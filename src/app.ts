@@ -10,7 +10,7 @@ import router from '@/routes'
 const app = express()
 
 // app middlewares
-// app.use(morgan('dev')) 
+// app.use(morgan('dev'))
 
 app.use(cors())
 app.use(cookieParser())
@@ -23,7 +23,7 @@ app.use(express.static(`${__dirname}/../public`))
 
 // test
 // app.use('/test', function (req, res, next) {
-//   throw new Error('test error') 
+//   throw new Error('test error')
 //   res.send('test')
 // })
 

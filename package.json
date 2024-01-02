@@ -1,5 +1,5 @@
 {
-  "name": "life-diary-server",
+  "name": "vv-airline-server",
   "version": "0.1.0",
   "description": "",
   "main": "dist/app.js",
@@ -19,10 +19,12 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "eslint": "^8.56.0",
     "express": "^4.18.2",
     "module-alias": "^2.2.3",
     "mongoose": "^8.0.3",
     "nodemon": "^3.0.2",
+    "prettier": "^3.1.1",
     "typescript": "^5.3.3"
   },
   "_moduleAliases": {
