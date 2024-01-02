@@ -1,0 +1,31 @@
+{
+  "name": "life-diary-server",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/app.js",
+  "author": "julytf",
+  "scripts": {
+    "build": "npx tsc",
+    "build-watch": "npx tsc -w",
+    "serve": "node ./dist/server.js",
+    "serve-watch": "nodemon ./dist/server.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@types/cookie-parser": "^1.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "module-alias": "^2.2.3",
+    "mongoose": "^8.0.3",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  }
+}
