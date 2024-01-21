@@ -2,8 +2,9 @@ import { SeatClasses, SeatStatuses, SeatTypes } from '@/enums/seat.enums'
 import { Schema, model } from 'mongoose'
 
 export interface ISeat {
+  code: string
   row: number
-  col: number
+  col: string
   status?: SeatStatuses
   seatType?: SeatTypes
   seatClass?: SeatClasses
@@ -11,12 +12,16 @@ export interface ISeat {
 }
 
 const seatSchema = new Schema<ISeat>({
+  code: {
+    type: String,
+    required: true,
+  },
   row: {
     type: Number,
     required: true,
   },
   col: {
-    type: Number,
+    type: String,
     required: true,
   },
   status: {

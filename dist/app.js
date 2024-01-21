@@ -10,7 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const routes_1 = __importDefault(require("@/routes"));
 const app = (0, express_1.default)();
 // app middlewares
-// app.use(morgan('dev')) 
+// app.use(morgan('dev'))
 app.use((0, cors_1.default)());
 app.use((0, cookie_parser_1.default)());
 // app.use(express.json({ limit: '10kb' }))
@@ -19,7 +19,7 @@ app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.static(`${__dirname}/../public`));
 // test
 // app.use('/test', function (req, res, next) {
-//   throw new Error('test error') 
+//   throw new Error('test error')
 //   res.send('test')
 // })
 // router
