@@ -3,7 +3,7 @@ import { Schema } from 'mongoose'
 export interface IAddress {
   address: string
   address2?: string
-  city: Schema.Types.ObjectId
+  province: Schema.Types.ObjectId
   district?: Schema.Types.ObjectId
   ward?: Schema.Types.ObjectId
 }
@@ -16,7 +16,7 @@ const addressSchema = new Schema<IAddress>({
   address2: {
     type: String,
   },
-  city: {
+  province: {
     type: Schema.Types.ObjectId,
     ref: 'City',
     required: true,

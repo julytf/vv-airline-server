@@ -1,4 +1,4 @@
-export enum AircraftStatuses {
+export enum AircraftStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   MAINTENANCE = 'MAINTENANCE',

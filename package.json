@@ -8,20 +8,27 @@
     "build": "npx tsc",
     "build-watch": "npx tsc -w",
     "serve": "node ./dist/server.js",
-    "serve-watch": "nodemon ./dist/server.js"
+    "serve-watch": "nodemon ./dist/server.js",
+    "db:drop": "node ./dist/db/scripts/drop.js",
+    "db:seed:init": "node ./dist/db/scripts/seed/init/index.js",
+    "db:seed:test": "node ./dist/db/scripts/seed/test/index.js"
   },
   "license": "ISC",
   "dependencies": {
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.4",
     "@types/stripe-v3": "^3.1.32",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "eslint": "^8.56.0",
     "express": "^4.18.2",
+    "joi": "^17.12.1",
+    "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^8.0.3",
     "nodemon": "^3.0.2",
@@ -31,5 +38,9 @@
   },
   "_moduleAliases": {
     "@": "dist"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6"
   }
 }

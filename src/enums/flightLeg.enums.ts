@@ -1,4 +1,4 @@
-export enum flightLegStatus {
+export enum FlightLegStatus {
   AVAILABLE = 'AVAILABLE',
   CANCELED = 'CANCELED',
 }

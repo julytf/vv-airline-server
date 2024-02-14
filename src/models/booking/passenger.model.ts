@@ -1,24 +1,24 @@
 import { Schema, model, connect } from 'mongoose'
-import { UserGenders } from '@/enums/user.enums'
-import { PassengerTypes } from '@/enums/passenger.enums'
+import { UserGender } from '@/enums/user.enums'
+import { PassengerType } from '@/enums/passenger.enums'
 
 export interface IPassenger {
-  type: PassengerTypes
+  type: PassengerType
   email?: string
   phoneNumber?: string
   firstName: string
   lastName: string
   dateOfBirth?: Date
-  gender?: UserGenders
+  gender?: UserGender
   // booking: Schema.Types.ObjectId
 }
 
 const passengerSchema = new Schema<IPassenger>({
   type: {
     type: String,
-    enum: PassengerTypes,
+    enum: PassengerType,
     required: true,
-    default: PassengerTypes.ADULT,
+    default: PassengerType.ADULT,
   },
   email: {
     type: String,
@@ -49,7 +49,7 @@ const passengerSchema = new Schema<IPassenger>({
   },
   gender: {
     type: String,
-    enum: UserGenders,
+    enum: UserGender,
   },
   // booking: {
   //   type: Schema.Types.ObjectId,

@@ -1,5 +1,12 @@
 // require('module-alias/register')
-import mongoose from 'mongoose'
+
+import Aircraft from '@/models/aircraft/aircraft.model'
+import AircraftModel from '@/models/aircraft/aircraftModel.model'
+import Airport from '@/models/flight/airport.model'
+import Flight from '@/models/flight/flight.model'
+import FlightRoute from '@/models/flight/flightRoute.model'
+import User from '@/models/user.model'
+import mongoose, { Model } from 'mongoose'
 
 mongoose.set('strictQuery', true)
 
@@ -14,7 +21,7 @@ if (process.env.MONGODB_TYPE != 'local') {
   }
   DB_string = DB_string.replace('<username>', process.env.MONGODB_USERNAME).replace(
     '<password>',
-    process.env.MONGODB_PASSWORD
+    process.env.MONGODB_PASSWORD,
   )
 }
 
@@ -25,7 +32,14 @@ export const init = () =>
     // require('@/models/Author.model').init(),
   ]).then(() => console.log('DB init successful'))
 
-export const drop = () =>
-  Promise.all([
-    // require('@/models/Author.model').deleteMany({}),
+export const drop = async () => {
+  await Promise.all([
+    User.deleteMany({}),
+    AircraftModel.deleteMany({}),
+    Aircraft.deleteMany({}),
+    Airport.deleteMany({}),
+    FlightRoute.deleteMany({}),
+    Flight.deleteMany({}),
   ]).then(() => console.log('DB drop successful'))
+  // await mongoose.connection.db.dropDatabase()
+}

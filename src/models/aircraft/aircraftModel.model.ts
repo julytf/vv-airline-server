@@ -1,4 +1,4 @@
-import { SeatClasses } from '@/enums/seat.enums'
+import { SeatClass } from '@/enums/seat.enums'
 import { Schema, model } from 'mongoose'
 
 interface IRowModel {
@@ -17,7 +17,7 @@ const rowModelSchema = new Schema<IRowModel>({
 })
 
 interface ICabinModel {
-  class: SeatClasses
+  class: SeatClass
   noRow: number
   noCol: number
   aisleCol: number[]
@@ -27,8 +27,8 @@ interface ICabinModel {
 const cabinModelSchema = new Schema<ICabinModel>({
   class: {
     type: String,
-    enum: SeatClasses,
-    default: SeatClasses.ECONOMY,
+    enum: SeatClass,
+    default: SeatClass.ECONOMY,
     required: true,
   },
   noRow: {

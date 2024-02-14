@@ -1,13 +1,13 @@
-import { SeatClasses, SeatStatuses, SeatTypes } from '@/enums/seat.enums'
+import { SeatClass, SeatStatus, SeatType } from '@/enums/seat.enums'
 import { Schema, model } from 'mongoose'
 
 export interface ISeat {
   code: string
   row: number
   col: string
-  status?: SeatStatuses
-  seatType?: SeatTypes
-  seatClass?: SeatClasses
+  status?: SeatStatus
+  seatType?: SeatType
+  seatClass?: SeatClass
   // aircraftModel: Schema.Types.ObjectId
 }
 
@@ -26,18 +26,18 @@ const seatSchema = new Schema<ISeat>({
   },
   status: {
     type: String,
-    enum: SeatStatuses,
-    default: SeatStatuses.AVAILABLE,
+    enum: SeatStatus,
+    default: SeatStatus.AVAILABLE,
   },
   seatType: {
     type: String,
-    enum: SeatTypes,
-    default: SeatTypes.NORMAL,
+    enum: SeatType,
+    default: SeatType.NORMAL,
   },
   seatClass: {
     type: String,
-    enum: SeatClasses,
-    default: SeatClasses.ECONOMY,
+    enum: SeatClass,
+    default: SeatClass.ECONOMY,
   },
   // aircraftModel: {
   //   type: Schema.Types.ObjectId,

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { ObjectId, Schema, model } from 'mongoose'
 
 export interface IDistrict {
   code: string
@@ -6,7 +6,10 @@ export interface IDistrict {
   nameEn: string
   fullName: string
   fullNameEn: string
-  province: Schema.Types.ObjectId
+  codeName: string
+  provinceCode: string
+  // province: Schema.Types.ObjectId
+  wards?: Schema.Types.ObjectId[]
 }
 
 const districtSchema = new Schema<IDistrict>({
@@ -30,11 +33,25 @@ const districtSchema = new Schema<IDistrict>({
     type: String,
     required: true,
   },
-  province: {
-    type: Schema.Types.ObjectId,
-    ref: 'Province',
+  codeName: {
+    type: String,
     required: true,
   },
+  provinceCode: {
+    type: String,
+    required: true,
+  },
+  // province: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Province',
+  //   required: true,
+  // },
+  wards: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Ward',
+    },
+  ],
 })
 
 const District = model<IDistrict>('District', districtSchema)

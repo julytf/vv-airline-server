@@ -1,0 +1,506 @@
+[
+  {
+    "code": "01",
+    "name": "Hà Nội",
+    "nameEn": "Ha Noi",
+    "fullName": "Thành phố Hà Nội",
+    "fullNameEn": "Ha Noi City",
+    "codeName": "ha_noi"
+  },
+  {
+    "code": "26",
+    "name": "Vĩnh Phúc",
+    "nameEn": "Vinh Phuc",
+    "fullName": "Tỉnh Vĩnh Phúc",
+    "fullNameEn": "Vinh Phuc Province",
+    "codeName": "vinh_phuc"
+  },
+  {
+    "code": "27",
+    "name": "Bắc Ninh",
+    "nameEn": "Bac Ninh",
+    "fullName": "Tỉnh Bắc Ninh",
+    "fullNameEn": "Bac Ninh Province",
+    "codeName": "bac_ninh"
+  },
+  {
+    "code": "30",
+    "name": "Hải Dương",
+    "nameEn": "Hai Duong",
+    "fullName": "Tỉnh Hải Dương",
+    "fullNameEn": "Hai Duong Province",
+    "codeName": "hai_duong"
+  },
+  {
+    "code": "31",
+    "name": "Hải Phòng",
+    "nameEn": "Hai Phong",
+    "fullName": "Thành phố Hải Phòng",
+    "fullNameEn": "Hai Phong City",
+    "codeName": "hai_phong"
+  },
+  {
+    "code": "33",
+    "name": "Hưng Yên",
+    "nameEn": "Hung Yen",
+    "fullName": "Tỉnh Hưng Yên",
+    "fullNameEn": "Hung Yen Province",
+    "codeName": "hung_yen"
+  },
+  {
+    "code": "34",
+    "name": "Thái Bình",
+    "nameEn": "Thai Binh",
+    "fullName": "Tỉnh Thái Bình",
+    "fullNameEn": "Thai Binh Province",
+    "codeName": "thai_binh"
+  },
+  {
+    "code": "35",
+    "name": "Hà Nam",
+    "nameEn": "Ha Nam",
+    "fullName": "Tỉnh Hà Nam",
+    "fullNameEn": "Ha Nam Province",
+    "codeName": "ha_nam"
+  },
+  {
+    "code": "96",
+    "name": "Cà Mau",
+    "nameEn": "Ca Mau",
+    "fullName": "Tỉnh Cà Mau",
+    "fullNameEn": "Ca Mau Province",
+    "codeName": "ca_mau"
+  },
+  {
+    "code": "02",
+    "name": "Hà Giang",
+    "nameEn": "Ha Giang",
+    "fullName": "Tỉnh Hà Giang",
+    "fullNameEn": "Ha Giang Province",
+    "codeName": "ha_giang"
+  },
+  {
+    "code": "04",
+    "name": "Cao Bằng",
+    "nameEn": "Cao Bang",
+    "fullName": "Tỉnh Cao Bằng",
+    "fullNameEn": "Cao Bang Province",
+    "codeName": "cao_bang"
+  },
+  {
+    "code": "06",
+    "name": "Bắc Kạn",
+    "nameEn": "Bac Kan",
+    "fullName": "Tỉnh Bắc Kạn",
+    "fullNameEn": "Bac Kan Province",
+    "codeName": "bac_kan"
+  },
+  {
+    "code": "08",
+    "name": "Tuyên Quang",
+    "nameEn": "Tuyen Quang",
+    "fullName": "Tỉnh Tuyên Quang",
+    "fullNameEn": "Tuyen Quang Province",
+    "codeName": "tuyen_quang"
+  },
+  {
+    "code": "19",
+    "name": "Thái Nguyên",
+    "nameEn": "Thai Nguyen",
+    "fullName": "Tỉnh Thái Nguyên",
+    "fullNameEn": "Thai Nguyen Province",
+    "codeName": "thai_nguyen"
+  },
+  {
+    "code": "20",
+    "name": "Lạng Sơn",
+    "nameEn": "Lang Son",
+    "fullName": "Tỉnh Lạng Sơn",
+    "fullNameEn": "Lang Son Province",
+    "codeName": "lang_son"
+  },
+  {
+    "code": "22",
+    "name": "Quảng Ninh",
+    "nameEn": "Quang Ninh",
+    "fullName": "Tỉnh Quảng Ninh",
+    "fullNameEn": "Quang Ninh Province",
+    "codeName": "quang_ninh"
+  },
+  {
+    "code": "24",
+    "name": "Bắc Giang",
+    "nameEn": "Bac Giang",
+    "fullName": "Tỉnh Bắc Giang",
+    "fullNameEn": "Bac Giang Province",
+    "codeName": "bac_giang"
+  },
+  {
+    "code": "25",
+    "name": "Phú Thọ",
+    "nameEn": "Phu Tho",
+    "fullName": "Tỉnh Phú Thọ",
+    "fullNameEn": "Phu Tho Province",
+    "codeName": "phu_tho"
+  },
+  {
+    "code": "10",
+    "name": "Lào Cai",
+    "nameEn": "Lao Cai",
+    "fullName": "Tỉnh Lào Cai",
+    "fullNameEn": "Lao Cai Province",
+    "codeName": "lao_cai"
+  },
+  {
+    "code": "11",
+    "name": "Điện Biên",
+    "nameEn": "Dien Bien",
+    "fullName": "Tỉnh Điện Biên",
+    "fullNameEn": "Dien Bien Province",
+    "codeName": "dien_bien"
+  },
+  {
+    "code": "12",
+    "name": "Lai Châu",
+    "nameEn": "Lai Chau",
+    "fullName": "Tỉnh Lai Châu",
+    "fullNameEn": "Lai Chau Province",
+    "codeName": "lai_chau"
+  },
+  {
+    "code": "14",
+    "name": "Sơn La",
+    "nameEn": "Son La",
+    "fullName": "Tỉnh Sơn La",
+    "fullNameEn": "Son La Province",
+    "codeName": "son_la"
+  },
+  {
+    "code": "15",
+    "name": "Yên Bái",
+    "nameEn": "Yen Bai",
+    "fullName": "Tỉnh Yên Bái",
+    "fullNameEn": "Yen Bai Province",
+    "codeName": "yen_bai"
+  },
+  {
+    "code": "17",
+    "name": "Hoà Bình",
+    "nameEn": "Hoa Binh",
+    "fullName": "Tỉnh Hoà Bình",
+    "fullNameEn": "Hoa Binh Province",
+    "codeName": "hoa_binh"
+  },
+  {
+    "code": "70",
+    "name": "Bình Phước",
+    "nameEn": "Binh Phuoc",
+    "fullName": "Tỉnh Bình Phước",
+    "fullNameEn": "Binh Phuoc Province",
+    "codeName": "binh_phuoc"
+  },
+  {
+    "code": "72",
+    "name": "Tây Ninh",
+    "nameEn": "Tay Ninh",
+    "fullName": "Tỉnh Tây Ninh",
+    "fullNameEn": "Tay Ninh Province",
+    "codeName": "tay_ninh"
+  },
+  {
+    "code": "74",
+    "name": "Bình Dương",
+    "nameEn": "Binh Duong",
+    "fullName": "Tỉnh Bình Dương",
+    "fullNameEn": "Binh Duong Province",
+    "codeName": "binh_duong"
+  },
+  {
+    "code": "75",
+    "name": "Đồng Nai",
+    "nameEn": "Dong Nai",
+    "fullName": "Tỉnh Đồng Nai",
+    "fullNameEn": "Dong Nai Province",
+    "codeName": "dong_nai"
+  },
+  {
+    "code": "79",
+    "name": "Hồ Chí Minh",
+    "nameEn": "Ho Chi Minh",
+    "fullName": "Thành phố Hồ Chí Minh",
+    "fullNameEn": "Ho Chi Minh City",
+    "codeName": "ho_chi_minh"
+  },
+  {
+    "code": "77",
+    "name": "Bà Rịa - Vũng Tàu",
+    "nameEn": "Ba Ria - Vung Tau",
+    "fullName": "Tỉnh Bà Rịa - Vũng Tàu",
+    "fullNameEn": "Ba Ria - Vung Tau Province",
+    "codeName": "ba_ria_vung_tau"
+  },
+  {
+    "code": "36",
+    "name": "Nam Định",
+    "nameEn": "Nam Dinh",
+    "fullName": "Tỉnh Nam Định",
+    "fullNameEn": "Nam Dinh Province",
+    "codeName": "nam_dinh"
+  },
+  {
+    "code": "37",
+    "name": "Ninh Bình",
+    "nameEn": "Ninh Binh",
+    "fullName": "Tỉnh Ninh Bình",
+    "fullNameEn": "Ninh Binh Province",
+    "codeName": "ninh_binh"
+  },
+  {
+    "code": "38",
+    "name": "Thanh Hóa",
+    "nameEn": "Thanh Hoa",
+    "fullName": "Tỉnh Thanh Hóa",
+    "fullNameEn": "Thanh Hoa Province",
+    "codeName": "thanh_hoa"
+  },
+  {
+    "code": "40",
+    "name": "Nghệ An",
+    "nameEn": "Nghe An",
+    "fullName": "Tỉnh Nghệ An",
+    "fullNameEn": "Nghe An Province",
+    "codeName": "nghe_an"
+  },
+  {
+    "code": "42",
+    "name": "Hà Tĩnh",
+    "nameEn": "Ha Tinh",
+    "fullName": "Tỉnh Hà Tĩnh",
+    "fullNameEn": "Ha Tinh Province",
+    "codeName": "ha_tinh"
+  },
+  {
+    "code": "44",
+    "name": "Quảng Bình",
+    "nameEn": "Quang Binh",
+    "fullName": "Tỉnh Quảng Bình",
+    "fullNameEn": "Quang Binh Province",
+    "codeName": "quang_binh"
+  },
+  {
+    "code": "45",
+    "name": "Quảng Trị",
+    "nameEn": "Quang Tri",
+    "fullName": "Tỉnh Quảng Trị",
+    "fullNameEn": "Quang Tri Province",
+    "codeName": "quang_tri"
+  },
+  {
+    "code": "46",
+    "name": "Thừa Thiên Huế",
+    "nameEn": "Thua Thien Hue",
+    "fullName": "Tỉnh Thừa Thiên Huế",
+    "fullNameEn": "Thua Thien Hue Province",
+    "codeName": "thua_thien_hue"
+  },
+  {
+    "code": "48",
+    "name": "Đà Nẵng",
+    "nameEn": "Da Nang",
+    "fullName": "Thành phố Đà Nẵng",
+    "fullNameEn": "Da Nang City",
+    "codeName": "da_nang"
+  },
+  {
+    "code": "49",
+    "name": "Quảng Nam",
+    "nameEn": "Quang Nam",
+    "fullName": "Tỉnh Quảng Nam",
+    "fullNameEn": "Quang Nam Province",
+    "codeName": "quang_nam"
+  },
+  {
+    "code": "51",
+    "name": "Quảng Ngãi",
+    "nameEn": "Quang Ngai",
+    "fullName": "Tỉnh Quảng Ngãi",
+    "fullNameEn": "Quang Ngai Province",
+    "codeName": "quang_ngai"
+  },
+  {
+    "code": "52",
+    "name": "Bình Định",
+    "nameEn": "Binh Dinh",
+    "fullName": "Tỉnh Bình Định",
+    "fullNameEn": "Binh Dinh Province",
+    "codeName": "binh_dinh"
+  },
+  {
+    "code": "54",
+    "name": "Phú Yên",
+    "nameEn": "Phu Yen",
+    "fullName": "Tỉnh Phú Yên",
+    "fullNameEn": "Phu Yen Province",
+    "codeName": "phu_yen"
+  },
+  {
+    "code": "56",
+    "name": "Khánh Hòa",
+    "nameEn": "Khanh Hoa",
+    "fullName": "Tỉnh Khánh Hòa",
+    "fullNameEn": "Khanh Hoa Province",
+    "codeName": "khanh_hoa"
+  },
+  {
+    "code": "58",
+    "name": "Ninh Thuận",
+    "nameEn": "Ninh Thuan",
+    "fullName": "Tỉnh Ninh Thuận",
+    "fullNameEn": "Ninh Thuan Province",
+    "codeName": "ninh_thuan"
+  },
+  {
+    "code": "60",
+    "name": "Bình Thuận",
+    "nameEn": "Binh Thuan",
+    "fullName": "Tỉnh Bình Thuận",
+    "fullNameEn": "Binh Thuan Province",
+    "codeName": "binh_thuan"
+  },
+  {
+    "code": "62",
+    "name": "Kon Tum",
+    "nameEn": "Kon Tum",
+    "fullName": "Tỉnh Kon Tum",
+    "fullNameEn": "Kon Tum Province",
+    "codeName": "kon_tum"
+  },
+  {
+    "code": "64",
+    "name": "Gia Lai",
+    "nameEn": "Gia Lai",
+    "fullName": "Tỉnh Gia Lai",
+    "fullNameEn": "Gia Lai Province",
+    "codeName": "gia_lai"
+  },
+  {
+    "code": "66",
+    "name": "Đắk Lắk",
+    "nameEn": "Dak Lak",
+    "fullName": "Tỉnh Đắk Lắk",
+    "fullNameEn": "Dak Lak Province",
+    "codeName": "dak_lak"
+  },
+  {
+    "code": "67",
+    "name": "Đắk Nông",
+    "nameEn": "Dak Nong",
+    "fullName": "Tỉnh Đắk Nông",
+    "fullNameEn": "Dak Nong Province",
+    "codeName": "dak_nong"
+  },
+  {
+    "code": "68",
+    "name": "Lâm Đồng",
+    "nameEn": "Lam Dong",
+    "fullName": "Tỉnh Lâm Đồng",
+    "fullNameEn": "Lam Dong Province",
+    "codeName": "lam_dong"
+  },
+  {
+    "code": "80",
+    "name": "Long An",
+    "nameEn": "Long An",
+    "fullName": "Tỉnh Long An",
+    "fullNameEn": "Long An Province",
+    "codeName": "long_an"
+  },
+  {
+    "code": "82",
+    "name": "Tiền Giang",
+    "nameEn": "Tien Giang",
+    "fullName": "Tỉnh Tiền Giang",
+    "fullNameEn": "Tien Giang Province",
+    "codeName": "tien_giang"
+  },
+  {
+    "code": "83",
+    "name": "Bến Tre",
+    "nameEn": "Ben Tre",
+    "fullName": "Tỉnh Bến Tre",
+    "fullNameEn": "Ben Tre Province",
+    "codeName": "ben_tre"
+  },
+  {
+    "code": "84",
+    "name": "Trà Vinh",
+    "nameEn": "Tra Vinh",
+    "fullName": "Tỉnh Trà Vinh",
+    "fullNameEn": "Tra Vinh Province",
+    "codeName": "tra_vinh"
+  },
+  {
+    "code": "86",
+    "name": "Vĩnh Long",
+    "nameEn": "Vinh Long",
+    "fullName": "Tỉnh Vĩnh Long",
+    "fullNameEn": "Vinh Long Province",
+    "codeName": "vinh_long"
+  },
+  {
+    "code": "87",
+    "name": "Đồng Tháp",
+    "nameEn": "Dong Thap",
+    "fullName": "Tỉnh Đồng Tháp",
+    "fullNameEn": "Dong Thap Province",
+    "codeName": "dong_thap"
+  },
+  {
+    "code": "89",
+    "name": "An Giang",
+    "nameEn": "An Giang",
+    "fullName": "Tỉnh An Giang",
+    "fullNameEn": "An Giang Province",
+    "codeName": "an_giang"
+  },
+  {
+    "code": "91",
+    "name": "Kiên Giang",
+    "nameEn": "Kien Giang",
+    "fullName": "Tỉnh Kiên Giang",
+    "fullNameEn": "Kien Giang Province",
+    "codeName": "kien_giang"
+  },
+  {
+    "code": "92",
+    "name": "Cần Thơ",
+    "nameEn": "Can Tho",
+    "fullName": "Thành phố Cần Thơ",
+    "fullNameEn": "Can Tho City",
+    "codeName": "can_tho"
+  },
+  {
+    "code": "93",
+    "name": "Hậu Giang",
+    "nameEn": "Hau Giang",
+    "fullName": "Tỉnh Hậu Giang",
+    "fullNameEn": "Hau Giang Province",
+    "codeName": "hau_giang"
+  },
+  {
+    "code": "94",
+    "name": "Sóc Trăng",
+    "nameEn": "Soc Trang",
+    "fullName": "Tỉnh Sóc Trăng",
+    "fullNameEn": "Soc Trang Province",
+    "codeName": "soc_trang"
+  },
+  {
+    "code": "95",
+    "name": "Bạc Liêu",
+    "nameEn": "Bac Lieu",
+    "fullName": "Tỉnh Bạc Liêu",
+    "fullNameEn": "Bac Lieu Province",
+    "codeName": "bac_lieu"
+  }
+]

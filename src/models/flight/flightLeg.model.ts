@@ -1,11 +1,11 @@
-import { flightLegStatus } from '@/enums/flightLeg.enums'
+import { FlightLegStatus } from '@/enums/flightLeg.enums'
 import { Schema, model } from 'mongoose'
 
 export interface IFlightLeg {
   departureTime: Date
   arrivalTime: Date
   remainingSeats: number
-  status: flightLegStatus
+  status: FlightLegStatus
   flightRoute: Schema.Types.ObjectId
 }
 
@@ -25,8 +25,8 @@ const flightLegSchema = new Schema<IFlightLeg>({
   },
   status: {
     type: String,
-    enum: flightLegStatus,
-    default: flightLegStatus.AVAILABLE,
+    enum: FlightLegStatus,
+    default: FlightLegStatus.AVAILABLE,
   },
   flightRoute: {
     type: Schema.Types.ObjectId,

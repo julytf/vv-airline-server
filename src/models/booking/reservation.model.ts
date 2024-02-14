@@ -1,4 +1,4 @@
-import { SeatClasses } from '@/enums/seat.enums'
+import { SeatClass } from '@/enums/seat.enums'
 import { Schema, model } from 'mongoose'
 
 export interface IReservation {

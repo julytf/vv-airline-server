@@ -1,4 +1,4 @@
-export enum PassengerTypes {
+export enum PassengerType {
   ADULT = 'ADULT',
   CHILD = 'CHILD',
 }

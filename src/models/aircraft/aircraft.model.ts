@@ -1,10 +1,10 @@
-import { AircraftStatuses } from '@/enums/aircraft.enums'
+import { AircraftStatus } from '@/enums/aircraft.enums'
 import { Schema, model } from 'mongoose'
 
 export interface IAircraft {
   registrationNumber: string
   name?: string
-  status?: AircraftStatuses
+  status?: AircraftStatus
   aircraftModel?: Schema.Types.ObjectId
 }
 
@@ -18,8 +18,8 @@ const aircraftSchema = new Schema<IAircraft>({
   },
   status: {
     type: String,
-    enum: AircraftStatuses,
-    default: AircraftStatuses.ACTIVE,
+    enum: AircraftStatus,
+    default: AircraftStatus.ACTIVE,
   },
   aircraftModel: {
     type: Schema.Types.ObjectId,

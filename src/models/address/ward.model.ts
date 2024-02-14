@@ -6,7 +6,9 @@ export interface IWard {
   nameEn: string
   fullName: string
   fullNameEn: string
-  district: Schema.Types.ObjectId
+  codeName: string
+  districtCode: string
+  // district: Schema.Types.ObjectId
 }
 
 const wardSchema = new Schema<IWard>({
@@ -30,11 +32,19 @@ const wardSchema = new Schema<IWard>({
     type: String,
     required: true,
   },
-  district: {
-    type: Schema.Types.ObjectId,
-    ref: 'District',
+  codeName: {
+    type: String,
     required: true,
   },
+  districtCode: {
+    type: String,
+    required: true,
+  },
+  // district: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'District',
+  //   required: true,
+  // },
 })
 
 const Ward = model<IWard>('Ward', wardSchema)
