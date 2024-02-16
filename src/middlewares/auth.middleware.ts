@@ -14,6 +14,7 @@ const auth = async (req: IRequestWithUser, res: Response, next: NextFunction) =>
   if (req.user) return next()
 
   const token = req.headers?.authorization?.replace('Bearer ', '') || req.cookies.jwt
+  console.log('[info]:token',token)
 
   if (!token) return next(new UnauthorizedError())
 

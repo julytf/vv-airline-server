@@ -1,9 +1,9 @@
 import { UserGender, UserRole, UserStatus } from '@/enums/user.enums'
 import { Schema, model, connect, Document, CallbackError } from 'mongoose'
-import addressSchema, { IAddress } from './schemas/address.schema'
 import bcrypt from 'bcrypt'
 import Joi, { ValidationResult } from 'joi'
 import userJoiSchema from '@/utils/validations/user.joiSchema'
+import { IAddress, addressSchema } from './address/address.model'
 
 export interface IUser extends Document {
   role: UserRole

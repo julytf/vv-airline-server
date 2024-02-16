@@ -37,13 +37,13 @@ export const login = catchPromise(async function (req, res, next) {
   const JwtSecretKey = process.env.JWT_SECRET_KEY as Secret
   const JwtExpiresIn = Number(process.env.JWT_EXPIRES_IN) || 0
 
-  const user = await User.findOne({ username: req.body.username }).select('+password')
+  const user = await User.findOne({ email: req.body.email }).select('+password')
 
   if (!user) return next(new NotFoundError('User not found!'))
 
   if (!(await user.matchPassword(req.body.password))) return next(new UnauthorizedError('Incorrect password!'))
 
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     {
       id: user.id,
     },
@@ -55,13 +55,13 @@ export const login = catchPromise(async function (req, res, next) {
 
   return res
     .status(200)
-    .cookie('jwt', token, {
+    .cookie('jwt', accessToken, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * JwtExpiresIn),
     })
     .json({
       status: 'success',
       data: {
-        token,
+        accessToken,
         user,
       },
     })
@@ -75,7 +75,7 @@ export const logout = catchPromise(async function (req, res, next) {
   })
 })
 
-export const getMe = catchPromise(async function (req: Request, res, next) {
+export const getProfile = catchPromise(async function (req: Request, res, next) {
   const authUser = (req as IRequestWithUser).user!
 
   const user = await User.findOne({ id: authUser.id })
@@ -87,7 +87,7 @@ export const getMe = catchPromise(async function (req: Request, res, next) {
   })
 })
 
-export const updateMe = catchPromise(async function (req, res, next) {
+export const updateProfile = catchPromise(async function (req, res, next) {
   const authUser = (req as IRequestWithUser).user!
 
   const user = await User.findByIdAndUpdate(authUser.id, req.body, {
@@ -124,7 +124,7 @@ export const changePassword = catchPromise(async function (req, res, next) {
   })
 })
 
-export const deleteMe = catchPromise(async function (req, res, next) {
+export const deleteProfile = catchPromise(async function (req, res, next) {
   const authUser = (req as IRequestWithUser).user!
   const user = await User.findByIdAndUpdate(authUser.id, { isDeleted: true, deletedAt: Date() }, {})
 

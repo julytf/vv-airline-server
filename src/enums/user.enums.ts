@@ -1,7 +1,9 @@
 export enum UserRole {
-  ADMIN = 'ADMIN',
-  STAFF = 'STAFF',
+  GUEST = 'GUEST',
   USER = 'USER',
+  STAFF = 'STAFF',
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
 }
 
 export enum UserGender {

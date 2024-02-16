@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
 export interface IAddress {
   address: string
@@ -8,7 +8,7 @@ export interface IAddress {
   ward?: Schema.Types.ObjectId
 }
 
-const addressSchema = new Schema<IAddress>({
+export const addressSchema = new Schema<IAddress>({
   address: {
     type: String,
     required: true,
@@ -31,4 +31,6 @@ const addressSchema = new Schema<IAddress>({
   },
 })
 
-export default addressSchema
+const Address = model<IAddress>('Address', addressSchema)
+
+export default Address

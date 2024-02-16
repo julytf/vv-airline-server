@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import addressSchema, { IAddress } from '../schemas/address.schema'
+import { IAddress, addressSchema } from '../address/address.model'
 
 export interface IAirport {
   name: string
