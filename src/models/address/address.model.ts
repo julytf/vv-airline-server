@@ -8,28 +8,31 @@ export interface IAddress {
   ward?: Schema.Types.ObjectId
 }
 
-export const addressSchema = new Schema<IAddress>({
-  address: {
-    type: String,
-    required: true,
+export const addressSchema = new Schema<IAddress>(
+  {
+    address: {
+      type: String,
+      required: true,
+    },
+    address2: {
+      type: String,
+    },
+    province: {
+      type: Schema.Types.ObjectId,
+      ref: 'City',
+      required: true,
+    },
+    district: {
+      type: Schema.Types.ObjectId,
+      ref: 'District',
+    },
+    ward: {
+      type: Schema.Types.ObjectId,
+      ref: 'Ward',
+    },
   },
-  address2: {
-    type: String,
-  },
-  province: {
-    type: Schema.Types.ObjectId,
-    ref: 'City',
-    required: true,
-  },
-  district: {
-    type: Schema.Types.ObjectId,
-    ref: 'District',
-  },
-  ward: {
-    type: Schema.Types.ObjectId,
-    ref: 'Ward',
-  },
-})
+  { _id: false },
+)
 
 const Address = model<IAddress>('Address', addressSchema)
 

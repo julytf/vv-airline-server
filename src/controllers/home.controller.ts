@@ -5,10 +5,12 @@ import Stripe from 'stripe'
 
 const stripe = new Stripe(config.stripe.secretKey)
 
-export const index = async (req: Request, res: Response, next: NextFunction) => {
-  const query = User.where({ _id: '0' })
+export default {
+  index: async (req: Request, res: Response, next: NextFunction) => {
+    const query = User.where({ _id: '0' })
 
-  return res.json({
-    status: 'success',
-  })
+    return res.json({
+      status: 'success',
+    })
+  },
 }

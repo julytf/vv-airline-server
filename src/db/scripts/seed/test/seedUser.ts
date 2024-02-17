@@ -44,7 +44,7 @@ export default async function seedUser() {
   staff.save()
 
   const user1 = new User({
-    role: UserRole.ADMIN,
+    role: UserRole.USER,
     firstName: 'long',
     lastName: 'tran',
     email: 'longtran@google.com',
@@ -63,7 +63,7 @@ export default async function seedUser() {
   user1.save()
 
   const user2 = new User({
-    role: UserRole.ADMIN,
+    role: UserRole.USER,
     firstName: 'phung',
     lastName: 'tran',
     email: 'longphung@google.com',
