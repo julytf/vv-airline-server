@@ -21,7 +21,7 @@ export default async function seedUser() {
       province: await Province.findOne({ codeName: 'tra_vinh' }),
     },
   })
-  await admin.setPassword('password')
+  await admin.setPassword('Password1@')
   admin.save()
 
   const staff = new User({
@@ -40,7 +40,7 @@ export default async function seedUser() {
       province: await Province.findOne({ codeName: 'tra_vinh' }),
     },
   })
-  await staff.setPassword('password')
+  await staff.setPassword('Password1@')
   staff.save()
 
   const user1 = new User({
@@ -59,7 +59,7 @@ export default async function seedUser() {
       province: await Province.findOne({ codeName: 'tra_vinh' }),
     },
   })
-  await user1.setPassword('password')
+  await user1.setPassword('Password1@')
   user1.save()
 
   const user2 = new User({
@@ -78,6 +78,6 @@ export default async function seedUser() {
       province: await Province.findOne({ codeName: 'tra_vinh' }),
     },
   })
-  await user2.setPassword('password')
+  await user2.setPassword('Password1@')
   user2.save()
 }

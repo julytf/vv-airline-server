@@ -102,7 +102,7 @@ export const deleteOne = function (Model: Model<any, any, any>) {
 
     if (!rs.deletedCount) throw new NotFoundError('No document found!')
 
-    // const doc = await Model.findOne({ id: req.params.id })
+    // const doc = await Model.findById(authUser.id)
 
     // if (!doc) throw new NotFoundError('No document found!')
 

@@ -10,7 +10,7 @@ router.route('/login').post(AuthController.login)
 router.use(authMiddleware)
 
 router.route('/logout').post(AuthController.logout)
-router.route('/change-password').post(AuthController.changePassword)
+router.route('/change-password').patch(AuthController.changePassword)
 router.route('/delete-profile').delete(AuthController.deleteProfile)
 
 export default router

@@ -117,7 +117,8 @@ userSchema.method('setPassword', async function (newPassword: string) {
 })
 
 userSchema.method('matchPassword', async function (candidatePassword: string) {
-  let user: IUser = this
+  const user: IUser = await User.findById(this._id).select('+_hashedPassword')
+
   console.log(candidatePassword, user._hashedPassword)
   const isMatch = await bcrypt.compare(candidatePassword, user._hashedPassword)
   return isMatch

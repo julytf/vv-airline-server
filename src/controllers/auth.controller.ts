@@ -40,6 +40,7 @@ export default {
     const user = await User.findOne({ email: req.body.email }).select('+password')
 
     if (!user) return next(new NotFoundError('User not found!'))
+    console.log(req.body)
 
     if (!(await user.matchPassword(req.body.password))) return next(new UnauthorizedError('Incorrect password!'))
 
@@ -73,15 +74,17 @@ export default {
       status: 'success',
     })
   }),
+
   changePassword: catchPromise(async function (req, res, next) {
+    console.log('old', req.body.oldPassword)
+    console.log('new', req.body.newPassword)
+    
     const authUser = (req as IRequestWithUser).user!
-    const user: IUser = (await User.findOne({ id: authUser.id }))!
+    const user: IUser = (await User.findById(authUser.id))!
 
     if (!(await user.matchPassword(req.body.oldPassword))) {
       return next(new UnauthorizedError('Incorrect password!'))
     }
-    console.log('old', req.body.oldPassword)
-    console.log('new', req.body.newPassword)
 
     await user.setPassword(req.body.newPassword)
     user.save()
