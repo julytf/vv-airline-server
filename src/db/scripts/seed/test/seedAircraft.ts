@@ -15,6 +15,8 @@ export default async function seedAircraft() {
 }
 
 async function _seedAircraftModel() {
+  let rowCount = 0
+
   await AircraftModel.create({
     name: 'Boing 787',
     seatMap: [
@@ -25,6 +27,7 @@ async function _seedAircraftModel() {
         aisleCol: [2, 4],
         map: await Promise.all(
           new Array(20).fill(0).map(async (_, rowIndex) => ({
+            index: rowCount++,
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
@@ -51,6 +54,7 @@ async function _seedAircraftModel() {
         aisleCol: [2, 4],
         map: await Promise.all(
           new Array(25).fill(0).map(async (_, rowIndex) => ({
+            index: rowCount++,
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
@@ -77,6 +81,7 @@ async function _seedAircraftModel() {
         aisleCol: [2, 4],
         map: await Promise.all(
           new Array(25).fill(0).map(async (_, rowIndex) => ({
+            index: rowCount++,
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
@@ -98,6 +103,8 @@ async function _seedAircraftModel() {
       },
     ],
   })
+
+  rowCount = 0
   await AircraftModel.create({
     name: 'Airbus A321',
     seatMap: [
@@ -108,6 +115,7 @@ async function _seedAircraftModel() {
         aisleCol: [2, 4],
         map: await Promise.all(
           new Array(10).fill(0).map(async (_, rowIndex) => ({
+            index: rowCount++,
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
@@ -134,6 +142,7 @@ async function _seedAircraftModel() {
         aisleCol: [2, 4],
         map: await Promise.all(
           new Array(30).fill(0).map(async (_, rowIndex) => ({
+            index: rowCount++,
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {

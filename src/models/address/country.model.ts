@@ -1,17 +1,16 @@
 import { ObjectId, Schema, model } from 'mongoose'
 
-export interface IProvince {
+export interface ICountry {
   code: string
   name: string
   nameEn: string
   fullName: string
   fullNameEn: string
   codeName: string
-  countryCode: string
-  districts?: Schema.Types.ObjectId[]
+  provinces?: Schema.Types.ObjectId[]
 }
 
-const provinceSchema = new Schema<IProvince>({
+export const countrySchema = new Schema<ICountry>({
   code: {
     type: String,
     required: true,
@@ -36,13 +35,9 @@ const provinceSchema = new Schema<IProvince>({
     type: String,
     required: true,
   },
-  countryCode: {
-    type: String,
-    required: true,
-  },
-  districts: [{ type: Schema.Types.ObjectId, ref: 'District' }],
+  provinces: [{ type: Schema.Types.ObjectId, ref: 'Province' }],
 })
 
-const Province = model<IProvince>('Province', provinceSchema)
+const Country = model<ICountry>('Country', countrySchema)
 
-export default Province
+export default Country

@@ -1,0 +1,74 @@
+[
+  {
+    "code": "84",
+    "name": "Việt Nam",
+    "nameEn": "Viet Nam",
+    "fullName": "Việt Nam",
+    "fullNameEn": "Viet Nam",
+    "codeName": "viet_nam"
+  },
+  {
+    "code": "1",
+    "name": "Mỹ",
+    "nameEn": "United States",
+    "fullName": "Mỹ",
+    "fullNameEn": "United States",
+    "codeName": "united_states"
+  },
+  {
+    "code": "33",
+    "name": "Pháp",
+    "nameEn": "France",
+    "fullName": "Pháp",
+    "fullNameEn": "France",
+    "codeName": "france"
+  },
+  {
+    "code": "86",
+    "name": "Trung Quốc",
+    "nameEn": "China",
+    "fullName": "Trung Quốc",
+    "fullNameEn": "China",
+    "codeName": "china"
+  },
+  {
+    "code": "66",
+    "name": "Thái Lan",
+    "nameEn": "Thailand",
+    "fullName": "Thái Lan",
+    "fullNameEn": "Thailand",
+    "codeName": "thailand"
+  },
+  {
+    "code": "81",
+    "name": "Nhật Bản",
+    "nameEn": "Japan",
+    "fullName": "Nhật Bản",
+    "fullNameEn": "Japan",
+    "codeName": "japan"
+  },
+  {
+    "code": "7",
+    "name": "Nga",
+    "nameEn": "Russia",
+    "fullName": "Nga",
+    "fullNameEn": "Russia",
+    "codeName": "russia"
+  },
+  {
+    "code": "61",
+    "name": "Úc",
+    "nameEn": "Australia",
+    "fullName": "Úc",
+    "fullNameEn": "Australia",
+    "codeName": "australia"
+  },
+  {
+    "code": "65",
+    "name": "Singapore",
+    "nameEn": "Singapore",
+    "fullName": "Singapore",
+    "fullNameEn": "Singapore",
+    "codeName": "singapore"
+  }
+]

@@ -3,7 +3,6 @@ import 'module-alias/register'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config({ path: './.env' })
-
 import * as DB from './db'
 import app from './app'
 

@@ -3,10 +3,12 @@
 import Aircraft from '@/models/aircraft/aircraft.model'
 import AircraftModel from '@/models/aircraft/aircraftModel.model'
 import Airport from '@/models/flight/airport.model'
+import FlightLeg from '@/models/flight/flightLeg.model'
 import Flight from '@/models/flight/flight.model'
 import FlightRoute from '@/models/flight/flightRoute.model'
 import User from '@/models/user.model'
 import mongoose, { Model } from 'mongoose'
+import Seat from '@/models/aircraft/seat.model'
 
 mongoose.set('strictQuery', true)
 
@@ -28,9 +30,7 @@ if (process.env.MONGODB_TYPE != 'local') {
 export const connect = () => mongoose.connect(DB_string, {}).then(() => console.log('DB connect successful'))
 
 export const init = () =>
-  Promise.all([
-    // require('@/models/Author.model').init(),
-  ]).then(() => console.log('DB init successful'))
+  Promise.all([FlightLeg.init(), FlightRoute.init()]).then(() => console.log('DB init successful'))
 
 export const drop = async () => {
   await Promise.all([
@@ -40,6 +40,7 @@ export const drop = async () => {
     Airport.deleteMany({}),
     FlightRoute.deleteMany({}),
     Flight.deleteMany({}),
+    Seat.deleteMany({}),
   ]).then(() => console.log('DB drop successful'))
   // await mongoose.connection.db.dropDatabase()
 }

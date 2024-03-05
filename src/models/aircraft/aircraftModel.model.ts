@@ -2,11 +2,13 @@ import { SeatClass } from '@/enums/seat.enums'
 import { Schema, model } from 'mongoose'
 
 interface IRowModel {
+  index: number
   hasExit: boolean
-  seats: Schema.Types.ObjectId[][]
+  seats: Schema.Types.ObjectId[]
 }
 
 const rowModelSchema = new Schema<IRowModel>({
+  index: Number,
   hasExit: Boolean,
   seats: [
     {

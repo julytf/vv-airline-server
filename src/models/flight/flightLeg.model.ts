@@ -7,6 +7,7 @@ export interface IFlightLeg {
   remainingSeats: number
   status: FlightLegStatus
   flightRoute: Schema.Types.ObjectId
+  aircraft: Schema.Types.ObjectId
 }
 
 const flightLegSchema = new Schema<IFlightLeg>({
@@ -31,6 +32,10 @@ const flightLegSchema = new Schema<IFlightLeg>({
   flightRoute: {
     type: Schema.Types.ObjectId,
     ref: 'FlightRoute',
+  },
+  aircraft: {
+    type: Schema.Types.ObjectId,
+    ref: 'Aircraft',
   },
 })
 

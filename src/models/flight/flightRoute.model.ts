@@ -3,9 +3,11 @@ import { Schema, model } from 'mongoose'
 
 export interface IFlightRoute {
   distance?: number
-  prices: IPrice[]
+  prices: {
+    [key: string]: number
+  }
   departureAirport: Schema.Types.ObjectId
-  destinationAirport: Schema.Types.ObjectId
+  arrivalAirport: Schema.Types.ObjectId
 }
 
 export interface IPrice {
@@ -22,25 +24,15 @@ const flightRouteSchema = new Schema<IFlightRoute>({
     ref: 'Airport',
     required: true,
   },
-  destinationAirport: {
+  arrivalAirport: {
     type: Schema.Types.ObjectId,
     ref: 'Airport',
     required: true,
   },
-  prices: [
-    {
-      value: {
-        type: Number,
-        required: true,
-      },
-      seatClass: {
-        type: String,
-        enum: SeatClass,
-        required: true,
-        default: SeatClass.ECONOMY,
-      },
-    },
-  ],
+  prices: {
+    type: Map,
+    of: String,
+  },
 })
 
 const FlightRoute = model<IFlightRoute>('FlightRoute', flightRouteSchema)

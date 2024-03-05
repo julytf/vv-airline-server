@@ -1,3 +1,4 @@
+import { PaymentMethod, PaymentStatus } from '@/enums/payment.enums'
 import { Schema, model } from 'mongoose'
 
 export interface IBooking {
@@ -8,6 +9,9 @@ export interface IBooking {
   user: Schema.Types.ObjectId
   passengers: Schema.Types.ObjectId[]
   flights: Schema.Types.ObjectId[]
+  reservations: Schema.Types.ObjectId[]
+  paymentMethod?: PaymentMethod
+  paymentStatus?: PaymentStatus
 }
 
 const bookingSchema = new Schema<IBooking>({
@@ -47,6 +51,22 @@ const bookingSchema = new Schema<IBooking>({
       ref: 'Flight',
     },
   ],
+  reservations: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Reservation',
+    },
+  ],
+  paymentMethod: {
+    type: String,
+    enum: PaymentMethod,
+    default: PaymentMethod.CARD,
+  },
+  paymentStatus: {
+    type: String,
+    enum: PaymentStatus,
+    default: PaymentStatus.PENDING,
+  },
 })
 
 const Booking = model<IBooking>('Booking', bookingSchema)

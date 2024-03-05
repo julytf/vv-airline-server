@@ -1,3 +1,4 @@
+import { PaymentStatus } from './../../enums/payment.enums'
 import { SeatClass } from '@/enums/seat.enums'
 import { Schema, model } from 'mongoose'
 
@@ -9,6 +10,7 @@ export interface IReservation {
   passenger: Schema.Types.ObjectId
   seat: Schema.Types.ObjectId
   services: Schema.Types.ObjectId[]
+  paymentStatus?: PaymentStatus
 }
 
 const reservationSchema = new Schema<IReservation>({
@@ -41,8 +43,13 @@ const reservationSchema = new Schema<IReservation>({
       ref: 'Service',
     },
   ],
+  paymentStatus: {
+    type: String,
+    enum: PaymentStatus,
+    default: PaymentStatus.PENDING,
+  },
 })
 
-const reservation = model<IReservation>('reservation', reservationSchema)
+const Reservation = model<IReservation>('reservation', reservationSchema)
 
-export default reservation
+export default Reservation

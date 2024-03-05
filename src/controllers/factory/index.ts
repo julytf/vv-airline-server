@@ -13,7 +13,7 @@ export const getOne = function (Model: Model<any, any, any>) {
 
     return res.status(200).json({
       status: 'success',
-      data: doc,
+      data: { doc },
     })
   })
 }
@@ -31,7 +31,6 @@ export const getAll = function (Model: Model<any, any, any>) {
 
     return res.status(200).json({
       status: 'success',
-      result: docs.length,
       data: docs,
     })
   })

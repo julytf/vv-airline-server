@@ -5,7 +5,8 @@
     "nameEn": "Ha Noi",
     "fullName": "Thành phố Hà Nội",
     "fullNameEn": "Ha Noi City",
-    "codeName": "ha_noi"
+    "codeName": "ha_noi",
+    "countryCode": "84"
   },
   {
     "code": "26",
@@ -13,7 +14,8 @@
     "nameEn": "Vinh Phuc",
     "fullName": "Tỉnh Vĩnh Phúc",
     "fullNameEn": "Vinh Phuc Province",
-    "codeName": "vinh_phuc"
+    "codeName": "vinh_phuc",
+    "countryCode": "84"
   },
   {
     "code": "27",
@@ -21,7 +23,8 @@
     "nameEn": "Bac Ninh",
     "fullName": "Tỉnh Bắc Ninh",
     "fullNameEn": "Bac Ninh Province",
-    "codeName": "bac_ninh"
+    "codeName": "bac_ninh",
+    "countryCode": "84"
   },
   {
     "code": "30",
@@ -29,7 +32,8 @@
     "nameEn": "Hai Duong",
     "fullName": "Tỉnh Hải Dương",
     "fullNameEn": "Hai Duong Province",
-    "codeName": "hai_duong"
+    "codeName": "hai_duong",
+    "countryCode": "84"
   },
   {
     "code": "31",
@@ -37,7 +41,8 @@
     "nameEn": "Hai Phong",
     "fullName": "Thành phố Hải Phòng",
     "fullNameEn": "Hai Phong City",
-    "codeName": "hai_phong"
+    "codeName": "hai_phong",
+    "countryCode": "84"
   },
   {
     "code": "33",
@@ -45,7 +50,8 @@
     "nameEn": "Hung Yen",
     "fullName": "Tỉnh Hưng Yên",
     "fullNameEn": "Hung Yen Province",
-    "codeName": "hung_yen"
+    "codeName": "hung_yen",
+    "countryCode": "84"
   },
   {
     "code": "34",
@@ -53,7 +59,8 @@
     "nameEn": "Thai Binh",
     "fullName": "Tỉnh Thái Bình",
     "fullNameEn": "Thai Binh Province",
-    "codeName": "thai_binh"
+    "codeName": "thai_binh",
+    "countryCode": "84"
   },
   {
     "code": "35",
@@ -61,7 +68,8 @@
     "nameEn": "Ha Nam",
     "fullName": "Tỉnh Hà Nam",
     "fullNameEn": "Ha Nam Province",
-    "codeName": "ha_nam"
+    "codeName": "ha_nam",
+    "countryCode": "84"
   },
   {
     "code": "96",
@@ -69,7 +77,8 @@
     "nameEn": "Ca Mau",
     "fullName": "Tỉnh Cà Mau",
     "fullNameEn": "Ca Mau Province",
-    "codeName": "ca_mau"
+    "codeName": "ca_mau",
+    "countryCode": "84"
   },
   {
     "code": "02",
@@ -77,7 +86,8 @@
     "nameEn": "Ha Giang",
     "fullName": "Tỉnh Hà Giang",
     "fullNameEn": "Ha Giang Province",
-    "codeName": "ha_giang"
+    "codeName": "ha_giang",
+    "countryCode": "84"
   },
   {
     "code": "04",
@@ -85,7 +95,8 @@
     "nameEn": "Cao Bang",
     "fullName": "Tỉnh Cao Bằng",
     "fullNameEn": "Cao Bang Province",
-    "codeName": "cao_bang"
+    "codeName": "cao_bang",
+    "countryCode": "84"
   },
   {
     "code": "06",
@@ -93,7 +104,8 @@
     "nameEn": "Bac Kan",
     "fullName": "Tỉnh Bắc Kạn",
     "fullNameEn": "Bac Kan Province",
-    "codeName": "bac_kan"
+    "codeName": "bac_kan",
+    "countryCode": "84"
   },
   {
     "code": "08",
@@ -101,7 +113,8 @@
     "nameEn": "Tuyen Quang",
     "fullName": "Tỉnh Tuyên Quang",
     "fullNameEn": "Tuyen Quang Province",
-    "codeName": "tuyen_quang"
+    "codeName": "tuyen_quang",
+    "countryCode": "84"
   },
   {
     "code": "19",
@@ -109,7 +122,8 @@
     "nameEn": "Thai Nguyen",
     "fullName": "Tỉnh Thái Nguyên",
     "fullNameEn": "Thai Nguyen Province",
-    "codeName": "thai_nguyen"
+    "codeName": "thai_nguyen",
+    "countryCode": "84"
   },
   {
     "code": "20",
@@ -117,7 +131,8 @@
     "nameEn": "Lang Son",
     "fullName": "Tỉnh Lạng Sơn",
     "fullNameEn": "Lang Son Province",
-    "codeName": "lang_son"
+    "codeName": "lang_son",
+    "countryCode": "84"
   },
   {
     "code": "22",
@@ -125,7 +140,8 @@
     "nameEn": "Quang Ninh",
     "fullName": "Tỉnh Quảng Ninh",
     "fullNameEn": "Quang Ninh Province",
-    "codeName": "quang_ninh"
+    "codeName": "quang_ninh",
+    "countryCode": "84"
   },
   {
     "code": "24",
@@ -133,7 +149,8 @@
     "nameEn": "Bac Giang",
     "fullName": "Tỉnh Bắc Giang",
     "fullNameEn": "Bac Giang Province",
-    "codeName": "bac_giang"
+    "codeName": "bac_giang",
+    "countryCode": "84"
   },
   {
     "code": "25",
@@ -141,7 +158,8 @@
     "nameEn": "Phu Tho",
     "fullName": "Tỉnh Phú Thọ",
     "fullNameEn": "Phu Tho Province",
-    "codeName": "phu_tho"
+    "codeName": "phu_tho",
+    "countryCode": "84"
   },
   {
     "code": "10",
@@ -149,7 +167,8 @@
     "nameEn": "Lao Cai",
     "fullName": "Tỉnh Lào Cai",
     "fullNameEn": "Lao Cai Province",
-    "codeName": "lao_cai"
+    "codeName": "lao_cai",
+    "countryCode": "84"
   },
   {
     "code": "11",
@@ -157,7 +176,8 @@
     "nameEn": "Dien Bien",
     "fullName": "Tỉnh Điện Biên",
     "fullNameEn": "Dien Bien Province",
-    "codeName": "dien_bien"
+    "codeName": "dien_bien",
+    "countryCode": "84"
   },
   {
     "code": "12",
@@ -165,7 +185,8 @@
     "nameEn": "Lai Chau",
     "fullName": "Tỉnh Lai Châu",
     "fullNameEn": "Lai Chau Province",
-    "codeName": "lai_chau"
+    "codeName": "lai_chau",
+    "countryCode": "84"
   },
   {
     "code": "14",
@@ -173,7 +194,8 @@
     "nameEn": "Son La",
     "fullName": "Tỉnh Sơn La",
     "fullNameEn": "Son La Province",
-    "codeName": "son_la"
+    "codeName": "son_la",
+    "countryCode": "84"
   },
   {
     "code": "15",
@@ -181,7 +203,8 @@
     "nameEn": "Yen Bai",
     "fullName": "Tỉnh Yên Bái",
     "fullNameEn": "Yen Bai Province",
-    "codeName": "yen_bai"
+    "codeName": "yen_bai",
+    "countryCode": "84"
   },
   {
     "code": "17",
@@ -189,7 +212,8 @@
     "nameEn": "Hoa Binh",
     "fullName": "Tỉnh Hoà Bình",
     "fullNameEn": "Hoa Binh Province",
-    "codeName": "hoa_binh"
+    "codeName": "hoa_binh",
+    "countryCode": "84"
   },
   {
     "code": "70",
@@ -197,7 +221,8 @@
     "nameEn": "Binh Phuoc",
     "fullName": "Tỉnh Bình Phước",
     "fullNameEn": "Binh Phuoc Province",
-    "codeName": "binh_phuoc"
+    "codeName": "binh_phuoc",
+    "countryCode": "84"
   },
   {
     "code": "72",
@@ -205,7 +230,8 @@
     "nameEn": "Tay Ninh",
     "fullName": "Tỉnh Tây Ninh",
     "fullNameEn": "Tay Ninh Province",
-    "codeName": "tay_ninh"
+    "codeName": "tay_ninh",
+    "countryCode": "84"
   },
   {
     "code": "74",
@@ -213,7 +239,8 @@
     "nameEn": "Binh Duong",
     "fullName": "Tỉnh Bình Dương",
     "fullNameEn": "Binh Duong Province",
-    "codeName": "binh_duong"
+    "codeName": "binh_duong",
+    "countryCode": "84"
   },
   {
     "code": "75",
@@ -221,7 +248,8 @@
     "nameEn": "Dong Nai",
     "fullName": "Tỉnh Đồng Nai",
     "fullNameEn": "Dong Nai Province",
-    "codeName": "dong_nai"
+    "codeName": "dong_nai",
+    "countryCode": "84"
   },
   {
     "code": "79",
@@ -229,7 +257,8 @@
     "nameEn": "Ho Chi Minh",
     "fullName": "Thành phố Hồ Chí Minh",
     "fullNameEn": "Ho Chi Minh City",
-    "codeName": "ho_chi_minh"
+    "codeName": "ho_chi_minh",
+    "countryCode": "84"
   },
   {
     "code": "77",
@@ -237,7 +266,8 @@
     "nameEn": "Ba Ria - Vung Tau",
     "fullName": "Tỉnh Bà Rịa - Vũng Tàu",
     "fullNameEn": "Ba Ria - Vung Tau Province",
-    "codeName": "ba_ria_vung_tau"
+    "codeName": "ba_ria_vung_tau",
+    "countryCode": "84"
   },
   {
     "code": "36",
@@ -245,7 +275,8 @@
     "nameEn": "Nam Dinh",
     "fullName": "Tỉnh Nam Định",
     "fullNameEn": "Nam Dinh Province",
-    "codeName": "nam_dinh"
+    "codeName": "nam_dinh",
+    "countryCode": "84"
   },
   {
     "code": "37",
@@ -253,7 +284,8 @@
     "nameEn": "Ninh Binh",
     "fullName": "Tỉnh Ninh Bình",
     "fullNameEn": "Ninh Binh Province",
-    "codeName": "ninh_binh"
+    "codeName": "ninh_binh",
+    "countryCode": "84"
   },
   {
     "code": "38",
@@ -261,7 +293,8 @@
     "nameEn": "Thanh Hoa",
     "fullName": "Tỉnh Thanh Hóa",
     "fullNameEn": "Thanh Hoa Province",
-    "codeName": "thanh_hoa"
+    "codeName": "thanh_hoa",
+    "countryCode": "84"
   },
   {
     "code": "40",
@@ -269,7 +302,8 @@
     "nameEn": "Nghe An",
     "fullName": "Tỉnh Nghệ An",
     "fullNameEn": "Nghe An Province",
-    "codeName": "nghe_an"
+    "codeName": "nghe_an",
+    "countryCode": "84"
   },
   {
     "code": "42",
@@ -277,7 +311,8 @@
     "nameEn": "Ha Tinh",
     "fullName": "Tỉnh Hà Tĩnh",
     "fullNameEn": "Ha Tinh Province",
-    "codeName": "ha_tinh"
+    "codeName": "ha_tinh",
+    "countryCode": "84"
   },
   {
     "code": "44",
@@ -285,7 +320,8 @@
     "nameEn": "Quang Binh",
     "fullName": "Tỉnh Quảng Bình",
     "fullNameEn": "Quang Binh Province",
-    "codeName": "quang_binh"
+    "codeName": "quang_binh",
+    "countryCode": "84"
   },
   {
     "code": "45",
@@ -293,7 +329,8 @@
     "nameEn": "Quang Tri",
     "fullName": "Tỉnh Quảng Trị",
     "fullNameEn": "Quang Tri Province",
-    "codeName": "quang_tri"
+    "codeName": "quang_tri",
+    "countryCode": "84"
   },
   {
     "code": "46",
@@ -301,7 +338,8 @@
     "nameEn": "Thua Thien Hue",
     "fullName": "Tỉnh Thừa Thiên Huế",
     "fullNameEn": "Thua Thien Hue Province",
-    "codeName": "thua_thien_hue"
+    "codeName": "thua_thien_hue",
+    "countryCode": "84"
   },
   {
     "code": "48",
@@ -309,7 +347,8 @@
     "nameEn": "Da Nang",
     "fullName": "Thành phố Đà Nẵng",
     "fullNameEn": "Da Nang City",
-    "codeName": "da_nang"
+    "codeName": "da_nang",
+    "countryCode": "84"
   },
   {
     "code": "49",
@@ -317,7 +356,8 @@
     "nameEn": "Quang Nam",
     "fullName": "Tỉnh Quảng Nam",
     "fullNameEn": "Quang Nam Province",
-    "codeName": "quang_nam"
+    "codeName": "quang_nam",
+    "countryCode": "84"
   },
   {
     "code": "51",
@@ -325,7 +365,8 @@
     "nameEn": "Quang Ngai",
     "fullName": "Tỉnh Quảng Ngãi",
     "fullNameEn": "Quang Ngai Province",
-    "codeName": "quang_ngai"
+    "codeName": "quang_ngai",
+    "countryCode": "84"
   },
   {
     "code": "52",
@@ -333,7 +374,8 @@
     "nameEn": "Binh Dinh",
     "fullName": "Tỉnh Bình Định",
     "fullNameEn": "Binh Dinh Province",
-    "codeName": "binh_dinh"
+    "codeName": "binh_dinh",
+    "countryCode": "84"
   },
   {
     "code": "54",
@@ -341,7 +383,8 @@
     "nameEn": "Phu Yen",
     "fullName": "Tỉnh Phú Yên",
     "fullNameEn": "Phu Yen Province",
-    "codeName": "phu_yen"
+    "codeName": "phu_yen",
+    "countryCode": "84"
   },
   {
     "code": "56",
@@ -349,7 +392,8 @@
     "nameEn": "Khanh Hoa",
     "fullName": "Tỉnh Khánh Hòa",
     "fullNameEn": "Khanh Hoa Province",
-    "codeName": "khanh_hoa"
+    "codeName": "khanh_hoa",
+    "countryCode": "84"
   },
   {
     "code": "58",
@@ -357,7 +401,8 @@
     "nameEn": "Ninh Thuan",
     "fullName": "Tỉnh Ninh Thuận",
     "fullNameEn": "Ninh Thuan Province",
-    "codeName": "ninh_thuan"
+    "codeName": "ninh_thuan",
+    "countryCode": "84"
   },
   {
     "code": "60",
@@ -365,7 +410,8 @@
     "nameEn": "Binh Thuan",
     "fullName": "Tỉnh Bình Thuận",
     "fullNameEn": "Binh Thuan Province",
-    "codeName": "binh_thuan"
+    "codeName": "binh_thuan",
+    "countryCode": "84"
   },
   {
     "code": "62",
@@ -373,7 +419,8 @@
     "nameEn": "Kon Tum",
     "fullName": "Tỉnh Kon Tum",
     "fullNameEn": "Kon Tum Province",
-    "codeName": "kon_tum"
+    "codeName": "kon_tum",
+    "countryCode": "84"
   },
   {
     "code": "64",
@@ -381,7 +428,8 @@
     "nameEn": "Gia Lai",
     "fullName": "Tỉnh Gia Lai",
     "fullNameEn": "Gia Lai Province",
-    "codeName": "gia_lai"
+    "codeName": "gia_lai",
+    "countryCode": "84"
   },
   {
     "code": "66",
@@ -389,7 +437,8 @@
     "nameEn": "Dak Lak",
     "fullName": "Tỉnh Đắk Lắk",
     "fullNameEn": "Dak Lak Province",
-    "codeName": "dak_lak"
+    "codeName": "dak_lak",
+    "countryCode": "84"
   },
   {
     "code": "67",
@@ -397,7 +446,8 @@
     "nameEn": "Dak Nong",
     "fullName": "Tỉnh Đắk Nông",
     "fullNameEn": "Dak Nong Province",
-    "codeName": "dak_nong"
+    "codeName": "dak_nong",
+    "countryCode": "84"
   },
   {
     "code": "68",
@@ -405,7 +455,8 @@
     "nameEn": "Lam Dong",
     "fullName": "Tỉnh Lâm Đồng",
     "fullNameEn": "Lam Dong Province",
-    "codeName": "lam_dong"
+    "codeName": "lam_dong",
+    "countryCode": "84"
   },
   {
     "code": "80",
@@ -413,7 +464,8 @@
     "nameEn": "Long An",
     "fullName": "Tỉnh Long An",
     "fullNameEn": "Long An Province",
-    "codeName": "long_an"
+    "codeName": "long_an",
+    "countryCode": "84"
   },
   {
     "code": "82",
@@ -421,7 +473,8 @@
     "nameEn": "Tien Giang",
     "fullName": "Tỉnh Tiền Giang",
     "fullNameEn": "Tien Giang Province",
-    "codeName": "tien_giang"
+    "codeName": "tien_giang",
+    "countryCode": "84"
   },
   {
     "code": "83",
@@ -429,7 +482,8 @@
     "nameEn": "Ben Tre",
     "fullName": "Tỉnh Bến Tre",
     "fullNameEn": "Ben Tre Province",
-    "codeName": "ben_tre"
+    "codeName": "ben_tre",
+    "countryCode": "84"
   },
   {
     "code": "84",
@@ -437,7 +491,8 @@
     "nameEn": "Tra Vinh",
     "fullName": "Tỉnh Trà Vinh",
     "fullNameEn": "Tra Vinh Province",
-    "codeName": "tra_vinh"
+    "codeName": "tra_vinh",
+    "countryCode": "84"
   },
   {
     "code": "86",
@@ -445,7 +500,8 @@
     "nameEn": "Vinh Long",
     "fullName": "Tỉnh Vĩnh Long",
     "fullNameEn": "Vinh Long Province",
-    "codeName": "vinh_long"
+    "codeName": "vinh_long",
+    "countryCode": "84"
   },
   {
     "code": "87",
@@ -453,7 +509,8 @@
     "nameEn": "Dong Thap",
     "fullName": "Tỉnh Đồng Tháp",
     "fullNameEn": "Dong Thap Province",
-    "codeName": "dong_thap"
+    "codeName": "dong_thap",
+    "countryCode": "84"
   },
   {
     "code": "89",
@@ -461,7 +518,8 @@
     "nameEn": "An Giang",
     "fullName": "Tỉnh An Giang",
     "fullNameEn": "An Giang Province",
-    "codeName": "an_giang"
+    "codeName": "an_giang",
+    "countryCode": "84"
   },
   {
     "code": "91",
@@ -469,7 +527,8 @@
     "nameEn": "Kien Giang",
     "fullName": "Tỉnh Kiên Giang",
     "fullNameEn": "Kien Giang Province",
-    "codeName": "kien_giang"
+    "codeName": "kien_giang",
+    "countryCode": "84"
   },
   {
     "code": "92",
@@ -477,7 +536,8 @@
     "nameEn": "Can Tho",
     "fullName": "Thành phố Cần Thơ",
     "fullNameEn": "Can Tho City",
-    "codeName": "can_tho"
+    "codeName": "can_tho",
+    "countryCode": "84"
   },
   {
     "code": "93",
@@ -485,7 +545,8 @@
     "nameEn": "Hau Giang",
     "fullName": "Tỉnh Hậu Giang",
     "fullNameEn": "Hau Giang Province",
-    "codeName": "hau_giang"
+    "codeName": "hau_giang",
+    "countryCode": "84"
   },
   {
     "code": "94",
@@ -493,7 +554,8 @@
     "nameEn": "Soc Trang",
     "fullName": "Tỉnh Sóc Trăng",
     "fullNameEn": "Soc Trang Province",
-    "codeName": "soc_trang"
+    "codeName": "soc_trang",
+    "countryCode": "84"
   },
   {
     "code": "95",
@@ -501,6 +563,7 @@
     "nameEn": "Bac Lieu",
     "fullName": "Tỉnh Bạc Liêu",
     "fullNameEn": "Bac Lieu Province",
-    "codeName": "bac_lieu"
+    "codeName": "bac_lieu",
+    "countryCode": "84"
   }
 ]
