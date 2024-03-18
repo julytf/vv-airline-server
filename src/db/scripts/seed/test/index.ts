@@ -5,6 +5,7 @@ import * as DB from '@/db'
 import seedUser from './seedUser'
 import seedAircraft from './seedAircraft'
 import seedFlight from './seedFlight'
+import seedBlogs from './seedBlogs'
 
 DB.connect()
   .then(() => DB.init())
@@ -13,9 +14,11 @@ DB.connect()
   })
 
 async function Seed() {
-  await seedUser()
-  await seedAircraft()
-  await seedFlight()
+  // await seedUser()
+  // await seedAircraft()
+  // await seedFlight()
+
+  await seedBlogs()
 
   process.exit(0)
 }

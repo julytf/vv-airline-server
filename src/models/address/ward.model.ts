@@ -8,7 +8,7 @@ export interface IWard {
   fullNameEn: string
   codeName: string
   districtCode: string
-  // district: Schema.Types.ObjectId
+  // district: Types.ObjectId
 }
 
 const wardSchema = new Schema<IWard>({

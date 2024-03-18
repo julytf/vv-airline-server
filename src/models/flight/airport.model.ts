@@ -1,14 +1,13 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 import { IAddress, addressSchema } from '../address/address.model'
 import { AirportType } from '@/enums/airport.enums'
 import Country, { ICountry, countrySchema } from '../address/country.model'
 
 export interface IAirport {
   IATA: string
-  cityCode: string
-  countryCode: string
+  // countryCode: string
   city: string
-  country: ICountry
+  country: Types.ObjectId
   type: AirportType
   name: string
   description?: string
@@ -21,17 +20,15 @@ const airportSchema = new Schema<IAirport>({
   IATA: {
     type: String,
   },
-  cityCode: {
-    type: String,
-  },
-  countryCode: {
-    type: String,
-  },
+  // countryCode: {
+  //   type: String,
+  // },
   city: {
     type: String,
   },
   country: {
-    type: countrySchema,
+    type: Schema.Types.ObjectId,
+    ref: 'Country',
   },
   type: {
     type: String,

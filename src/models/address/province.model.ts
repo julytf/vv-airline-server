@@ -1,4 +1,4 @@
-import { ObjectId, Schema, model } from 'mongoose'
+import { ObjectId, Schema, Types, model } from 'mongoose'
 
 export interface IProvince {
   code: string
@@ -8,7 +8,7 @@ export interface IProvince {
   fullNameEn: string
   codeName: string
   countryCode: string
-  districts?: Schema.Types.ObjectId[]
+  districts?: Types.ObjectId[]
 }
 
 const provinceSchema = new Schema<IProvince>({

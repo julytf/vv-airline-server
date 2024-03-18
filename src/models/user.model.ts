@@ -110,7 +110,7 @@ userSchema.method('setPassword', async function (newPassword: string) {
     const salt = await bcrypt.genSalt(saltWorkFactor)
     const hashedPassword = await bcrypt.hash(newPassword, salt)
     user._hashedPassword = hashedPassword
-    console.log(hashedPassword)
+    // console.log(hashedPassword)
   } catch (err: any) {
     console.log(err)
   }
@@ -119,7 +119,7 @@ userSchema.method('setPassword', async function (newPassword: string) {
 userSchema.method('matchPassword', async function (candidatePassword: string) {
   const user: IUser = await User.findById(this._id).select('+_hashedPassword')
 
-  console.log(candidatePassword, user._hashedPassword)
+  // console.log(candidatePassword, user._hashedPassword)
   const isMatch = await bcrypt.compare(candidatePassword, user._hashedPassword)
   return isMatch
 })

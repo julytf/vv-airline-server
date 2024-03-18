@@ -6,17 +6,17 @@ import * as factory from './factory'
 import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
 
-const stripe = new Stripe(config.stripe.secretKey)
+// const stripe = new Stripe(config.stripe.secretKey)
 
 export default {
   getProfile: catchPromise(async function (req: Request, res, next) {
     const authUser = (req as IRequestWithUser).user!
-    console.log(authUser)
-    console.log(authUser.id)
+    // console.log(authUser)
+    // console.log(authUser._id)
 
-    const user = await User.findById(authUser.id)
-    console.log(user)
-    console.log(user?.id)
+    const user = await User.findById(authUser._id)
+    // console.log(user)
+    // console.log(user?._id)
     return res.status(200).json({
       status: 'success',
       data: {
@@ -27,9 +27,14 @@ export default {
 
   updateProfile: catchPromise(async function (req, res, next) {
     const authUser = (req as IRequestWithUser).user!
-    console.log('[info]:body', req.body)
+    // console.log('[info]:body', req.body)
 
-    const user = await User.findByIdAndUpdate(authUser.id, req.body, {
+    const patchedUser = req.body
+    if (patchedUser.password) {
+      delete patchedUser.password
+    }
+
+    const user = await User.findByIdAndUpdate(authUser._id, patchedUser, {
       new: true,
       runValidators: true,
     })
@@ -42,5 +47,5 @@ export default {
     })
   }),
 
-  getUsers: factory.getAllPaginate(User),
+  getUsersPaginate: factory.getAllPaginate(User),
 }

@@ -1,11 +1,11 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 
 export interface IAddress {
   address: string
   address2?: string
-  province: Schema.Types.ObjectId
-  district?: Schema.Types.ObjectId
-  ward?: Schema.Types.ObjectId
+  province: Types.ObjectId
+  district?: Types.ObjectId
+  ward?: Types.ObjectId
 }
 
 export const addressSchema = new Schema<IAddress>(

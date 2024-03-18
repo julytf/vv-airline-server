@@ -1,13 +1,14 @@
 import { SeatClass } from '@/enums/seat.enums'
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 
 export interface IFlightRoute {
   distance?: number
   prices: {
-    [key: string]: number
+    [SeatClass.ECONOMY]: number
+    [SeatClass.BUSINESS]: number
   }
-  departureAirport: Schema.Types.ObjectId
-  arrivalAirport: Schema.Types.ObjectId
+  departureAirport: Types.ObjectId
+  arrivalAirport: Types.ObjectId
 }
 
 export interface IPrice {
@@ -30,8 +31,8 @@ const flightRouteSchema = new Schema<IFlightRoute>({
     required: true,
   },
   prices: {
-    type: Map,
-    of: String,
+    [SeatClass.ECONOMY]: { type: Number },
+    [SeatClass.BUSINESS]: { type: Number },
   },
 })
 

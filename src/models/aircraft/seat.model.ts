@@ -8,7 +8,7 @@ export interface ISeat {
   status?: SeatStatus
   seatType?: SeatType
   seatClass?: SeatClass
-  // aircraftModel: Schema.Types.ObjectId
+  // aircraftModel: Types.ObjectId
 }
 
 const seatSchema = new Schema<ISeat>({

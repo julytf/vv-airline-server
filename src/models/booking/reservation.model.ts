@@ -1,23 +1,24 @@
 import { PaymentStatus } from './../../enums/payment.enums'
 import { SeatClass } from '@/enums/seat.enums'
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 
 export interface IReservation {
-  price: number
+  _id: Types.ObjectId
+  // price: number
   // status?: string
-  // booking: Schema.Types.ObjectId
-  flightLeg: Schema.Types.ObjectId
-  passenger: Schema.Types.ObjectId
-  seat: Schema.Types.ObjectId
-  services: Schema.Types.ObjectId[]
+  // booking: Types.ObjectId
+  flightLeg: Types.ObjectId
+  passenger: Types.ObjectId
+  seat: Types.ObjectId
+  services: Types.ObjectId[]
   paymentStatus?: PaymentStatus
 }
 
 const reservationSchema = new Schema<IReservation>({
-  price: {
-    type: Number,
-    required: true,
-  },
+  // price: {
+  //   type: Number,
+  //   required: true,
+  // },
   // status: {
   //   type: String,
   // },

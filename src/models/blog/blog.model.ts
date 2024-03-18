@@ -1,13 +1,13 @@
 import { Schema, model, connect } from 'mongoose'
 
-export interface IArticle {
+export interface IBlog {
   title: string
   summary?: string
   coverImage?: string
   content: string
 }
 
-const articleSchema = new Schema<IArticle>(
+const blogSchema = new Schema<IBlog>(
   {
     title: {
       type: String,
@@ -29,7 +29,6 @@ const articleSchema = new Schema<IArticle>(
   },
 )
 
-const Article = model<IArticle>('Article', articleSchema)
+const Blog = model<IBlog>('Blog', blogSchema)
 
-export default Article
-
+export default Blog

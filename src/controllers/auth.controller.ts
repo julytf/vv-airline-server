@@ -27,7 +27,7 @@ export default {
     // console.log('user', user)
 
     await user.save()
-    console.log('saved')
+    // console.log('saved')
 
     return res.status(201).json({
       status: 'success',
@@ -40,13 +40,13 @@ export default {
     const user = await User.findOne({ email: req.body.email }).select('+password')
 
     if (!user) return next(new NotFoundError('User not found!'))
-    console.log(req.body)
+    // console.log(req.body)
 
     if (!(await user.matchPassword(req.body.password))) return next(new UnauthorizedError('Incorrect password!'))
 
     const accessToken = jwt.sign(
       {
-        id: user.id,
+        id: user._id,
       },
       JwtSecretKey,
       {
@@ -76,11 +76,11 @@ export default {
   }),
 
   changePassword: catchPromise(async function (req, res, next) {
-    console.log('old', req.body.oldPassword)
-    console.log('new', req.body.newPassword)
+    // console.log('old', req.body.oldPassword)
+    // console.log('new', req.body.newPassword)
     
     const authUser = (req as IRequestWithUser).user!
-    const user: IUser = (await User.findById(authUser.id))!
+    const user: IUser = (await User.findById(authUser._id))!
 
     if (!(await user.matchPassword(req.body.oldPassword))) {
       return next(new UnauthorizedError('Incorrect password!'))
@@ -98,7 +98,7 @@ export default {
   }),
   deleteProfile: catchPromise(async function (req, res, next) {
     const authUser = (req as IRequestWithUser).user!
-    const user = await User.findByIdAndUpdate(authUser.id, { isDeleted: true, deletedAt: Date() }, {})
+    const user = await User.findByIdAndUpdate(authUser._id, { isDeleted: true, deletedAt: Date() }, {})
 
     return res.status(204).send()
   }),

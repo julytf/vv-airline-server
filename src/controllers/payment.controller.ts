@@ -1,18 +1,22 @@
+import { populate } from 'dotenv'
 import config from '@/config'
 import { FlightType } from '@/enums/flight.enums'
 import { FlightLegType } from '@/enums/flightLeg.enums'
 import { PassengerType } from '@/enums/passenger.enums'
-import { PaymentStatus } from '@/enums/payment.enums'
+import { PaymentMethod, PaymentStatus } from '@/enums/payment.enums'
 import { SeatClass } from '@/enums/seat.enums'
 import { UserGender } from '@/enums/user.enums'
 import Seat, { ISeat } from '@/models/aircraft/seat.model'
+import Booking from '@/models/booking/booking.model'
 import Passenger from '@/models/booking/passenger.model'
-import Reservation from '@/models/booking/reservation.model'
+import Reservation, { IReservation } from '@/models/booking/reservation.model'
 import { IAirport } from '@/models/flight/airport.model'
 import Flight, { IFlight } from '@/models/flight/flight.model'
+import { IFlightRoute } from '@/models/flight/flightRoute.model'
 import { Request, Response, NextFunction } from 'express'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
+import { IFlightLeg } from '@/models/flight/flightLeg.model'
 
 // const stripe = new Stripe(config.stripe.secretKey)
 
@@ -115,7 +119,7 @@ export default {
   //   })
   // },
 
-  // TODO: get confirm request from user instead of directly from paypal webhook because  we doesnt have a public host yet
+  // TODO: get confirm request from user instead of directly from paypal webhook because  we doesn't have a public host yet
   confirmPayment: async (req: Request, res: Response, next: NextFunction) => {
     const paid = true
 
@@ -126,43 +130,21 @@ export default {
       })
     }
 
-    const bookingData: BookingData = req.body.bookingData
+    // TODO: get bookingId from paypal webhook
+    const bookingId = req.body.bookingId
 
-    //create passengers
-    const passengersData = [
-      ...bookingData.passengersData[PassengerType.ADULT],
-      ...bookingData.passengersData[PassengerType.CHILD],
-    ]
+    const booking = await Booking.findById(bookingId)
 
-    const passengers = await Promise.all(
-      passengersData.map((passenger) => {
-        Passenger.create(passenger)
-      }),
-    )
+    if (!booking) {
+      return res.json({
+        status: 'error',
+        message: 'Booking not found',
+      })
+    }
 
-    //create reservations
+    booking.paymentStatus = PaymentStatus.SUCCEEDED
+    booking.paymentMethod = PaymentMethod.PAYPAL
 
-    const outboundFlight = await Flight.findById(bookingData.flightsData[FlightType.OUTBOUND].flight)
-
-    const outboundDepartureSeatsData = [
-      ...bookingData.seatsData[FlightType.OUTBOUND][FlightLegType.DEPARTURE][PassengerType.ADULT],
-      ...bookingData.seatsData[FlightType.OUTBOUND][FlightLegType.DEPARTURE][PassengerType.CHILD],
-    ]
-
-    const outboundDepartureSeats = await Promise.all(outboundDepartureSeatsData.map((seat) => Seat.findById(seat)))
-
-    const outboundDepartureFlightReservations = await Promise.all(
-      passengers.map((passenger, index) => {
-        Reservation.create({
-          price: 9999,
-          flightLeg: outboundFlight?.flightLegs[0],
-          passenger: passenger,
-          seat: outboundDepartureSeats[index],
-          paymentStatus: PaymentStatus.PENDING,
-        })
-      }),
-    )
-
-    //create booking
+    await booking.save()
   },
 }

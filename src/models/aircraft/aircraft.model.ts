@@ -1,11 +1,11 @@
 import { AircraftStatus } from '@/enums/aircraft.enums'
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 
 export interface IAircraft {
   registrationNumber: string
   name?: string
   status?: AircraftStatus
-  aircraftModel?: Schema.Types.ObjectId
+  aircraftModel?: Types.ObjectId
 }
 
 const aircraftSchema = new Schema<IAircraft>({

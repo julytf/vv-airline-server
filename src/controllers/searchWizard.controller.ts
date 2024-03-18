@@ -6,12 +6,13 @@ import * as factory from './factory'
 import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
 import Flight from '@/models/flight/flight.model'
-import FlightRoute from '@/models/flight/flightRoute.model'
+import FlightRoute, { IFlightRoute } from '@/models/flight/flightRoute.model'
 import Airport from '@/models/flight/airport.model'
-import FlightLeg from '@/models/flight/flightLeg.model'
+import FlightLeg, { IFlightLeg } from '@/models/flight/flightLeg.model'
 import { populate } from 'dotenv'
 import { endOfDay, startOfDay } from 'date-fns'
 import path from 'path'
+import { FlightLegType } from '@/enums/flightLeg.enums'
 
 const stripe = new Stripe(config.stripe.secretKey)
 
@@ -39,10 +40,10 @@ export default {
     const adults = req.query['passengersAdults']
     const children = req.query['passengersChildren']
 
-    console.log('departureAirportIATA', departureAirportIATA)
-    console.log('arrivalAirportIATA', arrivalAirportIATA)
-    console.log('departureDate', departureDate)
-    console.log('adults', adults)
+    // console.log('departureAirportIATA', departureAirportIATA)
+    // console.log('arrivalAirportIATA', arrivalAirportIATA)
+    // console.log('departureDate', departureDate)
+    // console.log('adults', adults)
 
     if (!departureAirportIATA || !arrivalAirportIATA || !departureDate || !adults) {
       return res.status(400).json({
@@ -76,15 +77,37 @@ export default {
       {
         path: 'flightLegs',
         populate: [
-          { path: 'flightRoute', populate: [{ path: 'departureAirport' }, { path: 'arrivalAirport' }] },
           {
-            path: 'aircraft',
+            path: FlightLegType.DEPARTURE,
             populate: [
+              { path: 'flightRoute', populate: [{ path: 'departureAirport' }, { path: 'arrivalAirport' }] },
               {
-                path: 'aircraftModel',
-                populate: {
-                  path: 'seatMap.map.seats',
-                },
+                path: 'aircraft',
+                populate: [
+                  {
+                    path: 'aircraftModel',
+                    populate: {
+                      path: 'seatMap.map.seats',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: FlightLegType.TRANSIT,
+            populate: [
+              { path: 'flightRoute', populate: [{ path: 'departureAirport' }, { path: 'arrivalAirport' }] },
+              {
+                path: 'aircraft',
+                populate: [
+                  {
+                    path: 'aircraftModel',
+                    populate: {
+                      path: 'seatMap.map.seats',
+                    },
+                  },
+                ],
               },
             ],
           },

@@ -14,7 +14,7 @@ const auth = async (req: IRequestWithUser, res: Response, next: NextFunction) =>
   if (req.user) return next()
 
   const token = req.headers?.authorization?.replace('Bearer ', '') || req.cookies.jwt
-  console.log('[info]:token',token)
+  // console.log('[info]:token',token)
 
   if (!token) return next(new UnauthorizedError())
 
@@ -25,7 +25,7 @@ const auth = async (req: IRequestWithUser, res: Response, next: NextFunction) =>
     return next(err)
   }
   const user = await User.findById(decoded.id).select('+password')
-  console.log('auth', user?.id)
+  // console.log('auth', user?.id)
 
   if (!user) return next(new UnauthorizedError())
 

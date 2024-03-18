@@ -8,6 +8,6 @@ router.use(authMiddleware)
 
 router.route('/get-profile').get(UsersController.getProfile)
 router.route('/update-profile').patch(UsersController.updateProfile)
-router.route('/').get(UsersController.getUsers)
+router.route('/').get(UsersController.getUsersPaginate)
 
 export default router

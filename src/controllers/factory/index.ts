@@ -8,6 +8,7 @@ import NotFoundError from '@/errors/NotFoundError'
 export const getOne = function (Model: Model<any, any, any>) {
   return catchPromise(async function (req, res, next) {
     const doc = await Model.findById(req.params.id)
+    console.log(req.params.id)
 
     if (!doc) throw new NotFoundError('No document found!')
 
@@ -38,7 +39,7 @@ export const getAll = function (Model: Model<any, any, any>) {
 
 export const getAllPaginate = function (Model: Model<any, any, any>) {
   return catchPromise(async function (req, res, next) {
-    const { sort = false, page = 1, perPage = 12, q = '' } = req.query
+    const { sort = false, page = 1, perPage = 20, q = '' } = req.query
 
     const query = new AdjustQuery(Model.find())
       .nameFilter(q as string)
@@ -52,12 +53,13 @@ export const getAllPaginate = function (Model: Model<any, any, any>) {
     // docs.forEach(doc => doc?.completeImagesUrl())
 
     const count = await new AdjustQuery(Model.find()).nameFilter(q as string).query.countDocuments()
-    const noPage = Math.ceil(count / (perPage as number))
+    const lastPage = Math.ceil(count / (perPage as number))
 
     return res.status(200).json({
       status: 'success',
       data: {
         totalDocs: docs.length,
+        lastPage: lastPage,
         page,
         perPage,
         docs,
@@ -83,7 +85,7 @@ export const updateOne = function (Model: Model<any, any, any>) {
       new: true,
       runValidators: true,
     })
-    console.log(req.body)
+    // console.log(req.body)
 
     if (!doc) throw new NotFoundError('No document found!')
 
@@ -97,7 +99,7 @@ export const updateOne = function (Model: Model<any, any, any>) {
 export const deleteOne = function (Model: Model<any, any, any>) {
   return catchPromise(async function (req, res, next) {
     const rs = await Model.deleteOne({ _id: req.params.id })
-    console.log(req.params.id)
+    // console.log(req.params.id)
 
     if (!rs.deletedCount) throw new NotFoundError('No document found!')
 

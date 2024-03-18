@@ -1,4 +1,4 @@
-import { FlightLegStatus } from '@/enums/flightLeg.enums'
+import { FlightLegStatus, FlightLegType } from '@/enums/flightLeg.enums'
 import Country from '@/models/address/country.model'
 import District from '@/models/address/district.model'
 import Province from '@/models/address/province.model'
@@ -184,7 +184,9 @@ async function _seedFlight() {
     arrivalTime: new Date('2024-01-01 18:00:00'),
     remainingSeats: 120,
     flightRoute: HNToHCMFlightRoute,
-    flightLegs: [HNToCanThoFlightLeg],
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HNToCanThoFlightLeg,
+    },
   })
 
   const HNToHCMFlightHasTransit = await Flight.create({
@@ -193,7 +195,10 @@ async function _seedFlight() {
     arrivalTime: new Date('2024-01-01 22:00:00'),
     remainingSeats: 100,
     flightRoute: HNToHCMFlightRoute,
-    flightLegs: [HNToCanThoFlightLeg, CanThoToHCMFlightLeg],
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HNToCanThoFlightLeg,
+      [FlightLegType.TRANSIT]: CanThoToHCMFlightLeg,
+    },
   })
 
   const HCMToHNFlight = await Flight.create({
@@ -202,6 +207,8 @@ async function _seedFlight() {
     arrivalTime: new Date('2024-01-02 14:00:00'),
     remainingSeats: 100,
     flightRoute: HCMToHNFlightRoute,
-    flightLegs: [HCMToHNFlightLeg],
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HCMToHNFlightLeg,
+    },
   })
 }

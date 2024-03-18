@@ -1,10 +1,10 @@
 import { SeatClass } from '@/enums/seat.enums'
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 
 interface IRowModel {
   index: number
   hasExit: boolean
-  seats: Schema.Types.ObjectId[]
+  seats: Types.ObjectId[]
 }
 
 const rowModelSchema = new Schema<IRowModel>({

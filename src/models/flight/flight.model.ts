@@ -1,12 +1,16 @@
-import { Schema, model } from 'mongoose'
+import { FlightLegType } from '@/enums/flightLeg.enums'
+import { Schema, Types, model } from 'mongoose'
 
 export interface IFlight {
   hasTransit: boolean
   departureTime: Date
   arrivalTime: Date
   remainingSeats?: number
-  flightRoute: Schema.Types.ObjectId
-  flightLegs: Schema.Types.ObjectId[]
+  flightRoute: Types.ObjectId
+  flightLegs: {
+    [FlightLegType.DEPARTURE]: Types.ObjectId
+    [FlightLegType.TRANSIT]: Types.ObjectId
+  }
 }
 
 const flightSchema = new Schema<IFlight>({
@@ -31,12 +35,16 @@ const flightSchema = new Schema<IFlight>({
     type: Schema.Types.ObjectId,
     ref: 'FlightRoute',
   },
-  flightLegs: [
-    {
+  flightLegs: {
+    [FlightLegType.DEPARTURE]: {
       type: Schema.Types.ObjectId,
       ref: 'FlightLeg',
     },
-  ],
+    [FlightLegType.TRANSIT]: {
+      type: Schema.Types.ObjectId,
+      ref: 'FlightLeg',
+    },
+  },
 })
 
 const Flight = model<IFlight>('Flight', flightSchema)
