@@ -36,6 +36,11 @@ const flightRouteSchema = new Schema<IFlightRoute>({
   },
 })
 
+flightRouteSchema.pre('find', async function (next) {
+  this.populate([{ path: 'departureAirport' }, { path: 'arrivalAirport' }])
+  next()
+})
+
 const FlightRoute = model<IFlightRoute>('FlightRoute', flightRouteSchema)
 
 export default FlightRoute

@@ -47,12 +47,20 @@ const cabinModelSchema = new Schema<ICabinModel>({
 
 export interface IAircraftModel {
   name?: string
+  seatQuantity: {
+    [SeatClass.ECONOMY]: number
+    [SeatClass.BUSINESS]: number
+  }
   seatMap: ICabinModel[]
 }
 
 const aircraftModelSchema = new Schema<IAircraftModel>({
   name: {
     type: String,
+  },
+  seatQuantity: {
+    [SeatClass.ECONOMY]: { type: Number },
+    [SeatClass.BUSINESS]: { type: Number },
   },
   seatMap: [cabinModelSchema],
 })

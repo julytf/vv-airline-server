@@ -19,6 +19,10 @@ async function _seedAircraftModel() {
 
   await AircraftModel.create({
     name: 'Boing 787',
+    seatQuantity: {
+      [SeatClass.ECONOMY]: 300,
+      [SeatClass.BUSINESS]: 120,
+    },
     seatMap: [
       {
         class: SeatClass.BUSINESS,
@@ -107,6 +111,10 @@ async function _seedAircraftModel() {
   rowCount = 0
   await AircraftModel.create({
     name: 'Airbus A321',
+    seatQuantity: {
+      [SeatClass.ECONOMY]: 180,
+      [SeatClass.BUSINESS]: 60,
+    },
     seatMap: [
       {
         class: SeatClass.BUSINESS,

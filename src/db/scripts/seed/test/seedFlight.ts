@@ -1,10 +1,13 @@
+import { AirportType } from '@/enums/airport.enums'
 import { FlightLegStatus, FlightLegType } from '@/enums/flightLeg.enums'
+import { SeatClass } from '@/enums/seat.enums'
 import Country from '@/models/address/country.model'
 import District from '@/models/address/district.model'
 import Province from '@/models/address/province.model'
 import Ward from '@/models/address/ward.model'
 import Aircraft from '@/models/aircraft/aircraft.model'
-import Airport from '@/models/flight/airport.model'
+import { IAircraftModel } from '@/models/aircraft/aircraftModel.model'
+import Airport, { IAirport } from '@/models/flight/airport.model'
 import Flight from '@/models/flight/flight.model'
 import FlightLeg from '@/models/flight/flightLeg.model'
 import FlightRoute from '@/models/flight/flightRoute.model'
@@ -58,13 +61,18 @@ async function _seedAirport() {
   const airportsJson = (await readJsonFile('src/db/data/airports.json')) as object[]
 
   const airports = await Promise.all(
-    airportsJson.map(
-      async (airport: object) =>
-        await Airport.create({
-          ...airport,
-          country: await Country.findOne({ code: (airport as any).countryCode }),
-        }),
-    ),
+    airportsJson
+      .filter((data) => {
+        const airport = data as { type: string; countryCode: string }
+        return airport.type != AirportType.SMALL && airport.countryCode && airport.countryCode != '7'
+      })
+      .map(
+        async (airport: object) =>
+          await Airport.create({
+            ...airport,
+            country: await Country.findOne({ code: (airport as any).countryCode }),
+          }),
+      ),
   )
 }
 
@@ -112,8 +120,12 @@ async function _seedFlightRoute() {
 }
 
 async function _seedFlight() {
-  const aircraftVN217 = await Aircraft.findOne({ registrationNumber: 'VN-217' })
-  const aircraftVN11 = await Aircraft.findOne({ registrationNumber: 'VN-11' })
+  const aircraftVN217 = await Aircraft.findOne({ registrationNumber: 'VN-217' }).populate<{
+    aircraftModel: IAircraftModel
+  }>('aircraftModel')
+  const aircraftVN11 = await Aircraft.findOne({ registrationNumber: 'VN-11' }).populate<{
+    aircraftModel: IAircraftModel
+  }>('aircraftModel')
 
   // flight routes
   const haNoiAirport = await Airport.findOne({ IATA: 'HAN' })
@@ -144,7 +156,7 @@ async function _seedFlight() {
   const HNToHCMFlightLeg = await FlightLeg.create({
     departureTime: new Date('2024-01-01 08:00:00'),
     arrivalTime: new Date('2024-01-01 10:00:00'),
-    remainingSeats: 120,
+    remainingSeats: aircraftVN217?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HNToHCMFlightRoute,
     aircraft: aircraftVN217,
@@ -153,7 +165,7 @@ async function _seedFlight() {
   const HNToCanThoFlightLeg = await FlightLeg.create({
     departureTime: new Date('2024-01-01 16:00:00'),
     arrivalTime: new Date('2024-01-01 18:00:00'),
-    remainingSeats: 80,
+    remainingSeats: aircraftVN11?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HNToCanThoFlightRoute,
     aircraft: aircraftVN11,
@@ -162,7 +174,7 @@ async function _seedFlight() {
   const CanThoToHCMFlightLeg = await FlightLeg.create({
     departureTime: new Date('2024-01-01 20:00:00'),
     arrivalTime: new Date('2024-01-01 22:00:00'),
-    remainingSeats: 90,
+    remainingSeats: aircraftVN11?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: CanThoToHCMFlightRoute,
     aircraft: aircraftVN11,
@@ -171,7 +183,7 @@ async function _seedFlight() {
   const HCMToHNFlightLeg = await FlightLeg.create({
     departureTime: new Date('2024-01-02 12:00:00'),
     arrivalTime: new Date('2024-01-02 14:00:00'),
-    remainingSeats: 100,
+    remainingSeats: aircraftVN217?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HCMToHNFlightRoute,
     aircraft: aircraftVN217,
@@ -182,7 +194,7 @@ async function _seedFlight() {
     hasTransit: false,
     departureTime: new Date('2024-01-01 16:00:00'),
     arrivalTime: new Date('2024-01-01 18:00:00'),
-    remainingSeats: 120,
+    remainingSeats: HNToCanThoFlightLeg.remainingSeats,
     flightRoute: HNToHCMFlightRoute,
     flightLegs: {
       [FlightLegType.DEPARTURE]: HNToCanThoFlightLeg,
@@ -193,7 +205,13 @@ async function _seedFlight() {
     hasTransit: true,
     departureTime: new Date('2024-01-01 16:00:00'),
     arrivalTime: new Date('2024-01-01 22:00:00'),
-    remainingSeats: 100,
+    remainingSeats: {
+      [SeatClass.ECONOMY]:
+        HNToCanThoFlightLeg.remainingSeats[SeatClass.ECONOMY] + CanThoToHCMFlightLeg.remainingSeats[SeatClass.ECONOMY],
+      [SeatClass.BUSINESS]:
+        HNToCanThoFlightLeg.remainingSeats[SeatClass.BUSINESS] +
+        CanThoToHCMFlightLeg.remainingSeats[SeatClass.BUSINESS],
+    },
     flightRoute: HNToHCMFlightRoute,
     flightLegs: {
       [FlightLegType.DEPARTURE]: HNToCanThoFlightLeg,
@@ -205,7 +223,7 @@ async function _seedFlight() {
     hasTransit: false,
     departureTime: new Date('2024-01-02 12:00:00'),
     arrivalTime: new Date('2024-01-02 14:00:00'),
-    remainingSeats: 100,
+    remainingSeats: HCMToHNFlightLeg.remainingSeats,
     flightRoute: HCMToHNFlightRoute,
     flightLegs: {
       [FlightLegType.DEPARTURE]: HCMToHNFlightLeg,

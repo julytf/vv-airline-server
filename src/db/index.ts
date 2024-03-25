@@ -39,6 +39,7 @@ export const drop = async () => {
     Aircraft.deleteMany({}),
     Airport.deleteMany({}),
     FlightRoute.deleteMany({}),
+    FlightLeg.deleteMany({}),
     Flight.deleteMany({}),
     Seat.deleteMany({}),
   ]).then(() => console.log('DB drop successful'))

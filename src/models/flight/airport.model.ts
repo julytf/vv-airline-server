@@ -52,6 +52,11 @@ const airportSchema = new Schema<IAirport>({
   },
 })
 
+airportSchema.pre('find', async function (next) {
+  this.populate('country')
+  next()
+})
+
 const Airport = model<IAirport>('Airport', airportSchema)
 
 export default Airport

@@ -6,8 +6,6 @@ import * as factory from './factory'
 import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
 
-// const stripe = new Stripe(config.stripe.secretKey)
-
 export default {
   getProfile: catchPromise(async function (req: Request, res, next) {
     const authUser = (req as IRequestWithUser).user!

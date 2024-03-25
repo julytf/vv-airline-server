@@ -1,10 +1,14 @@
 import { FlightLegStatus } from '@/enums/flightLeg.enums'
+import { SeatClass } from '@/enums/seat.enums'
 import { Schema, Types, model } from 'mongoose'
 
 export interface IFlightLeg {
   departureTime: Date
   arrivalTime: Date
-  remainingSeats: number
+  remainingSeats: {
+    [SeatClass.ECONOMY]: number
+    [SeatClass.BUSINESS]: number
+  }
   status: FlightLegStatus
   flightRoute: Types.ObjectId
   aircraft: Types.ObjectId
@@ -20,9 +24,8 @@ const flightLegSchema = new Schema<IFlightLeg>({
     required: true,
   },
   remainingSeats: {
-    type: Number,
-    required: true,
-    default: 0,
+    [SeatClass.ECONOMY]: { type: Number },
+    [SeatClass.BUSINESS]: { type: Number },
   },
   status: {
     type: String,
@@ -37,6 +40,16 @@ const flightLegSchema = new Schema<IFlightLeg>({
     type: Schema.Types.ObjectId,
     ref: 'Aircraft',
   },
+})
+
+// TODO:
+flightLegSchema.methods.updateRemainingSeats = async function () {
+  const flight = this
+}
+
+flightLegSchema.pre('find', async function (next) {
+  this.populate([{ path: 'flightRoute' }, { path: 'aircraft' }])
+  next()
 })
 
 const FlightLeg = model<IFlightLeg>('FlightLeg', flightLegSchema)

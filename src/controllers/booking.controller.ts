@@ -18,8 +18,6 @@ import { Schema } from 'mongoose'
 import Stripe from 'stripe'
 import { IFlightLeg } from '@/models/flight/flightLeg.model'
 
-// const stripe = new Stripe(config.stripe.secretKey)
-
 interface SearchData {
   departureAirportIATA: string
   arrivalAirportIATA: string

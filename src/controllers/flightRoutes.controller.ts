@@ -5,17 +5,25 @@ import Stripe from 'stripe'
 import * as factory from './factory'
 import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
-import Airport from '@/models/flight/airport.model'
+import FlightRoute from '@/models/flight/flightRoute.model'
 import AdjustQuery from '@/utils/adjustQuery'
 import NotFoundError from '@/errors/NotFoundError'
 import Aircraft from '@/models/aircraft/aircraft.model'
 
 export default {
-  getAllPaginate: factory.getAllPaginate(Airport),
   // getAllPaginate: catchPromise(async function (req, res, next) {
   //   const { sort = false, page = 1, perPage = 20, q = '' } = req.query
 
-  //   const query = new AdjustQuery(Airport.find().populate('country'))
+  //   const query = new AdjustQuery(
+  //     FlightRoute.find().populate([
+  //       {
+  //         path: 'departureAirport',
+  //       },
+  //       {
+  //         path: 'arrivalAirport',
+  //       },
+  //     ]),
+  //   )
   //     .nameFilter(q as string)
   //     .paginate(page as number, perPage as number)
   //     .sort('-createdAt').query
@@ -25,7 +33,7 @@ export default {
 
   //   // docs.forEach(doc => doc?.completeImagesUrl())
 
-  //   const count = await new AdjustQuery(Airport.find()).nameFilter(q as string).query.countDocuments()
+  //   const count = await new AdjustQuery(FlightRoute.find()).nameFilter(q as string).query.countDocuments()
   //   const lastPage = Math.ceil(count / (perPage as number))
   //   // console.log('lastPage', lastPage);
   //   // console.log('count', count);
@@ -42,7 +50,26 @@ export default {
   //     },
   //   })
   // }),
-  getOne: factory.getOne(Airport),
-  createOne: factory.createOne(Airport),
-  updateOne: factory.updateOne(Airport),
+  // getOne: catchPromise(async function (req, res, next) {
+  //   const doc = await FlightRoute.findById(req.params.id).populate([
+  //     {
+  //       path: 'departureAirport',
+  //     },
+  //     {
+  //       path: 'arrivalAirport',
+  //     },
+  //   ])
+  //   console.log(req.params.id)
+
+  //   if (!doc) throw new NotFoundError('No document found!')
+
+  //   return res.status(200).json({
+  //     status: 'success',
+  //     data: { doc },
+  //   })
+  // }),
+  getAllPaginate: factory.getAllPaginate(FlightRoute),
+  getOne: factory.getOne(FlightRoute),
+  createOne: factory.createOne(FlightRoute),
+  updateOne: factory.updateOne(FlightRoute),
 }

@@ -30,3 +30,5 @@ docs/
 # Ignore compiled binaries
 *.exe
 *.dll
+
+public

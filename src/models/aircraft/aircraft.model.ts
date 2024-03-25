@@ -27,6 +27,11 @@ const aircraftSchema = new Schema<IAircraft>({
   },
 })
 
+aircraftSchema.pre('find', async function (next) {
+  this.populate('aircraftModel')
+  next()
+})
+
 const Aircraft = model<IAircraft>('Aircraft', aircraftSchema)
 
 export default Aircraft

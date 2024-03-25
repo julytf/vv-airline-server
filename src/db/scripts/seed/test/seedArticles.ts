@@ -1,7 +1,7 @@
-import Blog from '@/models/blog/blog.model'
+import Article from '@/models/article/article.model'
 
-export default async function seedBlogs() {
-  await Blog.create({
+export default async function seedArticles() {
+  await Article.create({
     title: 'Tokyo - Thủ đô của hiện đại và truyền thống',
     summary:
       'Nếu bạn yêu thích nền văn hóa của xứ sở mặt trời mọc, thì Tokyo chính là điểm đến trong mơ dành cho bạn. Với một Nhật Bản thu nhỏ được tái hiện trong một lần dừng chân, Tokyo khoác lên mình tấm áo hào nhoáng và lấp lánh của một siêu đô thị không ngủ, nhưng len lỏi trong những góc phố ồn ào nhất là cả những khoảng bình lặng và cổ điển. Hãy lập kế hoạch xách balo lên và đi thôi, vì từ tháng 9 đến tháng 11 sẽ là lúc thời tiết thuận lợi nhất cho một chuyến du lịch Tokyo trọn vẹn.',

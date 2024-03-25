@@ -45,6 +45,7 @@ const drop = () => __awaiter(void 0, void 0, void 0, function* () {
         aircraft_model_1.default.deleteMany({}),
         airport_model_1.default.deleteMany({}),
         flightRoute_model_1.default.deleteMany({}),
+        flightLeg_model_1.default.deleteMany({}),
         flight_model_1.default.deleteMany({}),
         seat_model_1.default.deleteMany({}),
     ]).then(() => console.log('DB drop successful'));
