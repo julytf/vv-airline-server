@@ -8,5 +8,6 @@ const router = Router()
 router.route('/get-airport').get(searchWizardController.getAirport)
 router.route('/get-airports').get(searchWizardController.getAirports)
 router.route('/get-flights').get(searchWizardController.getFlights)
+router.route('/get-flightLeg-reservations').get(searchWizardController.getFlightLegReservations)
 
 export default router

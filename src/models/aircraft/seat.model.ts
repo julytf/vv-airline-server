@@ -9,6 +9,7 @@ export interface ISeat {
   seatType?: SeatType
   seatClass?: SeatClass
   // aircraftModel: Types.ObjectId
+  surcharge?: number
 }
 
 const seatSchema = new Schema<ISeat>({
@@ -43,6 +44,9 @@ const seatSchema = new Schema<ISeat>({
   //   type: Schema.Types.ObjectId,
   //   ref: 'AircraftModel',
   // },
+  surcharge: {
+    type: Number,
+  },
 })
 
 const Seat = model<ISeat>('Seat', seatSchema)

@@ -51,6 +51,10 @@ const reservationSchema = new Schema<IReservation>({
   },
 })
 
+reservationSchema.pre('find', function () {
+  this.populate('flightLeg').populate('passenger').populate('seat').populate('services')
+})
+
 const Reservation = model<IReservation>('reservation', reservationSchema)
 
 export default Reservation

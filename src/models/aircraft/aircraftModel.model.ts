@@ -65,6 +65,11 @@ const aircraftModelSchema = new Schema<IAircraftModel>({
   seatMap: [cabinModelSchema],
 })
 
+aircraftModelSchema.pre('find', async function (next) {
+  this.populate('seatMap.map.seats')
+  next()
+})
+
 const AircraftModel = model<IAircraftModel>('AircraftModel', aircraftModelSchema)
 
 export default AircraftModel

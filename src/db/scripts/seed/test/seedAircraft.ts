@@ -38,13 +38,17 @@ async function _seedAircraftModel() {
                 const row = rowIndex + 1
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
+
+                const isWindowSeat = colIndex === 0 || colIndex === 5
+
                 return await Seat.create({
                   code,
                   row,
                   col,
                   status: SeatStatus.AVAILABLE,
-                  seatType: SeatType.NORMAL,
+                  seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.BUSINESS,
+                  surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -65,13 +69,17 @@ async function _seedAircraftModel() {
                 const row = rowIndex + 1
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
+
+                const isWindowSeat = colIndex === 0 || colIndex === 5
+
                 return await Seat.create({
                   code,
                   row,
                   col,
                   status: SeatStatus.AVAILABLE,
-                  seatType: SeatType.NORMAL,
+                  seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.ECONOMY,
+                  surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -92,13 +100,17 @@ async function _seedAircraftModel() {
                 const row = rowIndex + 1
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
+
+                const isWindowSeat = colIndex === 0 || colIndex === 5
+
                 return await Seat.create({
                   code,
                   row,
                   col,
                   status: SeatStatus.AVAILABLE,
-                  seatType: SeatType.NORMAL,
+                  seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.ECONOMY,
+                  surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -130,13 +142,17 @@ async function _seedAircraftModel() {
                 const row = rowIndex + 1
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
+
+                const isWindowSeat = colIndex === 0 || colIndex === 5
+
                 return await Seat.create({
                   code,
                   row,
                   col,
                   status: SeatStatus.AVAILABLE,
-                  seatType: SeatType.NORMAL,
+                  seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.BUSINESS,
+                  surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -157,13 +173,17 @@ async function _seedAircraftModel() {
                 const row = rowIndex + 1
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
+
+                const isWindowSeat = colIndex === 0 || colIndex === 5
+
                 return await Seat.create({
                   code,
                   row,
                   col,
                   status: SeatStatus.AVAILABLE,
-                  seatType: SeatType.NORMAL,
+                  seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.ECONOMY,
+                  surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),

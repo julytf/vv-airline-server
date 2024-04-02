@@ -14,6 +14,8 @@ import { endOfDay, startOfDay } from 'date-fns'
 import path from 'path'
 import { FlightLegType } from '@/enums/flightLeg.enums'
 import { SeatClass } from '@/enums/seat.enums'
+import Reservation from '@/models/booking/reservation.model'
+import { Types } from 'mongoose'
 
 export default {
   // getFlightRoutes: factory.getAll(FlightRoute),
@@ -129,6 +131,17 @@ export default {
     return res.status(200).json({
       status: 'success',
       data: flights,
+    })
+  }),
+
+  getFlightLegReservations: catchPromise(async function (req, res, next) {
+    const flightLegId = req.query.flightLegId as string
+
+    const reservations = await Reservation.find({ flightLeg: flightLegId })
+
+    return res.status(200).json({
+      status: 'success',
+      data: reservations,
     })
   }),
 }
