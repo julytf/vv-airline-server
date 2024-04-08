@@ -28,6 +28,7 @@ const aircraftSchema = new Schema<IAircraft>({
 })
 
 aircraftSchema.pre('find', async function (next) {
+  // console.log('here aircraftSchema')
   this.populate('aircraftModel')
   next()
 })

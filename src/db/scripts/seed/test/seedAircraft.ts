@@ -7,11 +7,13 @@ import Ward from '@/models/address/ward.model'
 import Aircraft from '@/models/aircraft/aircraft.model'
 import AircraftModel from '@/models/aircraft/aircraftModel.model'
 import Seat from '@/models/aircraft/seat.model'
+import Surcharge from '@/models/flight/surcharge.model'
 import User from '@/models/user.model'
 
 export default async function seedAircraft() {
   await _seedAircraftModel()
   await _seedAircraft()
+  await _seedSurcharge()
 }
 
 async function _seedAircraftModel() {
@@ -48,7 +50,7 @@ async function _seedAircraftModel() {
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.BUSINESS,
-                  surcharge: isWindowSeat ? 100 : 0,
+                  // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -79,7 +81,7 @@ async function _seedAircraftModel() {
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.ECONOMY,
-                  surcharge: isWindowSeat ? 100 : 0,
+                  // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -110,7 +112,7 @@ async function _seedAircraftModel() {
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.ECONOMY,
-                  surcharge: isWindowSeat ? 100 : 0,
+                  // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -152,7 +154,7 @@ async function _seedAircraftModel() {
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.BUSINESS,
-                  surcharge: isWindowSeat ? 100 : 0,
+                  // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -183,7 +185,7 @@ async function _seedAircraftModel() {
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
                   seatClass: SeatClass.ECONOMY,
-                  surcharge: isWindowSeat ? 100 : 0,
+                  // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
             ),
@@ -206,5 +208,12 @@ async function _seedAircraft() {
     name: 'VN 11',
     status: AircraftStatus.ACTIVE,
     aircraftModel: await AircraftModel.findOne({ name: 'Airbus A321' }),
+  })
+}
+
+async function _seedSurcharge() {
+  await Surcharge.create({
+    name: `SeatType.${SeatType.WINDOW}`,
+    value: 500_000,
   })
 }

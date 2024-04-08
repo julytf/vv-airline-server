@@ -17,6 +17,7 @@ import { Request, Response, NextFunction } from 'express'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
 import { IFlightLeg } from '@/models/flight/flightLeg.model'
+import Surcharge from '@/models/flight/surcharge.model'
 
 interface SearchData {
   departureAirportIATA: string
@@ -219,14 +220,28 @@ export default {
       outboundPrice += outboundFlight.flightLegs[FlightLegType.TRANSIT].flightRoute.prices[outboundFlightSeatClass]
     }
 
+    const surcharges = await Surcharge.find()
+
     const totalOutboundPrice = outboundPrice * totalPassengers
     booking.flightsInfo[FlightType.OUTBOUND] = {
       flight: outboundFlight._id,
       seatClass: outboundFlightSeatClass,
       price: outboundPrice,
       reservations: {
-        [FlightLegType.DEPARTURE]: outboundDepartureFlightReservations.map((reservation) => reservation._id),
-        [FlightLegType.TRANSIT]: outboundTransitFlightReservations.map((reservation) => reservation._id),
+        [FlightLegType.DEPARTURE]: outboundDepartureFlightReservations.map((reservation) => ({
+          reservation: reservation._id,
+          surcharge:
+            surcharges.find(
+              (surcharge) => surcharge.name === `SeatType.${(reservation.seat as unknown as ISeat).seatType}`,
+            )?.value || 0,
+        })),
+        [FlightLegType.TRANSIT]: outboundTransitFlightReservations.map((reservation) => ({
+          reservation: reservation._id,
+          surcharge:
+            surcharges.find(
+              (surcharge) => surcharge.name === `SeatType.${(reservation.seat as unknown as ISeat).seatType}`,
+            )?.value || 0,
+        })),
       },
     }
 
@@ -286,13 +301,36 @@ export default {
         seatClass: inboundFlightSeatClass,
         price: inboundPrice,
         reservations: {
-          [FlightLegType.DEPARTURE]: inboundDepartureFlightReservations.map((reservation) => reservation._id),
-          [FlightLegType.TRANSIT]: inboundTransitFlightReservations.map((reservation) => reservation._id),
+          [FlightLegType.DEPARTURE]: inboundDepartureFlightReservations.map((reservation) => ({
+            reservation: reservation._id,
+            surcharge:
+              surcharges.find(
+                (surcharge) => surcharge.name === `SeatType.${(reservation.seat as unknown as ISeat).seatType}`,
+              )?.value || 0,
+          })),
+          [FlightLegType.TRANSIT]: inboundTransitFlightReservations.map((reservation) => ({
+            reservation: reservation._id,
+            surcharge:
+              surcharges.find(
+                (surcharge) => surcharge.name === `SeatType.${(reservation.seat as unknown as ISeat).seatType}`,
+              )?.value || 0,
+          })),
         },
       }
     }
 
-    booking.totalPrice = totalOutboundPrice + totalInboundPrice
+    const totalSurcharge = [
+      ...(booking?.flightsInfo[FlightType.OUTBOUND].reservations[FlightLegType.DEPARTURE].map((obj) => obj.surcharge) ||
+        []),
+      ...(booking?.flightsInfo[FlightType.OUTBOUND].reservations[FlightLegType.TRANSIT].map((obj) => obj.surcharge) ||
+        []),
+      ...(booking?.flightsInfo[FlightType.INBOUND]?.reservations[FlightLegType.DEPARTURE].map((obj) => obj.surcharge) ||
+        []),
+      ...(booking?.flightsInfo[FlightType.INBOUND]?.reservations[FlightLegType.TRANSIT].map((obj) => obj.surcharge) ||
+        []),
+    ].reduce((acc, cur) => acc + cur, 0)
+
+    booking.totalPrice = totalOutboundPrice + totalInboundPrice + totalSurcharge
 
     // console.log('[log] booking', booking)
 

@@ -25,6 +25,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const seat_model_1 = __importDefault(require("@/models/aircraft/seat.model"));
 const service_model_1 = __importDefault(require("@/models/booking/service.model"));
 const reservation_model_1 = __importDefault(require("@/models/booking/reservation.model"));
+const booking_model_1 = __importDefault(require("@/models/booking/booking.model"));
 mongoose_1.default.set('strictQuery', true);
 if (!process.env.MONGODB_STRING || !process.env.MONGODB_DATABASE) {
     throw new Error('Some DB configs have not set yet');
@@ -52,6 +53,7 @@ const drop = () => __awaiter(void 0, void 0, void 0, function* () {
         seat_model_1.default.deleteMany({}),
         service_model_1.default.deleteMany({}),
         reservation_model_1.default.deleteMany({}),
+        booking_model_1.default.deleteMany({}),
     ]).then(() => console.log('DB drop successful'));
     // await mongoose.connection.db.dropDatabase()
 });

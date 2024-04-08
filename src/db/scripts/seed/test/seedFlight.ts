@@ -171,6 +171,15 @@ async function _seedFlight() {
     aircraft: aircraftVN11,
   })
 
+  const HNToCanThoFlightLegPassNight = await FlightLeg.create({
+    departureTime: new Date('2024-01-01 22:00:00'),
+    arrivalTime: new Date('2024-01-02 2:00:00'),
+    remainingSeats: aircraftVN11?.aircraftModel.seatQuantity,
+    status: FlightLegStatus.AVAILABLE,
+    flightRoute: HNToCanThoFlightRoute,
+    aircraft: aircraftVN11,
+  })
+
   const CanThoToHCMFlightLeg = await FlightLeg.create({
     departureTime: new Date('2024-01-01 20:00:00'),
     arrivalTime: new Date('2024-01-01 22:00:00'),
@@ -192,19 +201,29 @@ async function _seedFlight() {
   // flights
   const HNToHCMFlightNoTransit = await Flight.create({
     hasTransit: false,
-    departureTime: new Date('2024-01-01 16:00:00'),
-    arrivalTime: new Date('2024-01-01 18:00:00'),
+    departureTime: HNToCanThoFlightLeg.departureTime,
+    arrivalTime: HNToCanThoFlightLeg.arrivalTime,
     remainingSeats: HNToCanThoFlightLeg.remainingSeats,
     flightRoute: HNToHCMFlightRoute,
     flightLegs: {
       [FlightLegType.DEPARTURE]: HNToCanThoFlightLeg,
     },
   })
+  const HNToHCMFlightNoTransitPassNight = await Flight.create({
+    hasTransit: false,
+    departureTime: HNToCanThoFlightLegPassNight.departureTime,
+    arrivalTime: HNToCanThoFlightLegPassNight.arrivalTime,
+    remainingSeats: HNToCanThoFlightLegPassNight.remainingSeats,
+    flightRoute: HNToHCMFlightRoute,
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HNToCanThoFlightLegPassNight,
+    },
+  })
 
   const HNToHCMFlightHasTransit = await Flight.create({
     hasTransit: true,
-    departureTime: new Date('2024-01-01 16:00:00'),
-    arrivalTime: new Date('2024-01-01 22:00:00'),
+    departureTime: HNToCanThoFlightLeg.departureTime,
+    arrivalTime: CanThoToHCMFlightLeg.arrivalTime,
     remainingSeats: {
       [SeatClass.ECONOMY]:
         HNToCanThoFlightLeg.remainingSeats[SeatClass.ECONOMY] + CanThoToHCMFlightLeg.remainingSeats[SeatClass.ECONOMY],

@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const routes_1 = __importDefault(require("@/routes"));
+const errorHandler_1 = __importDefault(require("./errorHandler"));
 const app = (0, express_1.default)();
 // app middlewares
 // app.use(morgan('dev'))
@@ -24,5 +25,5 @@ app.use(express_1.default.static(`${__dirname}/../public`));
 // router
 app.use(routes_1.default);
 // app error handler
-// app.use(errorHandler)
+app.use(errorHandler_1.default);
 exports.default = app;

@@ -11,6 +11,7 @@ import mongoose, { Model } from 'mongoose'
 import Seat from '@/models/aircraft/seat.model'
 import Service from '@/models/booking/service.model'
 import Reservation from '@/models/booking/reservation.model'
+import Booking from '@/models/booking/booking.model'
 
 mongoose.set('strictQuery', true)
 
@@ -45,7 +46,9 @@ export const drop = async () => {
     Flight.deleteMany({}),
     Seat.deleteMany({}),
     Service.deleteMany({}),
-    Reservation.deleteMany({}),
+    Reservation.deleteMany({}), 
+    Booking.deleteMany({}),
+
   ]).then(() => console.log('DB drop successful'))
   // await mongoose.connection.db.dropDatabase()
 }

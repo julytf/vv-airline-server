@@ -13,6 +13,8 @@ import filesRoutes from './files.routes'
 import flightsRoutes from './flights.routes'
 import aircraftsRoutes from './aircrafts.routes'
 import aircraftModelsRoutes from './aircraftModels.routes'
+import surchargesRoutes from './surcharges.routes'
+import bookingsRoutes from './bookings.routes'
 
 const router = Router()
 
@@ -41,7 +43,9 @@ router.use('/api/airports', airportsRoutes)
 router.use('/api/flight-legs', flightLegsRoutes)
 router.use('/api/flight-routes', flightRoutesRoutes)
 router.use('/api/flights', flightsRoutes)
+router.use('/api/surcharges', surchargesRoutes)
 
 router.use('/api/users', usersRoutes)
+router.use('/api/bookings', bookingsRoutes)
 
 export default router

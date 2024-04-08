@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
 import router from '@/routes'
+import errorHandler from './errorHandler'
 
 const app = express()
 
@@ -30,6 +31,6 @@ app.use(express.static(`${__dirname}/../public`))
 app.use(router)
 
 // app error handler
-// app.use(errorHandler)
+app.use(errorHandler)
 
 export default app

@@ -2,7 +2,8 @@ import { FlightType } from '@/enums/flight.enums'
 import { FlightLegType } from '@/enums/flightLeg.enums'
 import { PaymentMethod, PaymentStatus } from '@/enums/payment.enums'
 import { SeatClass } from '@/enums/seat.enums'
-import { Schema, Types, model } from 'mongoose'
+import { model, PreMiddlewareFunction, Schema, Types } from 'mongoose'
+import Reservation from './reservation.model'
 
 export interface IBooking {
   adults: number
@@ -17,8 +18,14 @@ export interface IBooking {
       seatClass: SeatClass
       price: number
       reservations: {
-        [FlightLegType.DEPARTURE]: Types.ObjectId[]
-        [FlightLegType.TRANSIT]: Types.ObjectId[]
+        [FlightLegType.DEPARTURE]: {
+          reservation: Types.ObjectId
+          surcharge: number
+        }[]
+        [FlightLegType.TRANSIT]: {
+          reservation: Types.ObjectId
+          surcharge: number
+        }[]
       }
     }
     [FlightType.INBOUND]?: {
@@ -26,8 +33,14 @@ export interface IBooking {
       seatClass: SeatClass
       price: number
       reservations: {
-        [FlightLegType.DEPARTURE]: Types.ObjectId[]
-        [FlightLegType.TRANSIT]: Types.ObjectId[]
+        [FlightLegType.DEPARTURE]: {
+          reservation: Types.ObjectId
+          surcharge: number
+        }[]
+        [FlightLegType.TRANSIT]: {
+          reservation: Types.ObjectId
+          surcharge: number
+        }[]
       }
     }
   }
@@ -86,14 +99,20 @@ const bookingSchema = new Schema<IBooking>({
         reservations: {
           [FlightLegType.DEPARTURE]: [
             {
-              type: Schema.Types.ObjectId,
-              ref: 'Reservation',
+              reservation: {
+                type: Schema.Types.ObjectId,
+                ref: 'Reservation',
+              },
+              surcharge: Number,
             },
           ],
           [FlightLegType.TRANSIT]: [
             {
-              type: Schema.Types.ObjectId,
-              ref: 'Reservation',
+              reservation: {
+                type: Schema.Types.ObjectId,
+                ref: 'Reservation',
+              },
+              surcharge: Number,
             },
           ],
         },
@@ -119,14 +138,20 @@ const bookingSchema = new Schema<IBooking>({
         reservations: {
           [FlightLegType.DEPARTURE]: [
             {
-              type: Schema.Types.ObjectId,
-              ref: 'Reservation',
+              reservation: {
+                type: Schema.Types.ObjectId,
+                ref: 'Reservation',
+              },
+              surcharge: Number,
             },
           ],
           [FlightLegType.TRANSIT]: [
             {
-              type: Schema.Types.ObjectId,
-              ref: 'Reservation',
+              reservation: {
+                type: Schema.Types.ObjectId,
+                ref: 'Reservation',
+              },
+              surcharge: Number,
             },
           ],
         },
@@ -144,6 +169,20 @@ const bookingSchema = new Schema<IBooking>({
     default: PaymentStatus.PENDING,
   },
 })
+
+const findMiddleware: PreMiddlewareFunction = function (next) {
+  this.populate('user')
+    .populate('passengers')
+    .populate('flightsInfo.OUTBOUND.flight')
+    .populate('flightsInfo.OUTBOUND.reservations.DEPARTURE.reservation')
+    .populate('flightsInfo.OUTBOUND.reservations.TRANSIT.reservation')
+    .populate('flightsInfo.INBOUND.flight')
+    .populate('flightsInfo.INBOUND.reservations.DEPARTURE.reservation')
+    .populate('flightsInfo.INBOUND.reservations.TRANSIT.reservation')
+  next()
+}
+
+bookingSchema.pre(/^find/, findMiddleware)
 
 const Booking = model<IBooking>('Booking', bookingSchema)
 
