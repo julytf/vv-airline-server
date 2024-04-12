@@ -14,7 +14,7 @@ const auth = async (req: IRequestWithUser, res: Response, next: NextFunction) =>
   if (req.user) return next()
 
   const token = req.headers?.authorization?.replace('Bearer ', '') || req.cookies.jwt
-  // console.log('[info]:token',token)
+  console.log('[info]:token', token)
 
   if (!token) return next(new UnauthorizedError())
 
@@ -22,7 +22,8 @@ const auth = async (req: IRequestWithUser, res: Response, next: NextFunction) =>
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!) as AuthData
   } catch (err) {
-    return next(err)
+    // return next(err)
+    return next(new UnauthorizedError())
   }
   const user = await User.findById(decoded.id).select('+password')
   // console.log('auth', user?.id)

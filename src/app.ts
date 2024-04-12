@@ -7,6 +7,7 @@ import cors from 'cors'
 
 import router from '@/routes'
 import errorHandler from './errorHandler'
+import { sendEmail } from './utils/email'
 
 const app = express()
 
@@ -32,5 +33,12 @@ app.use(router)
 
 // app error handler
 app.use(errorHandler)
+
+// test
+// sendEmail({
+//   email: 'chanvucktv@gmail.com',
+//   subject: 'test subject',
+//   message: 'test message',
+// })
 
 export default app

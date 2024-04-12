@@ -37,7 +37,7 @@ async function _seedAircraftModel() {
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
-                const row = rowIndex + 1
+                const row = rowCount
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
 
@@ -68,7 +68,7 @@ async function _seedAircraftModel() {
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
-                const row = rowIndex + 1
+                const row = rowCount
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
 
@@ -99,7 +99,7 @@ async function _seedAircraftModel() {
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
-                const row = rowIndex + 1
+                const row = rowCount
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
 
@@ -141,7 +141,7 @@ async function _seedAircraftModel() {
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
-                const row = rowIndex + 1
+                const row = rowCount
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
 
@@ -172,7 +172,7 @@ async function _seedAircraftModel() {
             hasExit: rowIndex % 10 === 0,
             seats: await Promise.all(
               new Array(6).fill(0).map(async (_, colIndex) => {
-                const row = rowIndex + 1
+                const row = rowCount
                 const col = String.fromCharCode(65 + colIndex)
                 const code = `${row}${col}`
 

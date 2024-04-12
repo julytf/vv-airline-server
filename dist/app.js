@@ -26,4 +26,10 @@ app.use(express_1.default.static(`${__dirname}/../public`));
 app.use(routes_1.default);
 // app error handler
 app.use(errorHandler_1.default);
+// test
+// sendEmail({
+//   email: 'chanvucktv@gmail.com',
+//   subject: 'test subject',
+//   message: 'test message',
+// })
 exports.default = app;

@@ -21,4 +21,4 @@ async function Seed() {
   await seedArticles()
 
   process.exit(0)
-}
+} 

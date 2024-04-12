@@ -3,7 +3,7 @@ import { SeatClass } from '@/enums/seat.enums'
 import { Schema, Types, model } from 'mongoose'
 
 export interface IFlightLeg {
-  departureTime: Date
+  departureTime : Date
   arrivalTime: Date
   remainingSeats: {
     [SeatClass.ECONOMY]: number
@@ -15,7 +15,7 @@ export interface IFlightLeg {
 }
 
 const flightLegSchema = new Schema<IFlightLeg>({
-  departureTime: {
+  departureTime : {
     type: Date,
     required: true,
   },

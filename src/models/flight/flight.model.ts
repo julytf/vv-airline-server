@@ -4,7 +4,7 @@ import { Schema, Types, model } from 'mongoose'
 
 export interface IFlight {
   hasTransit: boolean
-  departureTime: Date
+  departureTime : Date
   arrivalTime: Date
   remainingSeats: {
     [SeatClass.ECONOMY]: number
@@ -22,7 +22,7 @@ const flightSchema = new Schema<IFlight>({
     type: Boolean,
     default: false,
   },
-  departureTime: {
+  departureTime : {
     type: Date,
     required: true,
   },

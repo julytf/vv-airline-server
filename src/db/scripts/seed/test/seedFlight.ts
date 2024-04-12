@@ -154,8 +154,8 @@ async function _seedFlight() {
 
   // flight legs
   const HNToHCMFlightLeg = await FlightLeg.create({
-    departureTime: new Date('2024-01-01 08:00:00'),
-    arrivalTime: new Date('2024-01-01 10:00:00'),
+    departureTime: new Date('2024-05-01 08:00:00'),
+    arrivalTime: new Date('2024-05-01 10:00:00'),
     remainingSeats: aircraftVN217?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HNToHCMFlightRoute,
@@ -163,8 +163,8 @@ async function _seedFlight() {
   })
 
   const HNToCanThoFlightLeg = await FlightLeg.create({
-    departureTime: new Date('2024-01-01 16:00:00'),
-    arrivalTime: new Date('2024-01-01 18:00:00'),
+    departureTime: new Date('2024-05-01 16:00:00'),
+    arrivalTime: new Date('2024-05-01 18:00:00'),
     remainingSeats: aircraftVN11?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HNToCanThoFlightRoute,
@@ -172,8 +172,8 @@ async function _seedFlight() {
   })
 
   const HNToCanThoFlightLegPassNight = await FlightLeg.create({
-    departureTime: new Date('2024-01-01 22:00:00'),
-    arrivalTime: new Date('2024-01-02 2:00:00'),
+    departureTime: new Date('2024-05-01 22:00:00'),
+    arrivalTime: new Date('2024-05-02 2:00:00'),
     remainingSeats: aircraftVN11?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HNToCanThoFlightRoute,
@@ -181,8 +181,8 @@ async function _seedFlight() {
   })
 
   const CanThoToHCMFlightLeg = await FlightLeg.create({
-    departureTime: new Date('2024-01-01 20:00:00'),
-    arrivalTime: new Date('2024-01-01 22:00:00'),
+    departureTime: new Date('2024-05-01 20:00:00'),
+    arrivalTime: new Date('2024-05-01 22:00:00'),
     remainingSeats: aircraftVN11?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: CanThoToHCMFlightRoute,
@@ -190,8 +190,8 @@ async function _seedFlight() {
   })
 
   const HCMToHNFlightLeg = await FlightLeg.create({
-    departureTime: new Date('2024-01-02 12:00:00'),
-    arrivalTime: new Date('2024-01-02 14:00:00'),
+    departureTime: new Date('2024-05-02 12:00:00'),
+    arrivalTime: new Date('2024-05-02 14:00:00'),
     remainingSeats: aircraftVN217?.aircraftModel.seatQuantity,
     status: FlightLegStatus.AVAILABLE,
     flightRoute: HCMToHNFlightRoute,
@@ -240,9 +240,64 @@ async function _seedFlight() {
 
   const HCMToHNFlight = await Flight.create({
     hasTransit: false,
-    departureTime: new Date('2024-01-02 12:00:00'),
-    arrivalTime: new Date('2024-01-02 14:00:00'),
+    departureTime: HCMToHNFlightLeg.departureTime,
+    arrivalTime: HCMToHNFlightLeg.arrivalTime,
     remainingSeats: HCMToHNFlightLeg.remainingSeats,
+    flightRoute: HCMToHNFlightRoute,
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HCMToHNFlightLeg,
+    },
+  })
+
+  // trash flight with completely wrong data created for testing orther functions
+  const trash0 = await Flight.create({
+    hasTransit: false,
+    departureTime: new Date('2024-05-01 2:00:00'),
+    arrivalTime: new Date('2024-05-01 4:00:00'),
+    remainingSeats: {
+      [SeatClass.ECONOMY]: 100,
+      [SeatClass.BUSINESS]: 100,
+    },
+    flightRoute: HNToHCMFlightRoute,
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HNToHCMFlightLeg,
+    },
+  })
+
+  const trash1 = await Flight.create({
+    hasTransit: false,
+    departureTime: new Date('2024-05-01 2:00:00'),
+    arrivalTime: new Date('2024-05-01 4:00:00'),
+    remainingSeats: {
+      [SeatClass.ECONOMY]: 100,
+      [SeatClass.BUSINESS]: 100,
+    },
+    flightRoute: HCMToHNFlightRoute,
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HCMToHNFlightLeg,
+    },
+  })
+  const trash2 = await Flight.create({
+    hasTransit: false,
+    departureTime: new Date('2024-05-01 12:00:00'),
+    arrivalTime: new Date('2024-05-01 14:00:00'),
+    remainingSeats: {
+      [SeatClass.ECONOMY]: 100,
+      [SeatClass.BUSINESS]: 100,
+    },
+    flightRoute: HCMToHNFlightRoute,
+    flightLegs: {
+      [FlightLegType.DEPARTURE]: HCMToHNFlightLeg,
+    },
+  })
+  const trash3 = await Flight.create({
+    hasTransit: false,
+    departureTime: new Date('2024-05-01 20:00:00'),
+    arrivalTime: new Date('2024-05-01 22:00:00'),
+    remainingSeats: {
+      [SeatClass.ECONOMY]: 100,
+      [SeatClass.BUSINESS]: 100,
+    },
     flightRoute: HCMToHNFlightRoute,
     flightLegs: {
       [FlightLegType.DEPARTURE]: HCMToHNFlightLeg,

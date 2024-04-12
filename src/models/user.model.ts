@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import Joi, { ValidationResult } from 'joi'
 import userJoiSchema from '@/utils/validations/user.joiSchema'
 import { IAddress, addressSchema } from './address/address.model'
+import { addMinutes } from 'date-fns'
 
 export interface IUser extends Document {
   role: UserRole
@@ -18,10 +19,15 @@ export interface IUser extends Document {
   address?: IAddress
   isDeleted: boolean
   deletedAt?: Date
+  resetToken?: {
+    token: string
+    expires: Date
+  }
 
   setPassword(newPassword: string): Promise<void>
   matchPassword(password: string): Promise<boolean>
   joiValidate(): ValidationResult<any>
+  createResetToken(): string
 }
 
 const userSchema = new Schema<IUser>(
@@ -98,6 +104,14 @@ const userSchema = new Schema<IUser>(
     deletedAt: {
       type: Date,
     },
+    resetToken: {
+      token: {
+        type: String,
+      },
+      expires: {
+        type: Date,
+      },
+    },
   },
   { timestamps: true },
 )
@@ -127,6 +141,18 @@ userSchema.method('matchPassword', async function (candidatePassword: string) {
 userSchema.method('joiValidate', function () {
   const user: IUser = this
   return userJoiSchema.validate(user)
+})
+
+userSchema.method('createResetToken', function () {
+  const user: IUser = this
+
+  user.resetToken = {
+    token: Math.floor(100000 + Math.random() * 900000).toString(),
+    expires: addMinutes(new Date(), 15),
+  }
+  // user.save()
+
+  return user.resetToken.token
 })
 
 const User = model<IUser>('User', userSchema)

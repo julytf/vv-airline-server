@@ -23,7 +23,7 @@ interface SearchData {
   departureAirportIATA: string
   arrivalAirportIATA: string
 
-  departureDate: Date
+  departureDate : Date
   returnDate: Date | null
 
   isRoundTrip: boolean

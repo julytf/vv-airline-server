@@ -78,7 +78,7 @@ export default {
   changePassword: catchPromise(async function (req, res, next) {
     // console.log('old', req.body.oldPassword)
     // console.log('new', req.body.newPassword)
-    
+
     const authUser = (req as IRequestWithUser).user!
     const user: IUser = (await User.findById(authUser._id))!
 
@@ -87,7 +87,7 @@ export default {
     }
 
     await user.setPassword(req.body.newPassword)
-    user.save()
+    await user.save()
 
     return res.status(200).json({
       status: 'success',
@@ -101,5 +101,65 @@ export default {
     const user = await User.findByIdAndUpdate(authUser._id, { isDeleted: true, deletedAt: Date() }, {})
 
     return res.status(204).send()
+  }),
+
+  // TODO: implement
+  // reset password routes
+  requestResetPasswordOTPEmail: catchPromise(async function (req, res, next) {
+    // send email with otp
+
+    const user = await User.findOne({ email: req.body.email })
+
+    if (!user) return next(new NotFoundError('User not found!'))
+
+    const token = user.createResetToken()
+    await user.save()
+
+    // TODO: send by email
+    console.log('token', token)
+
+    return res.status(200).json({
+      status: 'success',
+    })
+  }),
+
+  verifyOTP: catchPromise(async function (req, res, next) {
+    const OTP = req.body.OTP
+    const user = await User.findOne({ email: req.body.email })
+
+    if (
+      !user?.resetToken?.token ||
+      user?.resetToken?.token !== OTP ||
+      !user?.resetToken?.expires ||
+      user?.resetToken?.expires < new Date()
+    )
+      return next(new AppError('Invalid OTP', 400))
+
+    // if otp valid, return 200
+    return res.status(200).json({
+      status: 'success',
+    })
+  }),
+
+  resetPasswordWithOTP: catchPromise(async function (req, res, next) {
+    const OTP = req.body.OTP
+    const newPassword = req.body.newPassword
+    const user = await User.findOne({ email: req.body.email })
+
+    if (
+      !user?.resetToken?.token ||
+      user?.resetToken?.token !== OTP ||
+      !user?.resetToken?.expires ||
+      user?.resetToken?.expires < new Date()
+    )
+      return next(new AppError('Invalid OTP', 400))
+
+    user.resetToken = undefined
+    await user.setPassword(newPassword)
+    await user.save()
+
+    return res.status(200).json({
+      status: 'success',
+    })
   }),
 }

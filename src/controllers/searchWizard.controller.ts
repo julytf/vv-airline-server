@@ -33,19 +33,28 @@ export default {
   }),
 
   getFlights: catchPromise(async function (req, res, next) {
-    const { departureAirportIATA, arrivalAirportIATA, departureDate, totalPassengers } = req.query as {
+    const { departureAirportIATA, arrivalAirportIATA, departureDate , totalPassengers } = req.query as {
       departureAirportIATA: string
       arrivalAirportIATA: string
-      departureDate: string
+      departureDate : string
       totalPassengers: string
     }
 
     // console.log('departureAirportIATA', departureAirportIATA)
     // console.log('arrivalAirportIATA', arrivalAirportIATA)
-    // console.log('departureDate', departureDate)
+    // console.log('departureDate ', departureDate )
     // console.log('adults', adults)
 
-    if (!departureAirportIATA || !arrivalAirportIATA || !departureDate || !totalPassengers) {
+    // console.log('new Date()', new Date())
+    // console.log('startOfDay(new Date())', startOfDay(new Date()))
+    // console.log('--------------')
+    // console.log('departureDate ', departureDate )
+    // console.log('startOfDay(departureDate )', startOfDay(departureDate ))
+    // console.log('startOfDay(departureDate )', startOfDay(departureDate ).toISOString())
+    // console.log('endOfDay(departureDate )', endOfDay(departureDate ))
+    // console.log('endOfDay(departureDate )', endOfDay(departureDate ).toISOString())
+
+    if (!departureAirportIATA || !arrivalAirportIATA || !departureDate  || !totalPassengers) {
       return res.status(400).json({
         status: 'fail',
         message: 'Missing required fields',
@@ -61,23 +70,23 @@ export default {
       departureAirport: departureAirport,
       arrivalAirport: arrivalAirport,
     })
-    console.log(Number(totalPassengers))
+    // console.log(Number(totalPassengers))
 
     const flights = await Flight.find({
       $or: [
         {
           flightRoute,
-          departureDate: {
-            $gte: startOfDay(departureDate),
-            $lte: endOfDay(departureDate),
+          departureTime : {
+            $gte: startOfDay(departureDate ).toISOString(),
+            $lte: endOfDay(departureDate ).toISOString(),
           },
           [`remainingSeats.${SeatClass.ECONOMY}`]: { $gte: Number(totalPassengers) },
         },
         {
           flightRoute,
-          departureDate: {
-            $gte: startOfDay(departureDate),
-            $lte: endOfDay(departureDate),
+          departureTime : {
+            $gte: startOfDay(departureDate ),
+            $lte: endOfDay(departureDate ),
           },
           [`remainingSeats.${SeatClass.BUSINESS}`]: { $gte: Number(totalPassengers) },
         },
