@@ -12,6 +12,7 @@ import AircraftModel from '@/models/aircraft/aircraftModel.model'
 
 export default {
   getAllPaginate: factory.getAllPaginate(AircraftModel),
+  getAll: factory.getAll(AircraftModel),
   getOne: factory.getOne(AircraftModel),
   createOne: factory.createOne(AircraftModel),
   updateOne: factory.updateOne(AircraftModel),

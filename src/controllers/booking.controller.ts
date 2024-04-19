@@ -1,10 +1,11 @@
+import { TicketType } from './../enums/ticket.enums'
 import { populate } from 'dotenv'
 import config from '@/config'
 import { FlightType } from '@/enums/flight.enums'
 import { FlightLegType } from '@/enums/flightLeg.enums'
 import { PassengerType } from '@/enums/passenger.enums'
 import { PaymentMethod, PaymentStatus } from '@/enums/payment.enums'
-import { SeatClass } from '@/enums/seat.enums'
+import { TicketClass } from '@/enums/ticket.enums'
 import { UserGender } from '@/enums/user.enums'
 import Seat, { ISeat } from '@/models/aircraft/seat.model'
 import Booking from '@/models/booking/booking.model'
@@ -23,29 +24,34 @@ interface SearchData {
   departureAirportIATA: string
   arrivalAirportIATA: string
 
-  departureDate : Date
+  departureDate: Date
   returnDate: Date | null
 
   isRoundTrip: boolean
 
-  passengers: {
+  passengersQuantity: {
     [PassengerType.ADULT]: number
     [PassengerType.CHILD]: number
-    // infant: number
   }
 }
 
 interface FlightsData {
   [FlightType.OUTBOUND]: {
     flight: Schema.Types.ObjectId
-    seatClass: SeatClass
+    ticketClass: TicketClass
+    ticketType: TicketType
   }
   [FlightType.INBOUND]: {
     flight: Schema.Types.ObjectId
-    seatClass: SeatClass
+    ticketClass: TicketClass
+    ticketType: TicketType
   } | null
 }
 interface PassengersData {
+  contactInfo: {
+    email: string
+    phoneNumber: string
+  }
   [PassengerType.ADULT]: [
     {
       lastName: string
@@ -120,17 +126,23 @@ export default {
     //create booking
 
     const booking = new Booking({
-      adults: bookingData.searchData.passengers[PassengerType.ADULT],
-      children: bookingData.searchData.passengers[PassengerType.CHILD],
+      passengersQuantity: {
+        [PassengerType.ADULT]: bookingData.searchData.passengersQuantity[PassengerType.ADULT],
+        [PassengerType.CHILD]: bookingData.searchData.passengersQuantity[PassengerType.CHILD],
+      },
       isRoundtrip: bookingData.searchData.isRoundTrip,
       // totalPrice: 999_999_999,
+      // TODO: add user
       // user: null,
+      contactInfo: bookingData.passengersData.contactInfo,
       passengers: passengers,
       flightsInfo: {
         [FlightType.OUTBOUND]: null,
         [FlightType.INBOUND]: null,
       },
-      paymentStatus: PaymentStatus.PENDING,
+      payment: {
+        status: PaymentStatus.PENDING,
+      },
     })
 
     //create reservations
@@ -165,7 +177,8 @@ export default {
     // )
 
     const outboundFlightId = bookingData.flightsData[FlightType.OUTBOUND]!.flight
-    const outboundFlightSeatClass = bookingData.flightsData[FlightType.OUTBOUND]!.seatClass
+    const outboundFlightTicketClass = bookingData.flightsData[FlightType.OUTBOUND]!.ticketClass
+    const outboundFlightTicketType = bookingData.flightsData[FlightType.OUTBOUND]!.ticketType
 
     const outboundFlight = await Flight.findById(outboundFlightId).populate<{
       flightRoute: IFlightRoute
@@ -203,7 +216,18 @@ export default {
         }),
       ),
     )
-    let outboundPrice = outboundFlight.flightLegs[FlightLegType.DEPARTURE].flightRoute.prices[outboundFlightSeatClass]
+    let outboundPrice =
+      outboundFlight.flightLegs[FlightLegType.DEPARTURE].flightRoute.prices[outboundFlightTicketClass][
+        outboundFlightTicketType
+      ] || 0
+
+    console.log('outboundPrice', outboundPrice)
+    console.log(
+      'outboundFlight.flightLegs[FlightLegType.DEPARTURE].flightRoute.prices[outboundFlightTicketClass][outboundFlightTicketType]',
+      outboundFlight.flightLegs[FlightLegType.DEPARTURE].flightRoute.prices[outboundFlightTicketClass][
+        outboundFlightTicketType
+      ],
+    )
 
     let outboundTransitFlightReservations: IReservation[] = []
     if (outboundFlight?.hasTransit) {
@@ -217,15 +241,20 @@ export default {
           }),
         ),
       )
-      outboundPrice += outboundFlight.flightLegs[FlightLegType.TRANSIT].flightRoute.prices[outboundFlightSeatClass]
+      outboundPrice +=
+        outboundFlight.flightLegs[FlightLegType.TRANSIT].flightRoute.prices[outboundFlightTicketClass][
+          outboundFlightTicketType
+        ] || 0
     }
 
     const surcharges = await Surcharge.find()
 
     const totalOutboundPrice = outboundPrice * totalPassengers
+
     booking.flightsInfo[FlightType.OUTBOUND] = {
       flight: outboundFlight._id,
-      seatClass: outboundFlightSeatClass,
+      ticketClass: outboundFlightTicketClass,
+      ticketType: outboundFlightTicketType,
       price: outboundPrice,
       reservations: {
         [FlightLegType.DEPARTURE]: outboundDepartureFlightReservations.map((reservation) => ({
@@ -248,7 +277,8 @@ export default {
     let totalInboundPrice = 0
     if (bookingData.searchData.isRoundTrip) {
       const inboundFlightId = bookingData.flightsData[FlightType.INBOUND]!.flight
-      const inboundFlightSeatClass = bookingData.flightsData[FlightType.INBOUND]!.seatClass
+      const inboundFlightTicketClass = bookingData.flightsData[FlightType.INBOUND]!.ticketClass
+      const inboundFlightTicketType = bookingData.flightsData[FlightType.INBOUND]!.ticketType
 
       const inboundFlight = await Flight.findById(inboundFlightId).populate<{
         flightRoute: IFlightRoute
@@ -278,7 +308,10 @@ export default {
           }),
         ),
       )
-      let inboundPrice = inboundFlight.flightLegs[FlightLegType.DEPARTURE].flightRoute.prices[inboundFlightSeatClass]
+      let inboundPrice =
+        inboundFlight.flightLegs[FlightLegType.DEPARTURE].flightRoute.prices[inboundFlightTicketClass][
+          inboundFlightTicketType
+        ] || 0
 
       let inboundTransitFlightReservations: IReservation[] = []
       if (inboundFlight?.hasTransit) {
@@ -292,13 +325,17 @@ export default {
             }),
           ),
         )
-        inboundPrice += inboundFlight.flightLegs[FlightLegType.TRANSIT].flightRoute.prices[inboundFlightSeatClass]
+        inboundPrice +=
+          inboundFlight.flightLegs[FlightLegType.TRANSIT].flightRoute.prices[inboundFlightTicketClass][
+            inboundFlightTicketType
+          ] || 0
       }
 
       totalInboundPrice = inboundPrice * totalPassengers
       booking.flightsInfo[FlightType.INBOUND] = {
         flight: inboundFlight._id,
-        seatClass: inboundFlightSeatClass,
+        ticketClass: inboundFlightTicketClass,
+        ticketType: inboundFlightTicketType,
         price: inboundPrice,
         reservations: {
           [FlightLegType.DEPARTURE]: inboundDepartureFlightReservations.map((reservation) => ({

@@ -7,6 +7,7 @@ const router = Router()
 
 
 router.route('/').get(FlightLegsController.getAllPaginate)
+router.route('/get-by-departure-time').get(FlightLegsController.getByDepartureTime)
 router.route('/:id').get(FlightLegsController.getOne)
 
 router.use(authMiddleware)

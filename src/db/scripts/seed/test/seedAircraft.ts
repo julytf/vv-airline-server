@@ -1,5 +1,6 @@
 import { AircraftStatus } from '@/enums/aircraft.enums'
-import { SeatClass, SeatStatus, SeatType } from '@/enums/seat.enums'
+import { SeatStatus, SeatType } from '@/enums/seat.enums'
+import { TicketClass } from '@/enums/ticket.enums'
 import { UserGender, UserRole } from '@/enums/user.enums'
 import District from '@/models/address/district.model'
 import Province from '@/models/address/province.model'
@@ -22,12 +23,12 @@ async function _seedAircraftModel() {
   await AircraftModel.create({
     name: 'Boing 787',
     seatQuantity: {
-      [SeatClass.ECONOMY]: 300,
-      [SeatClass.BUSINESS]: 120,
+      [TicketClass.ECONOMY]: 300,
+      [TicketClass.BUSINESS]: 120,
     },
     seatMap: [
       {
-        class: SeatClass.BUSINESS,
+        class: TicketClass.BUSINESS,
         noRow: 20,
         noCol: 6,
         aisleCol: [2, 4],
@@ -49,7 +50,7 @@ async function _seedAircraftModel() {
                   col,
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
-                  seatClass: SeatClass.BUSINESS,
+                  ticketClass: TicketClass.BUSINESS,
                   // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
@@ -58,7 +59,7 @@ async function _seedAircraftModel() {
         ),
       },
       {
-        class: SeatClass.ECONOMY,
+        class: TicketClass.ECONOMY,
         noRow: 25,
         noCol: 6,
         aisleCol: [2, 4],
@@ -80,7 +81,7 @@ async function _seedAircraftModel() {
                   col,
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
-                  seatClass: SeatClass.ECONOMY,
+                  ticketClass: TicketClass.ECONOMY,
                   // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
@@ -89,7 +90,7 @@ async function _seedAircraftModel() {
         ),
       },
       {
-        class: SeatClass.ECONOMY,
+        class: TicketClass.ECONOMY,
         noRow: 25,
         noCol: 6,
         aisleCol: [2, 4],
@@ -111,7 +112,7 @@ async function _seedAircraftModel() {
                   col,
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
-                  seatClass: SeatClass.ECONOMY,
+                  ticketClass: TicketClass.ECONOMY,
                   // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
@@ -126,12 +127,12 @@ async function _seedAircraftModel() {
   await AircraftModel.create({
     name: 'Airbus A321',
     seatQuantity: {
-      [SeatClass.ECONOMY]: 180,
-      [SeatClass.BUSINESS]: 60,
+      [TicketClass.ECONOMY]: 180,
+      [TicketClass.BUSINESS]: 60,
     },
     seatMap: [
       {
-        class: SeatClass.BUSINESS,
+        class: TicketClass.BUSINESS,
         noRow: 10,
         noCol: 6,
         aisleCol: [2, 4],
@@ -153,7 +154,7 @@ async function _seedAircraftModel() {
                   col,
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
-                  seatClass: SeatClass.BUSINESS,
+                  ticketClass: TicketClass.BUSINESS,
                   // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),
@@ -162,7 +163,7 @@ async function _seedAircraftModel() {
         ),
       },
       {
-        class: SeatClass.ECONOMY,
+        class: TicketClass.ECONOMY,
         noRow: 30,
         noCol: 6,
         aisleCol: [2, 4],
@@ -184,7 +185,7 @@ async function _seedAircraftModel() {
                   col,
                   status: SeatStatus.AVAILABLE,
                   seatType: isWindowSeat ? SeatType.WINDOW : SeatType.NORMAL,
-                  seatClass: SeatClass.ECONOMY,
+                  ticketClass: TicketClass.ECONOMY,
                   // surcharge: isWindowSeat ? 100 : 0,
                 })
               }),

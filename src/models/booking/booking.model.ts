@@ -1,21 +1,29 @@
 import { FlightType } from '@/enums/flight.enums'
 import { FlightLegType } from '@/enums/flightLeg.enums'
 import { PaymentMethod, PaymentStatus } from '@/enums/payment.enums'
-import { SeatClass } from '@/enums/seat.enums'
+import { TicketClass, TicketType } from '@/enums/ticket.enums'
 import { model, PreMiddlewareFunction, Schema, Types } from 'mongoose'
 import Reservation from './reservation.model'
+import { PassengerType } from '@/enums/passenger.enums'
 
 export interface IBooking {
-  adults: number
-  children: number
+  passengersQuantity: {
+    [PassengerType.ADULT]: number
+    [PassengerType.CHILD]: number
+  }
   isRoundtrip: boolean
   totalPrice: number
   user?: Types.ObjectId
+  contactInfo: {
+    email: string
+    phoneNumber: string
+  }
   passengers: Types.ObjectId[]
   flightsInfo: {
     [FlightType.OUTBOUND]: {
       flight: Types.ObjectId
-      seatClass: SeatClass
+      ticketClass: TicketClass
+      ticketType: TicketType
       price: number
       reservations: {
         [FlightLegType.DEPARTURE]: {
@@ -30,7 +38,8 @@ export interface IBooking {
     }
     [FlightType.INBOUND]?: {
       flight: Types.ObjectId
-      seatClass: SeatClass
+      ticketClass: TicketClass
+      ticketType: TicketType
       price: number
       reservations: {
         [FlightLegType.DEPARTURE]: {
@@ -44,20 +53,25 @@ export interface IBooking {
       }
     }
   }
-  paymentMethod?: PaymentMethod
-  paymentStatus?: PaymentStatus
+  payment: {
+    intentId?: string
+    method?: PaymentMethod
+    status?: PaymentStatus
+  }
+
+  // updatePaymentStatus(status: PaymentStatus): Promise<void>
 }
 
 const bookingSchema = new Schema<IBooking>({
-  adults: {
-    type: Number,
-    required: true,
-    default: 1,
-  },
-  children: {
-    type: Number,
-    required: true,
-    default: 0,
+  passengersQuantity: {
+    [PassengerType.ADULT]: {
+      type: Number,
+      required: true,
+    },
+    [PassengerType.CHILD]: {
+      type: Number,
+      required: true,
+    },
   },
   isRoundtrip: {
     type: Boolean,
@@ -73,6 +87,16 @@ const bookingSchema = new Schema<IBooking>({
     ref: 'User',
     // required: true,
   },
+  contactInfo: {
+    email: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+  },
   passengers: [
     {
       type: Schema.Types.ObjectId,
@@ -87,9 +111,14 @@ const bookingSchema = new Schema<IBooking>({
           ref: 'Flight',
           required: true,
         },
-        seatClass: {
+        ticketClass: {
           type: String,
-          enum: SeatClass,
+          enum: TicketClass,
+          required: true,
+        },
+        ticketType: {
+          type: String,
+          enum: TicketType,
           required: true,
         },
         price: {
@@ -126,9 +155,14 @@ const bookingSchema = new Schema<IBooking>({
           ref: 'Flight',
           required: true,
         },
-        seatClass: {
+        ticketClass: {
           type: String,
-          enum: SeatClass,
+          enum: TicketClass,
+          required: true,
+        },
+        ticketType: {
+          type: String,
+          enum: TicketType,
           required: true,
         },
         price: {
@@ -159,14 +193,18 @@ const bookingSchema = new Schema<IBooking>({
       default: null,
     },
   },
-  paymentMethod: {
-    type: String,
-    enum: PaymentMethod,
-  },
-  paymentStatus: {
-    type: String,
-    enum: PaymentStatus,
-    default: PaymentStatus.PENDING,
+  payment: {
+    intentId: {
+      type: String,
+    },
+    method: {
+      type: String,
+      enum: PaymentMethod,
+    },
+    status: {
+      type: String,
+      enum: PaymentStatus,
+    },
   },
 })
 
@@ -183,6 +221,28 @@ const findMiddleware: PreMiddlewareFunction = function (next) {
 }
 
 bookingSchema.pre(/^find/, findMiddleware)
+
+// bookingSchema.method('updatePaymentStatus', async function (status: PaymentStatus) {
+//   this.payment.status = status
+
+//   const reservations = [
+//     ...this.flightsInfo[FlightType.OUTBOUND].reservations[FlightLegType.DEPARTURE].map(
+//       (reservation) => reservation.reservation,
+//     ),
+//     ...this.flightsInfo[FlightType.OUTBOUND].reservations[FlightLegType.TRANSIT].map(
+//       (reservation) => reservation.reservation,
+//     ),
+//   ]
+
+//   await Promise.all(
+//     reservations.map(async (reservation) => {
+//       console.log('log', reservation, status)
+//       await Reservation.findByIdAndUpdate(reservation, { status: status })
+//     }),
+//   )
+
+//   // await this.save()
+// })
 
 const Booking = model<IBooking>('Booking', bookingSchema)
 

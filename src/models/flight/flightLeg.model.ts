@@ -1,13 +1,13 @@
 import { FlightLegStatus } from '@/enums/flightLeg.enums'
-import { SeatClass } from '@/enums/seat.enums'
-import { Schema, Types, model } from 'mongoose'
+import { TicketClass } from '@/enums/ticket.enums'
+import { PreMiddlewareFunction, Schema, Types, model } from 'mongoose'
 
 export interface IFlightLeg {
-  departureTime : Date
+  departureTime: Date
   arrivalTime: Date
   remainingSeats: {
-    [SeatClass.ECONOMY]: number
-    [SeatClass.BUSINESS]: number
+    [TicketClass.ECONOMY]: number
+    [TicketClass.BUSINESS]: number
   }
   status: FlightLegStatus
   flightRoute: Types.ObjectId
@@ -15,7 +15,7 @@ export interface IFlightLeg {
 }
 
 const flightLegSchema = new Schema<IFlightLeg>({
-  departureTime : {
+  departureTime: {
     type: Date,
     required: true,
   },
@@ -24,8 +24,8 @@ const flightLegSchema = new Schema<IFlightLeg>({
     required: true,
   },
   remainingSeats: {
-    [SeatClass.ECONOMY]: { type: Number },
-    [SeatClass.BUSINESS]: { type: Number },
+    [TicketClass.ECONOMY]: { type: Number },
+    [TicketClass.BUSINESS]: { type: Number },
   },
   status: {
     type: String,
@@ -47,10 +47,12 @@ flightLegSchema.methods.updateRemainingSeats = async function () {
   const flight = this
 }
 
-flightLegSchema.pre('find', async function (next) {
+const findMiddleware: PreMiddlewareFunction = async function (next) {
   this.populate([{ path: 'flightRoute' }, { path: 'aircraft' }])
   next()
-})
+}
+
+flightLegSchema.pre(/find/, findMiddleware)
 
 const FlightLeg = model<IFlightLeg>('FlightLeg', flightLegSchema)
 

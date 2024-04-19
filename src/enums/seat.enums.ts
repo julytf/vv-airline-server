@@ -1,8 +1,3 @@
-export enum SeatClass {
-  ECONOMY = 'ECONOMY',
-  BUSINESS = 'BUSINESS',
-}
-
 export enum SeatType {
   NORMAL = 'NORMAL',
   WINDOW = 'WINDOW',

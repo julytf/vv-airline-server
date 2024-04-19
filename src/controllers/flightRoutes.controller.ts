@@ -69,6 +69,7 @@ export default {
   //   })
   // }),
   getAllPaginate: factory.getAllPaginate(FlightRoute),
+  getAll: factory.getAll(FlightRoute),
   getOne: factory.getOne(FlightRoute),
   createOne: factory.createOne(FlightRoute),
   updateOne: factory.updateOne(FlightRoute),

@@ -1,4 +1,4 @@
-import { SeatClass } from '@/enums/seat.enums'
+import { TicketClass } from '@/enums/ticket.enums'
 import { Schema, Types, model } from 'mongoose'
 
 interface IRowModel {
@@ -19,7 +19,7 @@ const rowModelSchema = new Schema<IRowModel>({
 })
 
 interface ICabinModel {
-  class: SeatClass
+  class: TicketClass
   noRow: number
   noCol: number
   aisleCol: number[]
@@ -29,8 +29,8 @@ interface ICabinModel {
 const cabinModelSchema = new Schema<ICabinModel>({
   class: {
     type: String,
-    enum: SeatClass,
-    default: SeatClass.ECONOMY,
+    enum: TicketClass,
+    default: TicketClass.ECONOMY,
     required: true,
   },
   noRow: {
@@ -48,8 +48,8 @@ const cabinModelSchema = new Schema<ICabinModel>({
 export interface IAircraftModel {
   name?: string
   seatQuantity: {
-    [SeatClass.ECONOMY]: number
-    [SeatClass.BUSINESS]: number
+    [TicketClass.ECONOMY]: number
+    [TicketClass.BUSINESS]: number
   }
   seatMap: ICabinModel[]
 }
@@ -59,8 +59,8 @@ const aircraftModelSchema = new Schema<IAircraftModel>({
     type: String,
   },
   seatQuantity: {
-    [SeatClass.ECONOMY]: { type: Number },
-    [SeatClass.BUSINESS]: { type: Number },
+    [TicketClass.ECONOMY]: { type: Number },
+    [TicketClass.BUSINESS]: { type: Number },
   },
   seatMap: [cabinModelSchema],
 })

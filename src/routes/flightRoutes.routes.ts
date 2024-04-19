@@ -8,6 +8,7 @@ const router = Router()
 router.use(authMiddleware)
 
 router.route('/').get(FlightRoutesController.getAllPaginate)
+router.route('/all').get(FlightRoutesController.getAll)
 router.route('/').post(FlightRoutesController.createOne)
 
 router.route('/:id').get(FlightRoutesController.getOne)

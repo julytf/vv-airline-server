@@ -1,5 +1,5 @@
 import { PaymentStatus } from './../../enums/payment.enums'
-import { SeatClass } from '@/enums/seat.enums'
+import { TicketClass } from '@/enums/ticket.enums'
 import { Schema, Types, model } from 'mongoose'
 
 export interface IReservation {

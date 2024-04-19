@@ -12,6 +12,7 @@ import Aircraft from '@/models/aircraft/aircraft.model'
 
 export default {
   getAllPaginate: factory.getAllPaginate(Airport),
+  getAll: factory.getAll(Airport),
   // getAllPaginate: catchPromise(async function (req, res, next) {
   //   const { sort = false, page = 1, perPage = 20, q = '' } = req.query
 

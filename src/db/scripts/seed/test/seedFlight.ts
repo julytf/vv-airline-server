@@ -1,6 +1,6 @@
 import { AirportType } from '@/enums/airport.enums'
 import { FlightLegStatus, FlightLegType } from '@/enums/flightLeg.enums'
-import { SeatClass } from '@/enums/seat.enums'
+import { TicketClass } from '@/enums/ticket.enums'
 import Country from '@/models/address/country.model'
 import District from '@/models/address/district.model'
 import Province from '@/models/address/province.model'
@@ -84,8 +84,16 @@ async function _seedFlightRoute() {
   await FlightRoute.create({
     distance: 50,
     prices: {
-      ECONOMY: 500_000,
-      BUSINESS: 1_000_000,
+      ECONOMY: {
+        BUDGET: 500_000,
+        STANDARD: 1_000_000,
+        FLEXIBLE: 1_500_000,
+      },
+      BUSINESS: {
+        BUDGET: null,
+        STANDARD: 2_000_000,
+        FLEXIBLE: 2_500_000,
+      },
     },
     departureAirport: haNoiAirport,
     arrivalAirport: canThoAirport,
@@ -93,8 +101,16 @@ async function _seedFlightRoute() {
   await FlightRoute.create({
     distance: 50,
     prices: {
-      ECONOMY: 500_000,
-      BUSINESS: 1_000_000,
+      ECONOMY: {
+        BUDGET: 500_000,
+        STANDARD: 1_000_000,
+        FLEXIBLE: 1_500_000,
+      },
+      BUSINESS: {
+        BUDGET: null,
+        STANDARD: 2_000_000,
+        FLEXIBLE: 2_500_000,
+      },
     },
     departureAirport: canThoAirport,
     arrivalAirport: hoChiMinhAirport,
@@ -102,8 +118,16 @@ async function _seedFlightRoute() {
   await FlightRoute.create({
     distance: 100,
     prices: {
-      ECONOMY: 1_000_000,
-      BUSINESS: 2_000_000,
+      ECONOMY: {
+        BUDGET: 500_000,
+        STANDARD: 1_000_000,
+        FLEXIBLE: 1_500_000,
+      },
+      BUSINESS: {
+        BUDGET: null,
+        STANDARD: 2_000_000,
+        FLEXIBLE: 2_500_000,
+      },
     },
     departureAirport: haNoiAirport,
     arrivalAirport: hoChiMinhAirport,
@@ -111,8 +135,16 @@ async function _seedFlightRoute() {
   await FlightRoute.create({
     distance: 100,
     prices: {
-      ECONOMY: 1_000_000,
-      BUSINESS: 2_000_000,
+      ECONOMY: {
+        BUDGET: 500_000,
+        STANDARD: 1_000_000,
+        FLEXIBLE: 1_500_000,
+      },
+      BUSINESS: {
+        BUDGET: null,
+        STANDARD: 2_000_000,
+        FLEXIBLE: 2_500_000,
+      },
     },
     departureAirport: hoChiMinhAirport,
     arrivalAirport: haNoiAirport,
@@ -225,11 +257,12 @@ async function _seedFlight() {
     departureTime: HNToCanThoFlightLeg.departureTime,
     arrivalTime: CanThoToHCMFlightLeg.arrivalTime,
     remainingSeats: {
-      [SeatClass.ECONOMY]:
-        HNToCanThoFlightLeg.remainingSeats[SeatClass.ECONOMY] + CanThoToHCMFlightLeg.remainingSeats[SeatClass.ECONOMY],
-      [SeatClass.BUSINESS]:
-        HNToCanThoFlightLeg.remainingSeats[SeatClass.BUSINESS] +
-        CanThoToHCMFlightLeg.remainingSeats[SeatClass.BUSINESS],
+      [TicketClass.ECONOMY]:
+        HNToCanThoFlightLeg.remainingSeats[TicketClass.ECONOMY] +
+        CanThoToHCMFlightLeg.remainingSeats[TicketClass.ECONOMY],
+      [TicketClass.BUSINESS]:
+        HNToCanThoFlightLeg.remainingSeats[TicketClass.BUSINESS] +
+        CanThoToHCMFlightLeg.remainingSeats[TicketClass.BUSINESS],
     },
     flightRoute: HNToHCMFlightRoute,
     flightLegs: {
@@ -255,8 +288,8 @@ async function _seedFlight() {
     departureTime: new Date('2024-05-01 2:00:00'),
     arrivalTime: new Date('2024-05-01 4:00:00'),
     remainingSeats: {
-      [SeatClass.ECONOMY]: 100,
-      [SeatClass.BUSINESS]: 100,
+      [TicketClass.ECONOMY]: 100,
+      [TicketClass.BUSINESS]: 100,
     },
     flightRoute: HNToHCMFlightRoute,
     flightLegs: {
@@ -269,8 +302,8 @@ async function _seedFlight() {
     departureTime: new Date('2024-05-01 2:00:00'),
     arrivalTime: new Date('2024-05-01 4:00:00'),
     remainingSeats: {
-      [SeatClass.ECONOMY]: 100,
-      [SeatClass.BUSINESS]: 100,
+      [TicketClass.ECONOMY]: 100,
+      [TicketClass.BUSINESS]: 100,
     },
     flightRoute: HCMToHNFlightRoute,
     flightLegs: {
@@ -282,8 +315,8 @@ async function _seedFlight() {
     departureTime: new Date('2024-05-01 12:00:00'),
     arrivalTime: new Date('2024-05-01 14:00:00'),
     remainingSeats: {
-      [SeatClass.ECONOMY]: 100,
-      [SeatClass.BUSINESS]: 100,
+      [TicketClass.ECONOMY]: 100,
+      [TicketClass.BUSINESS]: 100,
     },
     flightRoute: HCMToHNFlightRoute,
     flightLegs: {
@@ -295,8 +328,8 @@ async function _seedFlight() {
     departureTime: new Date('2024-05-01 20:00:00'),
     arrivalTime: new Date('2024-05-01 22:00:00'),
     remainingSeats: {
-      [SeatClass.ECONOMY]: 100,
-      [SeatClass.BUSINESS]: 100,
+      [TicketClass.ECONOMY]: 100,
+      [TicketClass.BUSINESS]: 100,
     },
     flightRoute: HCMToHNFlightRoute,
     flightLegs: {

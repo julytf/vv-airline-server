@@ -5,8 +5,8 @@ import authMiddleware from '@/middlewares/auth.middleware'
 
 const router = Router()
 
-router.route('/get-featured-articles').get(ArticlesController.getFeaturedArticles)
-router.route('/get-latest-articles').get(ArticlesController.getLatestArticles)
+router.route('/get-featured').get(ArticlesController.getFeaturedArticles)
+router.route('/get-latest').get(ArticlesController.getLatestArticles)
 
 router.route('/:id').get(ArticlesController.getOne)
 

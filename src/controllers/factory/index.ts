@@ -53,7 +53,7 @@ export const getAllPaginate = function (Model: Model<any, any, any>) {
     // docs.forEach(doc => doc?.completeImagesUrl())
 
     const count = await new AdjustQuery(Model.find()).nameFilter(q as string).query.countDocuments()
-    const lastPage = Math.ceil(count / (perPage as number))
+    const lastPage = Math.ceil(count / (perPage as number)) || 1
 
     return res.status(200).json({
       status: 'success',
