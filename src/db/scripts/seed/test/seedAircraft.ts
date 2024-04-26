@@ -1,6 +1,6 @@
 import { AircraftStatus } from '@/enums/aircraft.enums'
 import { SeatStatus, SeatType } from '@/enums/seat.enums'
-import { TicketClass } from '@/enums/ticket.enums'
+import { TicketClass, TicketType } from '@/enums/ticket.enums'
 import { UserGender, UserRole } from '@/enums/user.enums'
 import District from '@/models/address/district.model'
 import Province from '@/models/address/province.model'
@@ -216,5 +216,50 @@ async function _seedSurcharge() {
   await Surcharge.create({
     name: `SeatType.${SeatType.WINDOW}`,
     value: 500_000,
+  })
+
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.BUDGET}.Refund`,
+    value: null,
+  })
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.BUDGET}.Exchange`,
+    value: null,
+  })
+
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.STANDARD}.Refund`,
+    value: null,
+  })
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.STANDARD}.Exchange`,
+    value: 500_000,
+  })
+
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.FLEXIBLE}.Refund`,
+    value: 500_000,
+  })
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.FLEXIBLE}.Exchange`,
+    value: 0,
+  })
+
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.STANDARD}.Refund`,
+    value: 500_000,
+  })
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.STANDARD}.Exchange`,
+    value: 360_000,
+  })
+
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.FLEXIBLE}.Refund`,
+    value: 360_000,
+  })
+  await Surcharge.create({
+    name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.FLEXIBLE}.Exchange`,
+    value: 0,
   })
 }

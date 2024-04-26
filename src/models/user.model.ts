@@ -15,7 +15,7 @@ export interface IUser extends Document {
   phoneNumber?: string
   dateOfBirth?: Date
   gender?: UserGender
-  idNumber?: string
+  // idNumber?: string
   address?: IAddress
   isDeleted: boolean
   deletedAt?: Date
@@ -91,9 +91,9 @@ const userSchema = new Schema<IUser>(
       enum: UserGender,
       default: UserGender.MALE,
     },
-    idNumber: {
-      type: String,
-    },
+    // idNumber: {
+    //   type: String,
+    // },
     address: {
       type: addressSchema,
     },

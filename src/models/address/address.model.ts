@@ -12,7 +12,6 @@ export const addressSchema = new Schema<IAddress>(
   {
     address: {
       type: String,
-      required: true,
     },
     address2: {
       type: String,
@@ -20,7 +19,6 @@ export const addressSchema = new Schema<IAddress>(
     province: {
       type: Schema.Types.ObjectId,
       ref: 'City',
-      required: true,
     },
     district: {
       type: Schema.Types.ObjectId,

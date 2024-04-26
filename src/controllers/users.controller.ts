@@ -5,6 +5,7 @@ import Stripe from 'stripe'
 import * as factory from './factory'
 import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
+import { UserRole } from '@/enums/user.enums'
 
 export default {
   getProfile: catchPromise(async function (req: Request, res, next) {
@@ -46,4 +47,29 @@ export default {
   }),
 
   getUsersPaginate: factory.getAllPaginate(User),
+
+  createOne: catchPromise(async function (req, res, next) {
+    const user = await new User({
+      role: req.body.role,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      dateOfBirth: req.body.dateOfBirth,
+      gender: req.body.gender,
+      idNumber: req.body.idNumber,
+      address: req.body.address,
+    })
+    await user.setPassword(req.body.password)
+
+    // console.log('body', req.body)
+    // console.log('user', user)
+
+    await user.save()
+    // console.log('saved')
+
+    return res.status(201).json({
+      status: 'success',
+    })
+  }),
 }

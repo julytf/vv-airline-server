@@ -7,6 +7,4 @@ export enum SeatType {
 export enum SeatStatus {
   AVAILABLE = 'AVAILABLE',
   UNAVAILABLE = 'UNAVAILABLE',
-  BOOKED = 'BOOKED',
-  BLOCKED = 'BLOCKED',
 }

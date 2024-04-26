@@ -1,6 +1,6 @@
 export enum PaymentMethod {
   CARD = 'CARD',
-  //   CASH= 'CASH',
+  CASH = 'CASH',
   PAYPAL = 'PAYPAL',
 }
 
@@ -9,5 +9,6 @@ export enum PaymentStatus {
   SUCCEEDED = 'SUCCEEDED',
   FAILED = 'FAILED',
   CANCELLED = 'CANCELLED',
+  PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
   REFUNDED = 'REFUNDED',
 }

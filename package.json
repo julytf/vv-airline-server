@@ -42,11 +42,11 @@
     "stripe": "^14.25.0",
     "typescript": "^5.3.3"
   },
-  "_moduleAliases": {
-    "@": "dist"
-  },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

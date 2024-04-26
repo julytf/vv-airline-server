@@ -5,9 +5,11 @@ import authMiddleware from '@/middlewares/auth.middleware'
 const router = Router()
 
 router.use(authMiddleware)
+// TODO: check role
 
 router.route('/get-profile').get(UsersController.getProfile)
 router.route('/update-profile').patch(UsersController.updateProfile)
 router.route('/').get(UsersController.getUsersPaginate)
+router.route('/').post(UsersController.createOne)
 
 export default router

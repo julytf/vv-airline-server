@@ -7,6 +7,7 @@ import Reservation from './reservation.model'
 import { PassengerType } from '@/enums/passenger.enums'
 
 export interface IBooking {
+  pnr: string
   passengersQuantity: {
     [PassengerType.ADULT]: number
     [PassengerType.CHILD]: number
@@ -14,6 +15,7 @@ export interface IBooking {
   isRoundtrip: boolean
   totalPrice: number
   user?: Types.ObjectId
+  staff?: Types.ObjectId
   contactInfo: {
     email: string
     phoneNumber: string
@@ -26,15 +28,18 @@ export interface IBooking {
       ticketType: TicketType
       price: number
       reservations: {
+        paymentStatus: PaymentStatus
         [FlightLegType.DEPARTURE]: {
           reservation: Types.ObjectId
+          services: String[]
           surcharge: number
-        }[]
+        }
         [FlightLegType.TRANSIT]: {
           reservation: Types.ObjectId
+          services: String[]
           surcharge: number
-        }[]
-      }
+        }
+      }[]
     }
     [FlightType.INBOUND]?: {
       flight: Types.ObjectId
@@ -42,15 +47,18 @@ export interface IBooking {
       ticketType: TicketType
       price: number
       reservations: {
+        paymentStatus: PaymentStatus
         [FlightLegType.DEPARTURE]: {
           reservation: Types.ObjectId
+          services: String[]
           surcharge: number
-        }[]
+        }
         [FlightLegType.TRANSIT]: {
           reservation: Types.ObjectId
+          services: String[]
           surcharge: number
-        }[]
-      }
+        }
+      }[]
     }
   }
   payment: {
@@ -63,6 +71,11 @@ export interface IBooking {
 }
 
 const bookingSchema = new Schema<IBooking>({
+  pnr: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   passengersQuantity: {
     [PassengerType.ADULT]: {
       type: Number,
@@ -86,6 +99,10 @@ const bookingSchema = new Schema<IBooking>({
     type: Schema.Types.ObjectId,
     ref: 'User',
     // required: true,
+  },
+  staff: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
   contactInfo: {
     email: {
@@ -125,26 +142,29 @@ const bookingSchema = new Schema<IBooking>({
           type: Number,
           required: true,
         },
-        reservations: {
-          [FlightLegType.DEPARTURE]: [
-            {
+        reservations: [
+          {
+            paymentStatus: {
+              type: String,
+              enum: PaymentStatus,
+            },
+            [FlightLegType.DEPARTURE]: {
               reservation: {
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
               surcharge: Number,
             },
-          ],
-          [FlightLegType.TRANSIT]: [
-            {
+
+            [FlightLegType.TRANSIT]: {
               reservation: {
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
               surcharge: Number,
             },
-          ],
-        },
+          },
+        ],
       },
       default: null,
     },
@@ -169,26 +189,29 @@ const bookingSchema = new Schema<IBooking>({
           type: Number,
           required: true,
         },
-        reservations: {
-          [FlightLegType.DEPARTURE]: [
-            {
+        reservations: [
+          {
+            paymentStatus: {
+              type: String,
+              enum: PaymentStatus,
+            },
+            [FlightLegType.DEPARTURE]: {
               reservation: {
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
               surcharge: Number,
             },
-          ],
-          [FlightLegType.TRANSIT]: [
-            {
+
+            [FlightLegType.TRANSIT]: {
               reservation: {
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
               surcharge: Number,
             },
-          ],
-        },
+          },
+        ],
       },
       default: null,
     },

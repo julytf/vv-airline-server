@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose'
 
 export interface ISurcharge {
   name: string
-  value: number
+  value: number | null
 }
 
 const surchargeSchema = new Schema<ISurcharge>({
@@ -12,7 +12,6 @@ const surchargeSchema = new Schema<ISurcharge>({
   },
   value: {
     type: Number,
-    required: true,
   },
 })
 

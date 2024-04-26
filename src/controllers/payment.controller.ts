@@ -7,7 +7,7 @@ import { PaymentMethod, PaymentStatus } from '@/enums/payment.enums'
 import { TicketClass } from '@/enums/ticket.enums'
 import { UserGender } from '@/enums/user.enums'
 import Seat, { ISeat } from '@/models/aircraft/seat.model'
-import Booking from '@/models/booking/booking.model'
+import Booking, { IBooking } from '@/models/booking/booking.model'
 import Passenger from '@/models/booking/passenger.model'
 import Reservation, { IReservation } from '@/models/booking/reservation.model'
 import { IAirport } from '@/models/flight/airport.model'
@@ -49,6 +49,13 @@ interface FlightsData {
     flight: Schema.Types.ObjectId
     ticketClass: TicketClass
   } | null
+}
+
+interface RefundData {
+  pnr: string
+  email: string
+  [FlightType.OUTBOUND]: boolean[]
+  [FlightType.INBOUND]: boolean[]
 }
 interface PassengersData {
   [PassengerType.ADULT]: [
@@ -246,21 +253,32 @@ export default {
     // booking.payment.status = PaymentStatus.SUCCEEDED
     // await booking.updatePaymentStatus(PaymentStatus.SUCCEEDED)
     booking.payment.status = PaymentStatus.SUCCEEDED
+
+    const bookingReservations = [
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
+    ]
+    bookingReservations.map((reservation) => {
+      reservation.paymentStatus = PaymentStatus.SUCCEEDED
+    })
+
     await booking.save()
 
     // update reservation paymentStatus
-    const reservations = [
-      ...booking.flightsInfo[FlightType.OUTBOUND].reservations[FlightLegType.DEPARTURE].map(
-        (reservation) => reservation.reservation,
+    const reservationDocuments = [
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(
+        (reservation) => reservation[FlightLegType.DEPARTURE].reservation,
       ),
-      ...booking.flightsInfo[FlightType.OUTBOUND].reservations[FlightLegType.TRANSIT].map(
-        (reservation) => reservation.reservation,
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(
+        (reservation) => reservation[FlightLegType.TRANSIT].reservation,
       ),
     ]
     await Promise.all(
-      reservations.map(async (reservation) => {
+      reservationDocuments.map(async (reservation) => {
         console.log('log', reservation, PaymentStatus.SUCCEEDED)
-        await Reservation.findByIdAndUpdate(reservation._id, { paymentStatus: PaymentStatus.SUCCEEDED })
+        // TODO: this array have some null value for some reason, fix later
+        if (!reservation) return
+        await Reservation.findByIdAndUpdate(reservation, { paymentStatus: PaymentStatus.SUCCEEDED })
       }),
     )
 
@@ -271,10 +289,181 @@ export default {
     //   return next(new NotFoundError('Outbound flight not found'))
     // }
 
+    res.status(200).json({
+      status: 'success',
+    })
+  }),
 
+  refund: catchPromise(async function (req: Request, res: Response, next: NextFunction) {
+    const bookingId = req.params.id as string
+    const { pnr, email } = req.body as RefundData
+
+    const booking = await Booking.findById(bookingId)
+
+    if (!booking) {
+      return next(new NotFoundError('Booking not found'))
+    }
+    if (booking.pnr !== pnr || booking.contactInfo.email !== email) {
+      return next(new AppError('Invalid pnr or email', 400))
+    }
+
+    const refundData = req.body as RefundData
+
+    const outboundRefundQuantity = refundData[FlightType.OUTBOUND].filter((refund) => refund).length
+    const inboundRefundQuantity = refundData[FlightType.INBOUND].filter((refund) => refund).length
+
+    const outboundRefundReservations = booking.flightsInfo[FlightType.OUTBOUND].reservations.filter(
+      (_, i) => refundData[FlightType.OUTBOUND][i],
+    )
+    const inboundRefundReservations =
+      booking.flightsInfo[FlightType.INBOUND]?.reservations.filter((_, i) => refundData[FlightType.INBOUND][i]) || []
+
+    const refundReservations = [...outboundRefundReservations, ...inboundRefundReservations]
+
+    const surchargeRefundAmount = refundReservations.reduce(
+      (acc, reservation) =>
+        acc +
+        (reservation[FlightLegType.DEPARTURE].surcharge || 0) +
+        (reservation[FlightLegType.TRANSIT].surcharge || 0),
+      0,
+    )
+
+    const refundFee = 500_000
+
+    // console.log(
+    //   'booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity',
+    //   booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity,
+    // )
+    // console.log(
+    //   '(booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity',
+    //   (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity,
+    // )
+    console.log('surchargeRefundAmount', surchargeRefundAmount)
+    // console.log('refundFee', refundFee)
+
+    const refundAmount =
+      booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity +
+      (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity +
+      surchargeRefundAmount -
+      refundFee
+
+    if (!booking?.payment?.intentId) {
+      return next(new AppError('Booking has no payment intent', 400))
+    }
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(booking.payment.intentId)
+
+    if (paymentIntent.status !== 'succeeded') {
+      return next(new AppError('Payment failed', 400))
+    }
+
+    const refund = await stripe.refunds.create({
+      payment_intent: booking.payment.intentId,
+      amount: refundAmount,
+    })
+
+    booking.payment.status = PaymentStatus.REFUNDED
+
+    await Promise.all([
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(async (reservation, i) => {
+        if (refundData[FlightType.OUTBOUND][i]) {
+          reservation.paymentStatus = PaymentStatus.REFUNDED
+          const reservationId =
+            reservation[FlightLegType.DEPARTURE].reservation?._id || reservation[FlightLegType.TRANSIT].reservation?._id
+          if (!reservationId) return
+          await Reservation.findByIdAndUpdate(reservationId, { paymentStatus: PaymentStatus.REFUNDED })
+        }
+      }),
+      ...(booking.flightsInfo?.[FlightType.INBOUND]?.reservations.map(async (reservation, i) => {
+        if (refundData[FlightType.INBOUND][i]) {
+          reservation.paymentStatus = PaymentStatus.REFUNDED
+          const reservationId =
+            reservation[FlightLegType.DEPARTURE].reservation?._id || reservation[FlightLegType.TRANSIT].reservation?._id
+          if (!reservationId) return
+          await Reservation.findByIdAndUpdate(reservationId, { paymentStatus: PaymentStatus.REFUNDED })
+        }
+      }) || []),
+    ])
+
+    await booking.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: { booking },
+    })
+  }),
+
+  // TODO:
+  paymentSuccessByStaff: catchPromise(async function (req, res, next) {
+    const bookingId = req.query.bookingId as string
+
+    const booking = await Booking.findById(bookingId)
+
+    if (!booking) {
+      return next(new NotFoundError('Booking not found'))
+    }
+
+    // bỏ qua check payment
+    // if (!booking?.payment?.intentId) {
+    //   return next(new AppError('Booking has no payment intent', 400))
+    // }
+
+    // const paymentSession = await stripe.checkout.sessions.retrieve(booking.payment.intentId)
+    // console.log(paymentSession)
+    // console.log(paymentSession.payment_status)
+
+    
+    // bỏ qua check payment
+    // const paymentIntent = await stripe.paymentIntents.retrieve(booking.payment.intentId)
+    // console.log(paymentIntent)
+    // console.log(paymentIntent.status)
+
+    // if (paymentIntent.status !== 'succeeded') {
+    //   return next(new AppError('Payment failed', 400))
+    // }
+
+    // booking.payment.status = PaymentStatus.SUCCEEDED
+    // await booking.updatePaymentStatus(PaymentStatus.SUCCEEDED)
+    booking.payment.status = PaymentStatus.SUCCEEDED
+
+    const bookingReservations = [
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
+    ]
+    bookingReservations.map((reservation) => {
+      reservation.paymentStatus = PaymentStatus.SUCCEEDED
+    })
+
+    await booking.save()
+
+    // update reservation paymentStatus
+    const reservationDocuments = [
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(
+        (reservation) => reservation[FlightLegType.DEPARTURE].reservation,
+      ),
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(
+        (reservation) => reservation[FlightLegType.TRANSIT].reservation,
+      ),
+    ]
+    await Promise.all(
+      reservationDocuments.map(async (reservation) => {
+        console.log('log', reservation, PaymentStatus.SUCCEEDED)
+        // TODO: this array have some null value for some reason, fix later
+        if (!reservation) return
+        await Reservation.findByIdAndUpdate(reservation, { paymentStatus: PaymentStatus.SUCCEEDED })
+      }),
+    )
+
+    // TODO:
+    // update flights and flightLegs seats
+    // const outboundFlight = await Flight.findById(booking.flightsInfo[FlightType.OUTBOUND].flight)
+    // if (!outboundFlight) {
+    //   return next(new NotFoundError('Outbound flight not found'))
+    // }
 
     res.status(200).json({
       status: 'success',
     })
   }),
+  refundByStaff: catchPromise(async function (req: Request, res: Response, next: NextFunction) {}),
 }
