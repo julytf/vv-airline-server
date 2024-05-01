@@ -10,6 +10,7 @@ import NotFoundError from '@/errors/NotFoundError'
 import Booking from '@/models/booking/booking.model'
 import { PaymentStatus } from '@/enums/payment.enums'
 import ForbiddenError from '@/errors/ForbiddenError'
+import { UserRole } from '@/enums/user.enums'
 
 export default {
   getAllPaginate: catchPromise(async function (req: IRequestWithUser, res, next) {
@@ -122,7 +123,12 @@ export default {
 
     if (!doc) throw new NotFoundError('No document found!')
 
-    if (!doc.user || doc.user?._id.toString() !== req?.user?._id.toString()) {
+    // ! this is a temporary approach to allow only the owner of the booking to access the booking details
+    // ! this app should separate admin and user routes
+    if (
+      (!doc.user || doc.user?._id.toString() !== req?.user?._id.toString()) &&
+      ![UserRole.ADMIN, UserRole.SUPER_ADMIN].includes(req?.user?.role || UserRole.USER)
+    ) {
       throw new ForbiddenError('You are not allowed to access this document!')
     }
 

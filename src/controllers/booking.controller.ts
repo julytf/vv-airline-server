@@ -128,15 +128,19 @@ export default {
     // generate new pnr
     let pnr = ''
     let count = 0
+    let documentCount = 0
     do {
+      count++
+      if (count === 5) throw new Error('Cannot generate pnr')
+
       pnr = generatePNR()
       console.log('pnr', pnr)
 
-      count = await Booking.countDocuments({ pnr })
-      console.log('count', count) 
+      documentCount = await Booking.countDocuments({ pnr })
+      console.log('documentCount', documentCount)
       const docs = await Booking.find({ pnr })
-      console.log('docs', docs) 
-    } while (pnr === '' || count > 0)
+      console.log('docs', docs)
+    } while (pnr === '' || documentCount > 0)
 
     //create booking
     console.log('req.user?._id', req.user?._id)

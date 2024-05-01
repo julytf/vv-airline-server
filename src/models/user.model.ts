@@ -28,6 +28,8 @@ export interface IUser extends Document {
   matchPassword(password: string): Promise<boolean>
   joiValidate(): ValidationResult<any>
   createResetToken(): string
+
+  // isAdmin(): boolean
 }
 
 const userSchema = new Schema<IUser>(
@@ -151,6 +153,11 @@ userSchema.method('createResetToken', function () {
     expires: addMinutes(new Date(), 15),
   }
   // user.save()
+
+  // userSchema.method('isAdmin', function () {
+  //   const user: IUser = this
+  //   return [UserRole.ADMIN, UserRole.SUPER_ADMIN].includes(user.role)
+  // })
 
   return user.resetToken.token
 })

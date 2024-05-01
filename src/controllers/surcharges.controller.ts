@@ -4,6 +4,7 @@ import Surcharge from '@/models/flight/surcharge.model'
 import User from '@/models/user.model'
 import { Request, Response, NextFunction } from 'express'
 import Stripe from 'stripe'
+import * as factory from './factory'
 
 export default {
   getSurcharges: async (req: Request, res: Response, next: NextFunction) => {
@@ -14,4 +15,5 @@ export default {
       data: surcharges,
     })
   },
+  updateOne: factory.updateOne(Surcharge),
 }

@@ -21,6 +21,7 @@ import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
 import AppError from '@/errors/AppError'
 import NotFoundError from '@/errors/NotFoundError'
+import Surcharge from '@/models/flight/surcharge.model'
 
 const stripe = new Stripe(config.stripe.secretKey)
 
@@ -111,61 +112,6 @@ interface BookingData {
 }
 
 export default {
-  //
-  // move to paypal
-  //
-  // intents: async (req: Request, res: Response, next: NextFunction) => {
-  //   const amount = 10000
-
-  //   const paymentIntent = await stripe.paymentIntents.create({
-  //     amount,
-  //     currency: 'usd',
-  //     payment_method_types: ['card'],
-  //     metadata: { uid: 'testuid123' },
-  //   })
-
-  //   return res.json({
-  //     status: 'success',
-  //     data: { paymentIntent },
-  //   })
-  // },
-
-  // getCheckoutSession: catchPromise(async function (req: IRequestWithUser, res, next) {
-  //   const bookingId = req.params.bookingId
-
-  //   const session = await stripe.checkout.sessions.create({
-  //     payment_method_types: ['card'],
-  //     success_url: `${req.protocol}://${req.hostname}:${process.env.PORT}/api/payment/success/${bookingId}`,
-  //     cancel_url: `${req.protocol}://${req.hostname}:${process.env.PORT}/api/payment/fail/${bookingId}`,
-  //     // return_url: `${req.protocol}://${req.hostname}:${process.env.PORT}/api/payment/fail/${bookingId}`,
-  //     customer_email: req?.user?.email,
-  //     mode: 'payment',
-  //     line_items: [
-  //       {
-  //         price_data: {
-  //           currency: 'usd',
-  //           product_data: {
-  //             name: 'Flight booking',
-  //           },
-  //           unit_amount: 10000,
-  //         },
-  //         quantity: 1,
-  //       },
-  //     ],
-  //     metadata: {
-  //       bookingId: bookingId,
-  //     },
-  //   })
-
-  //   const paymentUrl = session.url
-
-  //   res.status(200).json({
-  //     status: 'success',
-  //     paymentUrl,
-  //     test: { session },
-  //   })
-  // }),
-
   getPaymentIntents: async (req: Request, res: Response, next: NextFunction) => {
     const bookingId = req.query.bookingId as string
     if (!bookingId) return next(new AppError('Booking id is required', 400))
@@ -294,7 +240,7 @@ export default {
     })
   }),
 
-  refund: catchPromise(async function (req: Request, res: Response, next: NextFunction) {
+  refund: catchPromise(async function (req: IRequestWithUser, res: Response, next: NextFunction) {
     const bookingId = req.params.id as string
     const { pnr, email } = req.body as RefundData
 
@@ -328,6 +274,8 @@ export default {
       0,
     )
 
+    const surcharges = await Surcharge.find({})
+    // TODO:
     const refundFee = 500_000
 
     // console.log(
@@ -394,7 +342,7 @@ export default {
   }),
 
   // TODO:
-  paymentSuccessByStaff: catchPromise(async function (req, res, next) {
+  paymentSuccessByStaff: catchPromise(async function (req: IRequestWithUser, res, next) {
     const bookingId = req.query.bookingId as string
 
     const booking = await Booking.findById(bookingId)
@@ -412,7 +360,6 @@ export default {
     // console.log(paymentSession)
     // console.log(paymentSession.payment_status)
 
-    
     // bỏ qua check payment
     // const paymentIntent = await stripe.paymentIntents.retrieve(booking.payment.intentId)
     // console.log(paymentIntent)
@@ -424,6 +371,9 @@ export default {
 
     // booking.payment.status = PaymentStatus.SUCCEEDED
     // await booking.updatePaymentStatus(PaymentStatus.SUCCEEDED)
+    booking.staff = req.user?._id
+
+    booking.payment.method = PaymentMethod.CASH
     booking.payment.status = PaymentStatus.SUCCEEDED
 
     const bookingReservations = [
@@ -465,5 +415,103 @@ export default {
       status: 'success',
     })
   }),
-  refundByStaff: catchPromise(async function (req: Request, res: Response, next: NextFunction) {}),
+
+  refundByStaff: catchPromise(async function (req: Request, res: Response, next: NextFunction) {
+    const bookingId = req.params.id as string
+    // const { pnr, email } = req.body as RefundData
+
+    const booking = await Booking.findById(bookingId)
+
+    if (!booking) {
+      return next(new NotFoundError('Booking not found'))
+    }
+    // if (booking.pnr !== pnr || booking.contactInfo.email !== email) {
+    //   return next(new AppError('Invalid pnr or email', 400))
+    // }
+
+    const refundData = req.body as RefundData
+
+    const outboundRefundQuantity = refundData[FlightType.OUTBOUND].filter((refund) => refund).length
+    const inboundRefundQuantity = refundData[FlightType.INBOUND].filter((refund) => refund).length
+
+    const outboundRefundReservations = booking.flightsInfo[FlightType.OUTBOUND].reservations.filter(
+      (_, i) => refundData[FlightType.OUTBOUND][i],
+    )
+    const inboundRefundReservations =
+      booking.flightsInfo[FlightType.INBOUND]?.reservations.filter((_, i) => refundData[FlightType.INBOUND][i]) || []
+
+    const refundReservations = [...outboundRefundReservations, ...inboundRefundReservations]
+
+    const surchargeRefundAmount = refundReservations.reduce(
+      (acc, reservation) =>
+        acc +
+        (reservation[FlightLegType.DEPARTURE].surcharge || 0) +
+        (reservation[FlightLegType.TRANSIT].surcharge || 0),
+      0,
+    )
+
+    const refundFee = 500_000
+
+    // console.log(
+    //   'booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity',
+    //   booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity,
+    // )
+    // console.log(
+    //   '(booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity',
+    //   (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity,
+    // )
+    // console.log('surchargeRefundAmount', surchargeRefundAmount)
+    // console.log('refundFee', refundFee)
+
+    const refundAmount =
+      booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity +
+      (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity +
+      surchargeRefundAmount -
+      refundFee
+
+    // if (!booking?.payment?.intentId) {
+    //   return next(new AppError('Booking has no payment intent', 400))
+    // }
+
+    // const paymentIntent = await stripe.paymentIntents.retrieve(booking.payment.intentId)
+
+    // if (paymentIntent.status !== 'succeeded') {
+    //   return next(new AppError('Payment failed', 400))
+    // }
+
+    // const refund = await stripe.refunds.create({
+    //   payment_intent: booking.payment.intentId,
+    //   amount: refundAmount,
+    // })
+
+    booking.payment.status = PaymentStatus.REFUNDED
+
+    await Promise.all([
+      ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(async (reservation, i) => {
+        if (refundData[FlightType.OUTBOUND][i]) {
+          reservation.paymentStatus = PaymentStatus.REFUNDED
+          const reservationId =
+            reservation[FlightLegType.DEPARTURE].reservation?._id || reservation[FlightLegType.TRANSIT].reservation?._id
+          if (!reservationId) return
+          await Reservation.findByIdAndUpdate(reservationId, { paymentStatus: PaymentStatus.REFUNDED })
+        }
+      }),
+      ...(booking.flightsInfo?.[FlightType.INBOUND]?.reservations.map(async (reservation, i) => {
+        if (refundData[FlightType.INBOUND][i]) {
+          reservation.paymentStatus = PaymentStatus.REFUNDED
+          const reservationId =
+            reservation[FlightLegType.DEPARTURE].reservation?._id || reservation[FlightLegType.TRANSIT].reservation?._id
+          if (!reservationId) return
+          await Reservation.findByIdAndUpdate(reservationId, { paymentStatus: PaymentStatus.REFUNDED })
+        }
+      }) || []),
+    ])
+
+    await booking.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: { booking, refundAmount },
+    })
+  }),
 }
