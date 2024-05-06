@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose'
 
-export interface ISurcharge {
+export interface IMealPlan {
   title: string
   name: string
   value: number | null
 }
 
-const surchargeSchema = new Schema<ISurcharge>({
+const mealPlanSchema = new Schema<IMealPlan>({
   title: {
     type: String,
     required: true,
@@ -20,6 +20,6 @@ const surchargeSchema = new Schema<ISurcharge>({
   },
 })
 
-const Surcharge = model<ISurcharge>('Surcharge', surchargeSchema)
+const MealPlan = model<IMealPlan>('MealPlan', mealPlanSchema)
 
-export default Surcharge
+export default MealPlan

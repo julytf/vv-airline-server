@@ -1,5 +1,5 @@
 import { TicketClass } from '@/enums/ticket.enums'
-import { Schema, Types, model } from 'mongoose'
+import { PreMiddlewareFunction, Schema, Types, model } from 'mongoose'
 
 interface IRowModel {
   index: number
@@ -64,11 +64,12 @@ const aircraftModelSchema = new Schema<IAircraftModel>({
   },
   seatMap: [cabinModelSchema],
 })
-
-aircraftModelSchema.pre('find', async function (next) {
+const findMiddleware: PreMiddlewareFunction = async function (next) {
   this.populate('seatMap.map.seats')
   next()
-})
+}
+
+aircraftModelSchema.pre(/find/, findMiddleware)
 
 const AircraftModel = model<IAircraftModel>('AircraftModel', aircraftModelSchema)
 

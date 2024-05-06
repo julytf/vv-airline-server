@@ -8,6 +8,8 @@ import Ward from '@/models/address/ward.model'
 import Aircraft from '@/models/aircraft/aircraft.model'
 import AircraftModel from '@/models/aircraft/aircraftModel.model'
 import Seat from '@/models/aircraft/seat.model'
+import MealPlan from '@/models/flight/mealPlan.model'
+import Service from '@/models/flight/mealPlan.model'
 import Surcharge from '@/models/flight/surcharge.model'
 import User from '@/models/user.model'
 
@@ -15,6 +17,7 @@ export default async function seedAircraft() {
   await _seedAircraftModel()
   await _seedAircraft()
   await _seedSurcharge()
+  await _seedMealPlan()
 }
 
 async function _seedAircraftModel() {
@@ -214,52 +217,86 @@ async function _seedAircraft() {
 
 async function _seedSurcharge() {
   await Surcharge.create({
+    title: 'Phụ phí ghế - Ghế cửa sổ',
     name: `SeatType.${SeatType.WINDOW}`,
     value: 500_000,
   })
 
   await Surcharge.create({
+    title: 'Phí hoàn vé - Phổ thông - Tiết kiệm',
     name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.BUDGET}.Refund`,
     value: null,
   })
-  await Surcharge.create({
-    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.BUDGET}.Exchange`,
-    value: null,
-  })
+  // await Surcharge.create({
+  //   title: 'Phí đổi vé - Phổ thông - Tiết kiệm',
+  //   name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.BUDGET}.Exchange`,
+  //   value: null,
+  // })
 
   await Surcharge.create({
+    title: 'Phí hoàn vé - Phổ thông - Tiêu chuẩn',
     name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.STANDARD}.Refund`,
     value: null,
   })
-  await Surcharge.create({
-    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.STANDARD}.Exchange`,
-    value: 500_000,
-  })
+  // await Surcharge.create({
+  //   title: 'Phí đổi vé - Phổ thông - Tiêu chuẩn',
+  //   name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.STANDARD}.Exchange`,
+  //   value: 500_000,
+  // })
 
   await Surcharge.create({
+    title: 'Phí hoàn vé - Phổ thông - Linh hoạt',
     name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.FLEXIBLE}.Refund`,
     value: 500_000,
   })
-  await Surcharge.create({
-    name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.FLEXIBLE}.Exchange`,
-    value: 0,
-  })
+  // await Surcharge.create({
+  //   title: 'Phí đổi vé - Phổ thông - Linh hoạt',
+  //   name: `TicketClass.${TicketClass.ECONOMY}.${TicketType.FLEXIBLE}.Exchange`,
+  //   value: 0,
+  // })
 
   await Surcharge.create({
+    title: 'Phí hoàn vé - Thương gia - Tiêu chuẩn',
     name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.STANDARD}.Refund`,
     value: 500_000,
   })
-  await Surcharge.create({
-    name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.STANDARD}.Exchange`,
-    value: 360_000,
-  })
+  // await Surcharge.create({
+  //   title: 'Phí đổi vé - Thương gia - Tiêu chuẩn',
+  //   name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.STANDARD}.Exchange`,
+  //   value: 360_000,
+  // })
 
   await Surcharge.create({
+    title: 'Phí hoàn vé - Thương gia - Linh hoạt',
     name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.FLEXIBLE}.Refund`,
     value: 360_000,
   })
-  await Surcharge.create({
-    name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.FLEXIBLE}.Exchange`,
+  // await Surcharge.create({
+  //   title: 'Phí đổi vé - Thương gia - Linh hoạt',
+  //   name: `TicketClass.${TicketClass.BUSINESS}.${TicketType.FLEXIBLE}.Exchange`,
+  //   value: 0,
+  // })
+}
+
+async function _seedMealPlan() {
+  await MealPlan.create({
+    title: 'Đồ ăn Việt Nam',
+    name: `do_an_viet_nam`,
+    value: 0,
+  })
+  await MealPlan.create({
+    title: 'Đồ ăn Pháp',
+    name: `do_an_phap`,
+    value: 0,
+  })
+  await MealPlan.create({
+    title: 'Đồ ăn Thổ Nhĩ Kỳ',
+    name: `do_an_tho_nhi_ky`,
+    value: 0,
+  })
+  await MealPlan.create({
+    title: 'Đồ ăn Nga',
+    name: `do_an_nga`,
     value: 0,
   })
 }

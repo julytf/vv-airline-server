@@ -16,14 +16,15 @@ const fetchUser = async (req: IRequestWithUser, res: Response, next: NextFunctio
   const token = req.headers?.authorization?.replace('Bearer ', '') || req.cookies.jwt
   console.log('[info]:token', token)
 
-  if (!token) return next(new UnauthorizedError())
+  if (!token) return next()
 
   let decoded
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!) as AuthData
   } catch (err) {
     // return next(err)
-    return next(new UnauthorizedError())
+
+    return next()
   }
   const user = await User.findById(decoded.id).select('+password')
   // console.log('auth', user?.id)

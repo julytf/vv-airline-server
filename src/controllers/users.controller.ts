@@ -29,6 +29,7 @@ export default {
     // console.log('[info]:body', req.body)
 
     const patchedUser = req.body
+    delete patchedUser._id
     if (patchedUser.password) {
       delete patchedUser.password
     }
@@ -47,6 +48,9 @@ export default {
   }),
 
   getUsersPaginate: factory.getAllPaginate(User),
+
+  getOne: factory.getOne(User),
+  updateOne: factory.updateOne(User),
 
   createOne: catchPromise(async function (req, res, next) {
     const user = await new User({

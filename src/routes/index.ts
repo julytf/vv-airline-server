@@ -15,6 +15,7 @@ import aircraftsRoutes from './aircrafts.routes'
 import aircraftModelsRoutes from './aircraftModels.routes'
 import surchargesRoutes from './surcharges.routes'
 import bookingsRoutes from './bookings.routes'
+import mealPlansRoutes from './mealPlans.routes'
 
 const router = Router()
 
@@ -44,6 +45,7 @@ router.use('/api/flight-legs', flightLegsRoutes)
 router.use('/api/flight-routes', flightRoutesRoutes)
 router.use('/api/flights', flightsRoutes)
 router.use('/api/surcharges', surchargesRoutes)
+router.use('/api/meal-plans', mealPlansRoutes)
 
 router.use('/api/users', usersRoutes)
 router.use('/api/bookings', bookingsRoutes)

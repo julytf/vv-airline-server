@@ -9,7 +9,6 @@ import FlightRoute from '@/models/flight/flightRoute.model'
 import User from '@/models/user.model'
 import mongoose, { Model } from 'mongoose'
 import Seat from '@/models/aircraft/seat.model'
-import Service from '@/models/booking/service.model'
 import Reservation from '@/models/booking/reservation.model'
 import Booking from '@/models/booking/booking.model'
 import Article from '@/models/article/article.model'
@@ -48,7 +47,6 @@ export const drop = async () => {
     FlightLeg.deleteMany({}),
     Flight.deleteMany({}),
     Seat.deleteMany({}),
-    Service.deleteMany({}),
     Reservation.deleteMany({}),
     Booking.deleteMany({}),
     Article.deleteMany({}),

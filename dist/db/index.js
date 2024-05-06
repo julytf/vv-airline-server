@@ -23,7 +23,6 @@ const flightRoute_model_1 = __importDefault(require("@/models/flight/flightRoute
 const user_model_1 = __importDefault(require("@/models/user.model"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const seat_model_1 = __importDefault(require("@/models/aircraft/seat.model"));
-const service_model_1 = __importDefault(require("@/models/booking/service.model"));
 const reservation_model_1 = __importDefault(require("@/models/booking/reservation.model"));
 const booking_model_1 = __importDefault(require("@/models/booking/booking.model"));
 const article_model_1 = __importDefault(require("@/models/article/article.model"));
@@ -54,7 +53,6 @@ const drop = () => __awaiter(void 0, void 0, void 0, function* () {
         flightLeg_model_1.default.deleteMany({}),
         flight_model_1.default.deleteMany({}),
         seat_model_1.default.deleteMany({}),
-        service_model_1.default.deleteMany({}),
         reservation_model_1.default.deleteMany({}),
         booking_model_1.default.deleteMany({}),
         article_model_1.default.deleteMany({}),

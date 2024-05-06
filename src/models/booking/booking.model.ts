@@ -5,6 +5,7 @@ import { TicketClass, TicketType } from '@/enums/ticket.enums'
 import { model, PreMiddlewareFunction, Schema, Types } from 'mongoose'
 import Reservation from './reservation.model'
 import { PassengerType } from '@/enums/passenger.enums'
+import { SeatType } from '@/enums/seat.enums'
 
 export interface IBooking {
   pnr: string
@@ -31,13 +32,37 @@ export interface IBooking {
         paymentStatus: PaymentStatus
         [FlightLegType.DEPARTURE]: {
           reservation: Types.ObjectId
-          services: String[]
-          surcharge: number
+          services: {
+            seat: {
+              seatType: SeatType
+              charge: number
+            }
+            baggage: {
+              quantity: number
+              charge: number
+            }
+            meal: {
+              name: string | null
+              charge: number
+            }
+          }
         }
         [FlightLegType.TRANSIT]: {
           reservation: Types.ObjectId
-          services: String[]
-          surcharge: number
+          services: {
+            seat: {
+              seatType: SeatType
+              charge: number
+            }
+            baggage: {
+              quantity: number
+              charge: number
+            }
+            meal: {
+              name: string | null
+              charge: number
+            }
+          }
         }
       }[]
     }
@@ -50,13 +75,37 @@ export interface IBooking {
         paymentStatus: PaymentStatus
         [FlightLegType.DEPARTURE]: {
           reservation: Types.ObjectId
-          services: String[]
-          surcharge: number
+          services: {
+            seat: {
+              seatType: SeatType
+              charge: number
+            }
+            baggage: {
+              quantity: number
+              charge: number
+            }
+            meal: {
+              name: string | null
+              charge: number
+            }
+          }
         }
         [FlightLegType.TRANSIT]: {
           reservation: Types.ObjectId
-          services: String[]
-          surcharge: number
+          services: {
+            seat: {
+              seatType: SeatType
+              charge: number
+            }
+            baggage: {
+              quantity: number
+              charge: number
+            }
+            meal: {
+              name: string | null
+              charge: number
+            }
+          }
         }
       }[]
     }
@@ -153,7 +202,23 @@ const bookingSchema = new Schema<IBooking>({
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
-              surcharge: Number,
+              services: {
+                seat: {
+                  seatType: {
+                    type: String,
+                    enum: SeatType,
+                  },
+                  charge: Number,
+                },
+                baggage: {
+                  quantity: Number,
+                  charge: Number,
+                },
+                meal: {
+                  name: String,
+                  charge: Number,
+                },
+              },
             },
 
             [FlightLegType.TRANSIT]: {
@@ -161,7 +226,23 @@ const bookingSchema = new Schema<IBooking>({
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
-              surcharge: Number,
+              services: {
+                seat: {
+                  seatType: {
+                    type: String,
+                    enum: SeatType,
+                  },
+                  charge: Number,
+                },
+                baggage: {
+                  quantity: Number,
+                  charge: Number,
+                },
+                meal: {
+                  name: String,
+                  charge: Number,
+                },
+              },
             },
           },
         ],
@@ -200,7 +281,23 @@ const bookingSchema = new Schema<IBooking>({
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
-              surcharge: Number,
+              services: {
+                seat: {
+                  seatType: {
+                    type: String,
+                    enum: SeatType,
+                  },
+                  charge: Number,
+                },
+                baggage: {
+                  quantity: Number,
+                  charge: Number,
+                },
+                meal: {
+                  name: String,
+                  charge: Number,
+                },
+              },
             },
 
             [FlightLegType.TRANSIT]: {
@@ -208,7 +305,23 @@ const bookingSchema = new Schema<IBooking>({
                 type: Schema.Types.ObjectId,
                 ref: 'Reservation',
               },
-              surcharge: Number,
+              services: {
+                seat: {
+                  seatType: {
+                    type: String,
+                    enum: SeatType,
+                  },
+                  charge: Number,
+                },
+                baggage: {
+                  quantity: Number,
+                  charge: Number,
+                },
+                meal: {
+                  name: String,
+                  charge: Number,
+                },
+              },
             },
           },
         ],

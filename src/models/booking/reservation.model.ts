@@ -10,7 +10,7 @@ export interface IReservation {
   flightLeg: Types.ObjectId
   passenger: Types.ObjectId
   seat: Types.ObjectId
-  services: Types.ObjectId[]
+  // services: Types.ObjectId[]
   paymentStatus?: PaymentStatus
 }
 
@@ -38,12 +38,12 @@ const reservationSchema = new Schema<IReservation>({
     type: Schema.Types.ObjectId,
     ref: 'Seat',
   },
-  services: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Service',
-    },
-  ],
+  // services: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Service',
+  //   },
+  // ], 
   paymentStatus: {
     type: String,
     enum: PaymentStatus,
@@ -51,8 +51,8 @@ const reservationSchema = new Schema<IReservation>({
   },
 })
 
-reservationSchema.pre('find', function () {
-  this.populate('flightLeg').populate('passenger').populate('seat').populate('services')
+reservationSchema.pre('find', function () { 
+  this.populate('flightLeg').populate('passenger').populate('seat')
 })
 
 const Reservation = model<IReservation>('Reservation', reservationSchema)

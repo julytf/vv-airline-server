@@ -62,8 +62,6 @@ export default {
       })
     }
 
-    // TODO: check enough slots for passengers
-
     const departureAirport = await Airport.findOne({ IATA: departureAirportIATA })
     const arrivalAirport = await Airport.findOne({ IATA: arrivalAirportIATA })
 

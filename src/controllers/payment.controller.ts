@@ -143,7 +143,7 @@ export default {
     })
   },
 
-  // TODO: get confirm request from user instead of directly from paypal webhook because  we doesn't have a public host yet
+  // !TODO: get confirm request from user instead of directly from paypal webhook because  we doesn't have a public host yet => wont do this in this project
   // confirmPayment: async (req: Request, res: Response, next: NextFunction) => {
   //   const paid = true
 
@@ -154,7 +154,7 @@ export default {
   //     })
   //   }
 
-  //   // TODO: get bookingId from paypal webhook
+  //   // !TODO: get bookingId from paypal webhook
   //   const bookingId = req.body.bookingId
 
   //   const booking = await Booking.findById(bookingId)
@@ -222,7 +222,7 @@ export default {
     await Promise.all(
       reservationDocuments.map(async (reservation) => {
         console.log('log', reservation, PaymentStatus.SUCCEEDED)
-        // TODO: this array have some null value for some reason, fix later
+        // !TODO: this array have some null value for some reason, fix later => wont fix this in this project
         if (!reservation) return
         await Reservation.findByIdAndUpdate(reservation, { paymentStatus: PaymentStatus.SUCCEEDED })
       }),
@@ -237,6 +237,7 @@ export default {
 
     res.status(200).json({
       status: 'success',
+      data: { booking },
     })
   }),
 
@@ -266,18 +267,43 @@ export default {
 
     const refundReservations = [...outboundRefundReservations, ...inboundRefundReservations]
 
-    const surchargeRefundAmount = refundReservations.reduce(
+    const subChargeRefundAmount = refundReservations.reduce(
       (acc, reservation) =>
         acc +
-        (reservation[FlightLegType.DEPARTURE].surcharge || 0) +
-        (reservation[FlightLegType.TRANSIT].surcharge || 0),
+        (reservation[FlightLegType.DEPARTURE].services.seat.charge || 0) +
+        (reservation[FlightLegType.DEPARTURE].services.baggage.charge || 0) +
+        (reservation[FlightLegType.DEPARTURE].services.meal.charge || 0) +
+        (reservation[FlightLegType.TRANSIT].services.seat.charge || 0) +
+        (reservation[FlightLegType.TRANSIT].services.baggage.charge || 0) +
+        (reservation[FlightLegType.TRANSIT].services.meal.charge || 0),
       0,
     )
 
     const surcharges = await Surcharge.find({})
-    // TODO:
-    const refundFee = 500_000
 
+    const outboundRefundChargeForOne =
+      surcharges.find(
+        (s) =>
+          s.name ===
+          `TicketClass.${booking.flightsInfo[FlightType.OUTBOUND].ticketClass}.${
+            booking.flightsInfo[FlightType.OUTBOUND].ticketType
+          }.Refund`,
+      )?.value || 0
+
+    const inboundRefundChargeForOne =
+      surcharges.find(
+        (s) =>
+          s.name ===
+          `TicketClass.${booking.flightsInfo?.[FlightType.INBOUND]?.ticketClass}.${booking.flightsInfo?.[
+            FlightType.INBOUND
+          ]?.ticketType}.Refund`,
+      )?.value || 0
+
+    console.log('outboundRefundChargeForOne', outboundRefundChargeForOne)
+    console.log('inboundRefundChargeForOne', inboundRefundChargeForOne)
+
+    const refundFee =
+      outboundRefundChargeForOne * outboundRefundQuantity + inboundRefundQuantity * inboundRefundChargeForOne
     // console.log(
     //   'booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity',
     //   booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity,
@@ -286,14 +312,20 @@ export default {
     //   '(booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity',
     //   (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity,
     // )
-    console.log('surchargeRefundAmount', surchargeRefundAmount)
-    // console.log('refundFee', refundFee)
+    console.log('subChargeRefundAmount', subChargeRefundAmount)
+    console.log('refundFee', refundFee)
 
     const refundAmount =
       booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity +
       (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity +
-      surchargeRefundAmount -
+      subChargeRefundAmount -
       refundFee
+
+    console.log('refundAmount', refundAmount)
+
+    // return res.status(200).json({
+    //   status: 'success',
+    // })
 
     if (!booking?.payment?.intentId) {
       return next(new AppError('Booking has no payment intent', 400))
@@ -341,7 +373,6 @@ export default {
     })
   }),
 
-  // TODO:
   paymentSuccessByStaff: catchPromise(async function (req: IRequestWithUser, res, next) {
     const bookingId = req.query.bookingId as string
 
@@ -398,7 +429,7 @@ export default {
     await Promise.all(
       reservationDocuments.map(async (reservation) => {
         console.log('log', reservation, PaymentStatus.SUCCEEDED)
-        // TODO: this array have some null value for some reason, fix later
+        // !TODO: this array have some null value for some reason, fix later => wont fix this in this project
         if (!reservation) return
         await Reservation.findByIdAndUpdate(reservation, { paymentStatus: PaymentStatus.SUCCEEDED })
       }),
@@ -442,15 +473,43 @@ export default {
 
     const refundReservations = [...outboundRefundReservations, ...inboundRefundReservations]
 
-    const surchargeRefundAmount = refundReservations.reduce(
+    const subChargeRefundAmount = refundReservations.reduce(
       (acc, reservation) =>
         acc +
-        (reservation[FlightLegType.DEPARTURE].surcharge || 0) +
-        (reservation[FlightLegType.TRANSIT].surcharge || 0),
+        (reservation[FlightLegType.DEPARTURE].services.seat.charge || 0) +
+        (reservation[FlightLegType.DEPARTURE].services.baggage.charge || 0) +
+        (reservation[FlightLegType.DEPARTURE].services.meal.charge || 0) +
+        (reservation[FlightLegType.TRANSIT].services.seat.charge || 0) +
+        (reservation[FlightLegType.TRANSIT].services.baggage.charge || 0) +
+        (reservation[FlightLegType.TRANSIT].services.meal.charge || 0),
       0,
     )
 
-    const refundFee = 500_000
+    const surcharges = await Surcharge.find({})
+
+    const outboundRefundChargeForOne =
+    surcharges.find(
+      (s) =>
+        s.name ===
+        `TicketClass.${booking.flightsInfo[FlightType.OUTBOUND].ticketClass}.${
+          booking.flightsInfo[FlightType.OUTBOUND].ticketType
+        }.Refund`,
+    )?.value || 0
+
+  const inboundRefundChargeForOne =
+    surcharges.find(
+      (s) =>
+        s.name ===
+        `TicketClass.${booking.flightsInfo?.[FlightType.INBOUND]?.ticketClass}.${booking.flightsInfo?.[
+          FlightType.INBOUND
+        ]?.ticketType}.Refund`,
+    )?.value || 0
+
+  console.log('outboundRefundChargeForOne', outboundRefundChargeForOne)
+  console.log('inboundRefundChargeForOne', inboundRefundChargeForOne)
+
+  const refundFee =
+    outboundRefundChargeForOne * outboundRefundQuantity + inboundRefundQuantity * inboundRefundChargeForOne
 
     // console.log(
     //   'booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity',
@@ -466,7 +525,7 @@ export default {
     const refundAmount =
       booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity +
       (booking.flightsInfo?.[FlightType.INBOUND]?.price || 0) * inboundRefundQuantity +
-      surchargeRefundAmount -
+      subChargeRefundAmount -
       refundFee
 
     // if (!booking?.payment?.intentId) {

@@ -20,6 +20,7 @@ const aircrafts_routes_1 = __importDefault(require("./aircrafts.routes"));
 const aircraftModels_routes_1 = __importDefault(require("./aircraftModels.routes"));
 const surcharges_routes_1 = __importDefault(require("./surcharges.routes"));
 const bookings_routes_1 = __importDefault(require("./bookings.routes"));
+const mealPlans_routes_1 = __importDefault(require("./mealPlans.routes"));
 const router = (0, express_1.Router)();
 router.route('/api').get((req, res, next) => {
     return res.json({
@@ -41,6 +42,7 @@ router.use('/api/flight-legs', flightLegs_routes_1.default);
 router.use('/api/flight-routes', flightRoutes_routes_1.default);
 router.use('/api/flights', flights_routes_1.default);
 router.use('/api/surcharges', surcharges_routes_1.default);
+router.use('/api/meal-plans', mealPlans_routes_1.default);
 router.use('/api/users', users_routes_1.default);
 router.use('/api/bookings', bookings_routes_1.default);
 exports.default = router;
