@@ -18,7 +18,7 @@ export const getOne = function (Model: Model<any, any, any>) {
     })
   })
 }
-// TODO: filter, sort, limitfields, paginate
+// !TODO: filter, sort, limitfields, paginate
 export const getAll = function (Model: Model<any, any, any>) {
   return catchPromise(async function (req, res, next) {
     const query = Model.find()

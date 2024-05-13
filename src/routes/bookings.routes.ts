@@ -11,6 +11,9 @@ router.use(authMiddleware)
 
 router.route('/get-my-all-paginate').get(BookingsController.getMyAllPaginate)
 router.route('/').get(BookingsController.getAllPaginate)
+router.route('/by-me').get(BookingsController.getAllByMePaginate)
+router.route('/get-by-time-range').get(BookingsController.getByTimeRange)
 router.route('/:id').get(BookingsController.getOne)
+
 
 export default router

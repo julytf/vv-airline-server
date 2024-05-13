@@ -42,11 +42,14 @@ export default {
       })
       .reduce((a, b) => a + b, 0)
 
+    // let index = 0
+
     await Promise.all(
       aircraftModelData.seatMap.map(async (cabin) => {
         await Promise.all(
           cabin.map.map(async (row) => {
             console.log(row.seats)
+            // row.index = index++
             row.seats = await Promise.all(
               row.seats.map(async (seat) => {
                 const newSeat = await Seat.create(seat)

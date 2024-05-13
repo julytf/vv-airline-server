@@ -20,6 +20,7 @@ export interface IFlight {
   }
 
   autoFillDataWithFlightLegsData(): Promise<void>
+  updateRemainingSeats(): Promise<void>
 }
 
 const flightSchema = new Schema<IFlight>({
@@ -55,9 +56,21 @@ const flightSchema = new Schema<IFlight>({
   },
 })
 
-// TODO:
 flightSchema.methods.updateRemainingSeats = async function () {
   const flight = this
+  const departureFlightLeg = await FlightLeg.findById<IFlightLeg>(flight.flightLegs[FlightLegType.DEPARTURE])
+  const transitFlightLeg = await FlightLeg.findById<IFlightLeg>(flight.flightLegs[FlightLegType.TRANSIT])
+
+  flight.remainingSeats = {
+    [TicketClass.ECONOMY]: minNotNull(
+      departureFlightLeg?.remainingSeats[TicketClass.ECONOMY] ?? null,
+      transitFlightLeg?.remainingSeats[TicketClass.ECONOMY] ?? null,
+    ),
+    [TicketClass.BUSINESS]: minNotNull(
+      departureFlightLeg?.remainingSeats[TicketClass.BUSINESS] ?? null,
+      transitFlightLeg?.remainingSeats[TicketClass.BUSINESS] ?? null,
+    ),
+  }
 }
 
 flightSchema.method('autoFillDataWithFlightLegsData', async function () {

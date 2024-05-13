@@ -7,6 +7,7 @@ import { Request } from 'express'
 import AppError from '@/errors/AppError'
 import NotFoundError from '@/errors/NotFoundError'
 import UnauthorizedError from '@/errors/UnauthorizedError'
+import { sendEmail } from '@/utils/email'
 
 export default {
   register: catchPromise(async function (req, res, next) {
@@ -103,7 +104,6 @@ export default {
     return res.status(204).send()
   }),
 
-  // TODO: implement
   // reset password routes
   requestResetPasswordOTPEmail: catchPromise(async function (req, res, next) {
     // send email with otp
@@ -115,8 +115,13 @@ export default {
     const token = user.createResetToken()
     await user.save()
 
-    // TODO: send by email
     console.log('token', token)
+
+    sendEmail({
+      email: user.email,
+      subject: 'VV Airline - Mã OTP đổi mật khẩu',
+      message: `Mã OTP của bạn là: ${token}`,
+    })
 
     return res.status(200).json({
       status: 'success',

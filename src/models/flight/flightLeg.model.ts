@@ -2,6 +2,10 @@ import { FlightLegStatus } from '@/enums/flightLeg.enums'
 import { TicketClass } from '@/enums/ticket.enums'
 import { endOfYear, startOfYear } from 'date-fns'
 import { PreMiddlewareFunction, Schema, Types, model } from 'mongoose'
+import Reservation from '../booking/reservation.model'
+import { PaymentStatus } from '@/enums/payment.enums'
+import { ISeat } from '../aircraft/seat.model'
+import AircraftModel from '../aircraft/aircraftModel.model'
 
 export interface IFlightLeg {
   flightNumber: string
@@ -14,6 +18,8 @@ export interface IFlightLeg {
   status: FlightLegStatus
   flightRoute: Types.ObjectId
   aircraft: Types.ObjectId
+
+  updateRemainingSeats(): Promise<void>
 }
 
 const flightLegSchema = new Schema<IFlightLeg>({
@@ -48,9 +54,49 @@ const flightLegSchema = new Schema<IFlightLeg>({
   },
 })
 
-// TODO:
+// flightLegSchema.methods.updateRemainingSeats = async function ({
+//   [TicketClass.ECONOMY]: economySeatsQuantity,
+//   [TicketClass.BUSINESS]: businessSeatsQuantity,
+// }: {
+//   [TicketClass.ECONOMY]: number
+//   [TicketClass.BUSINESS]: number
+// }) {
+//   const flightLeg = this
+//   flightLeg.remainingSeats[TicketClass.ECONOMY] = economySeatsQuantity
+//   flightLeg.remainingSeats[TicketClass.BUSINESS] = businessSeatsQuantity
+// }
+
 flightLegSchema.methods.updateRemainingSeats = async function () {
-  const flight = this
+  const flightLeg = this
+
+  const aircraftModel = await AircraftModel.findById(
+    flightLeg.aircraft.aircraftModel?._id || flightLeg.aircraft.aircraftModel,
+  )
+
+  const reservations = await Reservation.find<{
+    paymentStatus: PaymentStatus
+    seat: ISeat
+  }>({ flightLeg: flightLeg._id, paymentStatus: PaymentStatus.SUCCEEDED })
+
+  const economySeatsQuantity = reservations.filter(
+    (reservation) => reservation.seat.ticketClass === TicketClass.ECONOMY,
+  ).length
+
+  const businessSeatsQuantity = reservations.filter(
+    (reservation) => reservation.seat.ticketClass === TicketClass.BUSINESS,
+  ).length
+
+  flightLeg.remainingSeats = {
+    [TicketClass.ECONOMY]: (aircraftModel?.seatQuantity?.[TicketClass.ECONOMY] || 0) - economySeatsQuantity,
+    [TicketClass.BUSINESS]: (aircraftModel?.seatQuantity?.[TicketClass.BUSINESS] || 0) - businessSeatsQuantity,
+  }
+
+  console.log('id', flightLeg._id)
+  console.log('flightLeg.remainingSeats[TicketClass.ECONOMY]', flightLeg.remainingSeats[TicketClass.ECONOMY])
+  console.log('flightLeg.remainingSeats[TicketClass.BUSINESS]', flightLeg.remainingSeats[TicketClass.BUSINESS])
+  console.log('economySeatsQuantity', economySeatsQuantity)
+  console.log('businessSeatsQuantity', businessSeatsQuantity)
+  console.log('reservations', reservations)
 }
 
 const findMiddleware: PreMiddlewareFunction = async function (next) {

@@ -16,12 +16,13 @@ import { IFlightRoute } from '@/models/flight/flightRoute.model'
 import { Request, Response, NextFunction } from 'express'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
-import { IFlightLeg } from '@/models/flight/flightLeg.model'
+import FlightLeg, { IFlightLeg } from '@/models/flight/flightLeg.model'
 import catchPromise from '@/utils/catchPromise'
 import IRequestWithUser from '@/interfaces/IRequestWithUser'
 import AppError from '@/errors/AppError'
 import NotFoundError from '@/errors/NotFoundError'
 import Surcharge from '@/models/flight/surcharge.model'
+import { sendEmail } from '@/utils/email'
 
 const stripe = new Stripe(config.stripe.secretKey)
 
@@ -199,10 +200,11 @@ export default {
     // booking.payment.status = PaymentStatus.SUCCEEDED
     // await booking.updatePaymentStatus(PaymentStatus.SUCCEEDED)
     booking.payment.status = PaymentStatus.SUCCEEDED
+    booking.payment.paidAt = new Date()
 
     const bookingReservations = [
       ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
-      ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
+      ...(booking.flightsInfo[FlightType.INBOUND]?.reservations || []),
     ]
     bookingReservations.map((reservation) => {
       reservation.paymentStatus = PaymentStatus.SUCCEEDED
@@ -218,7 +220,20 @@ export default {
       ...booking.flightsInfo[FlightType.OUTBOUND].reservations.map(
         (reservation) => reservation[FlightLegType.TRANSIT].reservation,
       ),
+      ...(booking.flightsInfo?.[FlightType.INBOUND]?.reservations?.map(
+        (reservation) => reservation[FlightLegType.DEPARTURE].reservation,
+      ) || []),
+      ...(booking.flightsInfo?.[FlightType.INBOUND]?.reservations?.map(
+        (reservation) => reservation[FlightLegType.TRANSIT].reservation,
+      ) || []),
     ]
+    // console.log('************start************')
+    // console.log(
+    //   booking.flightsInfo?.[FlightType.INBOUND]?.reservations?.map(
+    //     (reservation) => reservation[FlightLegType.TRANSIT].reservation,
+    //   ) || [],
+    // )
+    // console.log('************************')
     await Promise.all(
       reservationDocuments.map(async (reservation) => {
         console.log('log', reservation, PaymentStatus.SUCCEEDED)
@@ -228,12 +243,49 @@ export default {
       }),
     )
 
-    // TODO:
-    // update flights and flightLegs seats
-    // const outboundFlight = await Flight.findById(booking.flightsInfo[FlightType.OUTBOUND].flight)
-    // if (!outboundFlight) {
-    //   return next(new NotFoundError('Outbound flight not found'))
-    // }
+    const outboundFlight = await Flight.findById(booking.flightsInfo[FlightType.OUTBOUND].flight)
+
+    const departureOutboundFlight = await FlightLeg.findById(
+      outboundFlight?.flightLegs[FlightLegType.DEPARTURE]?._id || outboundFlight?.flightLegs[FlightLegType.DEPARTURE],
+    )
+    await departureOutboundFlight?.updateRemainingSeats()
+    await departureOutboundFlight?.save()
+
+    const transitOutboundFlight = await FlightLeg.findById(
+      outboundFlight?.flightLegs[FlightLegType.TRANSIT]?._id || outboundFlight?.flightLegs[FlightLegType.TRANSIT],
+    )
+    await transitOutboundFlight?.updateRemainingSeats()
+    await transitOutboundFlight?.save()
+
+    await outboundFlight?.updateRemainingSeats()
+    await outboundFlight?.save()
+
+    if (booking.flightsInfo[FlightType.INBOUND]) {
+      const inboundFlight = await Flight.findById(booking.flightsInfo[FlightType.INBOUND].flight)
+
+      const departureInboundFlight = await FlightLeg.findById(
+        inboundFlight?.flightLegs[FlightLegType.DEPARTURE]?._id || inboundFlight?.flightLegs[FlightLegType.DEPARTURE],
+      )
+      await departureInboundFlight?.updateRemainingSeats()
+      await departureInboundFlight?.save()
+
+      const transitInboundFlight = await FlightLeg.findById(
+        inboundFlight?.flightLegs[FlightLegType.TRANSIT]?._id || inboundFlight?.flightLegs[FlightLegType.TRANSIT],
+      )
+      await transitInboundFlight?.updateRemainingSeats()
+      await transitInboundFlight?.save()
+
+      await inboundFlight?.updateRemainingSeats()
+      await inboundFlight?.save()
+    }
+
+    // sendEmail({
+    //   email: booking.contactInfo.email,
+    //   subject: 'VV Airline - Đặt vé thành công',
+    //   message: `Chúng tôi xin thông báo rằng đơn đặt vé máy bay của bạn đã được xác nhận thành công. Dưới đây là mã PNR của bạn để kiểm tra thêm thông tin:
+
+    //   Mã PNR: ${booking.pnr}`,
+    // })
 
     res.status(200).json({
       status: 'success',
@@ -367,6 +419,14 @@ export default {
 
     await booking.save()
 
+    // sendEmail({
+    //   email: booking.contactInfo.email,
+    //   subject: 'VV Airline - Đặt vé thành công',
+    //   message: `Chúng tôi xin thông báo rằng một số hoặc toàn bộ vé trong đơn đặt vé máy bay của bạn đã được hủy thành công. Dưới đây là mã PNR của bạn để kiểm tra thêm thông tin:
+
+    //   Mã PNR: ${booking.pnr}`,
+    // })
+
     res.status(200).json({
       status: 'success',
       data: { booking },
@@ -406,6 +466,7 @@ export default {
 
     booking.payment.method = PaymentMethod.CASH
     booking.payment.status = PaymentStatus.SUCCEEDED
+    booking.payment.paidAt = new Date()
 
     const bookingReservations = [
       ...booking.flightsInfo[FlightType.OUTBOUND].reservations,
@@ -435,12 +496,49 @@ export default {
       }),
     )
 
-    // TODO:
-    // update flights and flightLegs seats
-    // const outboundFlight = await Flight.findById(booking.flightsInfo[FlightType.OUTBOUND].flight)
-    // if (!outboundFlight) {
-    //   return next(new NotFoundError('Outbound flight not found'))
-    // }
+    const outboundFlight = await Flight.findById(booking.flightsInfo[FlightType.OUTBOUND].flight)
+
+    const departureOutboundFlight = await FlightLeg.findById(
+      outboundFlight?.flightLegs[FlightLegType.DEPARTURE]?._id || outboundFlight?.flightLegs[FlightLegType.DEPARTURE],
+    )
+    await departureOutboundFlight?.updateRemainingSeats()
+    await departureOutboundFlight?.save()
+
+    const transitOutboundFlight = await FlightLeg.findById(
+      outboundFlight?.flightLegs[FlightLegType.TRANSIT]?._id || outboundFlight?.flightLegs[FlightLegType.TRANSIT],
+    )
+    await transitOutboundFlight?.updateRemainingSeats()
+    await transitOutboundFlight?.save()
+
+    await outboundFlight?.updateRemainingSeats()
+    await outboundFlight?.save()
+
+    if (booking.flightsInfo[FlightType.INBOUND]) {
+      const inboundFlight = await Flight.findById(booking.flightsInfo[FlightType.INBOUND].flight)
+
+      const departureInboundFlight = await FlightLeg.findById(
+        inboundFlight?.flightLegs[FlightLegType.DEPARTURE]?._id || inboundFlight?.flightLegs[FlightLegType.DEPARTURE],
+      )
+      await departureInboundFlight?.updateRemainingSeats()
+      await departureInboundFlight?.save()
+
+      const transitInboundFlight = await FlightLeg.findById(
+        inboundFlight?.flightLegs[FlightLegType.TRANSIT]?._id || inboundFlight?.flightLegs[FlightLegType.TRANSIT],
+      )
+      await transitInboundFlight?.updateRemainingSeats()
+      await transitInboundFlight?.save()
+
+      await inboundFlight?.updateRemainingSeats()
+      await inboundFlight?.save()
+    }
+
+    // sendEmail({
+    //   email: booking.contactInfo.email,
+    //   subject: 'VV Airline - Đặt vé thành công',
+    //   message: `Chúng tôi xin thông báo rằng đơn đặt vé máy bay của bạn đã được xác nhận thành công. Dưới đây là mã PNR của bạn để kiểm tra thêm thông tin:
+
+    //   Mã PNR: ${booking.pnr}`,
+    // })
 
     res.status(200).json({
       status: 'success',
@@ -488,28 +586,28 @@ export default {
     const surcharges = await Surcharge.find({})
 
     const outboundRefundChargeForOne =
-    surcharges.find(
-      (s) =>
-        s.name ===
-        `TicketClass.${booking.flightsInfo[FlightType.OUTBOUND].ticketClass}.${
-          booking.flightsInfo[FlightType.OUTBOUND].ticketType
-        }.Refund`,
-    )?.value || 0
+      surcharges.find(
+        (s) =>
+          s.name ===
+          `TicketClass.${booking.flightsInfo[FlightType.OUTBOUND].ticketClass}.${
+            booking.flightsInfo[FlightType.OUTBOUND].ticketType
+          }.Refund`,
+      )?.value || 0
 
-  const inboundRefundChargeForOne =
-    surcharges.find(
-      (s) =>
-        s.name ===
-        `TicketClass.${booking.flightsInfo?.[FlightType.INBOUND]?.ticketClass}.${booking.flightsInfo?.[
-          FlightType.INBOUND
-        ]?.ticketType}.Refund`,
-    )?.value || 0
+    const inboundRefundChargeForOne =
+      surcharges.find(
+        (s) =>
+          s.name ===
+          `TicketClass.${booking.flightsInfo?.[FlightType.INBOUND]?.ticketClass}.${booking.flightsInfo?.[
+            FlightType.INBOUND
+          ]?.ticketType}.Refund`,
+      )?.value || 0
 
-  console.log('outboundRefundChargeForOne', outboundRefundChargeForOne)
-  console.log('inboundRefundChargeForOne', inboundRefundChargeForOne)
+    console.log('outboundRefundChargeForOne', outboundRefundChargeForOne)
+    console.log('inboundRefundChargeForOne', inboundRefundChargeForOne)
 
-  const refundFee =
-    outboundRefundChargeForOne * outboundRefundQuantity + inboundRefundQuantity * inboundRefundChargeForOne
+    const refundFee =
+      outboundRefundChargeForOne * outboundRefundQuantity + inboundRefundQuantity * inboundRefundChargeForOne
 
     // console.log(
     //   'booking.flightsInfo[FlightType.OUTBOUND].price * outboundRefundQuantity',
@@ -567,6 +665,14 @@ export default {
     ])
 
     await booking.save()
+
+    // sendEmail({
+    //   email: booking.contactInfo.email,
+    //   subject: 'VV Airline - Đặt vé thành công',
+    //   message: `Chúng tôi xin thông báo rằng một số hoặc toàn bộ vé trong đơn đặt vé máy bay của bạn đã được hủy thành công. Dưới đây là mã PNR của bạn để kiểm tra thêm thông tin:
+
+    //   Mã PNR: ${booking.pnr}`,
+    // })
 
     res.status(200).json({
       status: 'success',

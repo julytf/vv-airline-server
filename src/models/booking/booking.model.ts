@@ -114,235 +114,244 @@ export interface IBooking {
     intentId?: string
     method?: PaymentMethod
     status?: PaymentStatus
+    paidAt?: Date
   }
 
   // updatePaymentStatus(status: PaymentStatus): Promise<void>
 }
 
-const bookingSchema = new Schema<IBooking>({
-  pnr: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  passengersQuantity: {
-    [PassengerType.ADULT]: {
+const bookingSchema = new Schema<IBooking>(
+  {
+    pnr: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    passengersQuantity: {
+      [PassengerType.ADULT]: {
+        type: Number,
+        required: true,
+      },
+      [PassengerType.CHILD]: {
+        type: Number,
+        required: true,
+      },
+    },
+    isRoundtrip: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    totalPrice: {
       type: Number,
       required: true,
     },
-    [PassengerType.CHILD]: {
-      type: Number,
-      required: true,
-    },
-  },
-  isRoundtrip: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  totalPrice: {
-    type: Number,
-    required: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    // required: true,
-  },
-  staff: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  contactInfo: {
-    email: {
-      type: String,
-      required: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-  },
-  passengers: [
-    {
+    user: {
       type: Schema.Types.ObjectId,
-      ref: 'Passenger',
+      ref: 'User',
+      // required: true,
     },
-  ],
-  flightsInfo: {
-    [FlightType.OUTBOUND]: {
-      type: {
-        flight: {
-          type: Schema.Types.ObjectId,
-          ref: 'Flight',
-          required: true,
-        },
-        ticketClass: {
-          type: String,
-          enum: TicketClass,
-          required: true,
-        },
-        ticketType: {
-          type: String,
-          enum: TicketType,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-        reservations: [
-          {
-            paymentStatus: {
-              type: String,
-              enum: PaymentStatus,
-            },
-            [FlightLegType.DEPARTURE]: {
-              reservation: {
-                type: Schema.Types.ObjectId,
-                ref: 'Reservation',
-              },
-              services: {
-                seat: {
-                  seatType: {
-                    type: String,
-                    enum: SeatType,
-                  },
-                  charge: Number,
-                },
-                baggage: {
-                  quantity: Number,
-                  charge: Number,
-                },
-                meal: {
-                  name: String,
-                  charge: Number,
-                },
-              },
-            },
-
-            [FlightLegType.TRANSIT]: {
-              reservation: {
-                type: Schema.Types.ObjectId,
-                ref: 'Reservation',
-              },
-              services: {
-                seat: {
-                  seatType: {
-                    type: String,
-                    enum: SeatType,
-                  },
-                  charge: Number,
-                },
-                baggage: {
-                  quantity: Number,
-                  charge: Number,
-                },
-                meal: {
-                  name: String,
-                  charge: Number,
-                },
-              },
-            },
-          },
-        ],
-      },
-      default: null,
+    staff: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
-    [FlightType.INBOUND]: {
-      type: {
-        flight: {
-          type: Schema.Types.ObjectId,
-          ref: 'Flight',
-          required: true,
-        },
-        ticketClass: {
-          type: String,
-          enum: TicketClass,
-          required: true,
-        },
-        ticketType: {
-          type: String,
-          enum: TicketType,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-        reservations: [
-          {
-            paymentStatus: {
-              type: String,
-              enum: PaymentStatus,
-            },
-            [FlightLegType.DEPARTURE]: {
-              reservation: {
-                type: Schema.Types.ObjectId,
-                ref: 'Reservation',
-              },
-              services: {
-                seat: {
-                  seatType: {
-                    type: String,
-                    enum: SeatType,
-                  },
-                  charge: Number,
-                },
-                baggage: {
-                  quantity: Number,
-                  charge: Number,
-                },
-                meal: {
-                  name: String,
-                  charge: Number,
-                },
-              },
-            },
-
-            [FlightLegType.TRANSIT]: {
-              reservation: {
-                type: Schema.Types.ObjectId,
-                ref: 'Reservation',
-              },
-              services: {
-                seat: {
-                  seatType: {
-                    type: String,
-                    enum: SeatType,
-                  },
-                  charge: Number,
-                },
-                baggage: {
-                  quantity: Number,
-                  charge: Number,
-                },
-                meal: {
-                  name: String,
-                  charge: Number,
-                },
-              },
-            },
-          },
-        ],
+    contactInfo: {
+      email: {
+        type: String,
+        required: true,
       },
-      default: null,
+      phoneNumber: {
+        type: String,
+        required: true,
+      },
+    },
+    passengers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Passenger',
+      },
+    ],
+    flightsInfo: {
+      [FlightType.OUTBOUND]: {
+        type: {
+          flight: {
+            type: Schema.Types.ObjectId,
+            ref: 'Flight',
+            required: true,
+          },
+          ticketClass: {
+            type: String,
+            enum: TicketClass,
+            required: true,
+          },
+          ticketType: {
+            type: String,
+            enum: TicketType,
+            required: true,
+          },
+          price: {
+            type: Number,
+            required: true,
+          },
+          reservations: [
+            {
+              paymentStatus: {
+                type: String,
+                enum: PaymentStatus,
+              },
+              [FlightLegType.DEPARTURE]: {
+                reservation: {
+                  type: Schema.Types.ObjectId,
+                  ref: 'Reservation',
+                },
+                services: {
+                  seat: {
+                    seatType: {
+                      type: String,
+                      enum: SeatType,
+                    },
+                    charge: Number,
+                  },
+                  baggage: {
+                    quantity: Number,
+                    charge: Number,
+                  },
+                  meal: {
+                    name: String,
+                    charge: Number,
+                  },
+                },
+              },
+
+              [FlightLegType.TRANSIT]: {
+                reservation: {
+                  type: Schema.Types.ObjectId,
+                  ref: 'Reservation',
+                },
+                services: {
+                  seat: {
+                    seatType: {
+                      type: String,
+                      enum: SeatType,
+                    },
+                    charge: Number,
+                  },
+                  baggage: {
+                    quantity: Number,
+                    charge: Number,
+                  },
+                  meal: {
+                    name: String,
+                    charge: Number,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        default: null,
+      },
+      [FlightType.INBOUND]: {
+        type: {
+          flight: {
+            type: Schema.Types.ObjectId,
+            ref: 'Flight',
+            required: true,
+          },
+          ticketClass: {
+            type: String,
+            enum: TicketClass,
+            required: true,
+          },
+          ticketType: {
+            type: String,
+            enum: TicketType,
+            required: true,
+          },
+          price: {
+            type: Number,
+            required: true,
+          },
+          reservations: [
+            {
+              paymentStatus: {
+                type: String,
+                enum: PaymentStatus,
+              },
+              [FlightLegType.DEPARTURE]: {
+                reservation: {
+                  type: Schema.Types.ObjectId,
+                  ref: 'Reservation',
+                },
+                services: {
+                  seat: {
+                    seatType: {
+                      type: String,
+                      enum: SeatType,
+                    },
+                    charge: Number,
+                  },
+                  baggage: {
+                    quantity: Number,
+                    charge: Number,
+                  },
+                  meal: {
+                    name: String,
+                    charge: Number,
+                  },
+                },
+              },
+
+              [FlightLegType.TRANSIT]: {
+                reservation: {
+                  type: Schema.Types.ObjectId,
+                  ref: 'Reservation',
+                },
+                services: {
+                  seat: {
+                    seatType: {
+                      type: String,
+                      enum: SeatType,
+                    },
+                    charge: Number,
+                  },
+                  baggage: {
+                    quantity: Number,
+                    charge: Number,
+                  },
+                  meal: {
+                    name: String,
+                    charge: Number,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        default: null,
+      },
+    },
+    payment: {
+      intentId: {
+        type: String,
+      },
+      method: {
+        type: String,
+        enum: PaymentMethod,
+      },
+      status: {
+        type: String,
+        enum: PaymentStatus,
+      },
+      paidAt: {
+        type: Date,
+      },
     },
   },
-  payment: {
-    intentId: {
-      type: String,
-    },
-    method: {
-      type: String,
-      enum: PaymentMethod,
-    },
-    status: {
-      type: String,
-      enum: PaymentStatus,
-    },
+  {
+    timestamps: true,
   },
-})
+)
 
 const findMiddleware: PreMiddlewareFunction = function (next) {
   this.populate('user')
